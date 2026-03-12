@@ -3,13 +3,13 @@ package com.planner.ui;
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
-import com.planner.domain.FixedActivity;
+import com.planner.domain.Absence;
 import com.planner.repository.DeveloperRepository;
-import com.planner.repository.FixedActivityRepository;
+import com.planner.repository.AbsenceRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.ActivityService;
 import com.planner.service.DeveloperService;
-import com.planner.service.FixedActivityService;
+import com.planner.service.AbsenceService;
 import com.planner.service.ProjectService;
 import com.planner.service.TimeRegistrationService;
 
@@ -23,18 +23,18 @@ public class ConsoleUI {
     private final ActivityService activityService;
     private final DeveloperService developerService;
     private final TimeRegistrationService timeRegistrationService;
-    private final FixedActivityService fixedActivityService;
+    private final AbsenceService absenceService;
     private final Scanner scanner = new Scanner(System.in);
 
     public ConsoleUI() {
         DeveloperRepository developerRepository = new DeveloperRepository();
         ProjectRepository projectRepository = new ProjectRepository();
-        FixedActivityRepository fixedActivityRepository = new FixedActivityRepository();
+        AbsenceRepository absenceRepository = new AbsenceRepository();
         this.projectService = new ProjectService(projectRepository, developerRepository);
-        this.activityService = new ActivityService(projectRepository, developerRepository, fixedActivityRepository);
+        this.activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
         this.developerService = new DeveloperService(developerRepository);
         this.timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        this.fixedActivityService = new FixedActivityService(fixedActivityRepository, developerRepository);
+        this.absenceService = new AbsenceService(absenceRepository, developerRepository);
     }
 
     public void start() {
@@ -51,7 +51,7 @@ public class ConsoleUI {
                 case "5" -> assignProjectLeader();
                 case "6" -> registerTime();
                 case "7" -> printReport();
-                case "8" -> registerFixedActivity();
+                case "8" -> registerAbsence();
                 case "9" -> showAvailableDevelopers();
                 case "0" -> running = false;
                 default -> System.out.println("Invalid choice. Try again.");
@@ -150,11 +150,11 @@ public class ConsoleUI {
                 "TOTAL", project.getTotalBudgetedHours(), project.getTotalRegisteredHours());
     }
 
-    private void registerFixedActivity() {
+    private void registerAbsence() {
         System.out.print("Your initials: ");
         String initials = scanner.nextLine().trim();
         System.out.println("Type (VACATION / SICK_LEAVE / COURSE / OTHER): ");
-        FixedActivity.Type type = FixedActivity.Type.valueOf(scanner.nextLine().trim().toUpperCase());
+        Absence.Type type = Absence.Type.valueOf(scanner.nextLine().trim().toUpperCase());
         System.out.print("Start week (e.g. 10): ");
         int startWeek = Integer.parseInt(scanner.nextLine().trim());
         System.out.print("Start year (e.g. 2026): ");
@@ -163,8 +163,8 @@ public class ConsoleUI {
         int endWeek = Integer.parseInt(scanner.nextLine().trim());
         System.out.print("End year: ");
         int endYear = Integer.parseInt(scanner.nextLine().trim());
-        fixedActivityService.registerFixedActivity(initials, type, startWeek, startYear, endWeek, endYear);
-        System.out.println("Fixed activity registered.");
+        absenceService.registerAbsence(initials, type, startWeek, startYear, endWeek, endYear);
+        System.out.println("Absence registered.");
     }
 
     private void showAvailableDevelopers() {

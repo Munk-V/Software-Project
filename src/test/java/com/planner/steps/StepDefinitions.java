@@ -2,14 +2,14 @@ package com.planner.steps;
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
-import com.planner.domain.FixedActivity;
+import com.planner.domain.Absence;
 import com.planner.domain.Project;
 import com.planner.repository.DeveloperRepository;
-import com.planner.repository.FixedActivityRepository;
+import com.planner.repository.AbsenceRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.ActivityService;
 import com.planner.service.DeveloperService;
-import com.planner.service.FixedActivityService;
+import com.planner.service.AbsenceService;
 import com.planner.service.ProjectService;
 import com.planner.service.TimeRegistrationService;
 import io.cucumber.java.Before;
@@ -26,12 +26,12 @@ public class StepDefinitions {
 
     private DeveloperRepository developerRepository;
     private ProjectRepository projectRepository;
-    private FixedActivityRepository fixedActivityRepository;
+    private AbsenceRepository absenceRepository;
     private ProjectService projectService;
     private ActivityService activityService;
     private DeveloperService developerService;
     private TimeRegistrationService timeRegistrationService;
-    private FixedActivityService fixedActivityService;
+    private AbsenceService absenceService;
 
     private Project currentProject;
     private List<Developer> availableDevelopers;
@@ -42,12 +42,12 @@ public class StepDefinitions {
     public void setUp() {
         developerRepository = new DeveloperRepository();
         projectRepository = new ProjectRepository();
-        fixedActivityRepository = new FixedActivityRepository();
+        absenceRepository = new AbsenceRepository();
         projectService = new ProjectService(projectRepository, developerRepository);
-        activityService = new ActivityService(projectRepository, developerRepository, fixedActivityRepository);
+        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
         developerService = new DeveloperService(developerRepository);
         timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        fixedActivityService = new FixedActivityService(fixedActivityRepository, developerRepository);
+        absenceService = new AbsenceService(absenceRepository, developerRepository);
     }
 
     @Given("the system has a developer with initials {string}")
@@ -165,18 +165,18 @@ public class StepDefinitions {
 
     @When("developer {string} registers vacation from week {int} {int} to week {int} {int}")
     public void developerRegistersVacation(String initials, int startWeek, int startYear, int endWeek, int endYear) {
-        fixedActivityService.registerFixedActivity(initials, FixedActivity.Type.VACATION,
+        absenceService.registerAbsence(initials, Absence.Type.VACATION,
                 startWeek, startYear, endWeek, endYear);
     }
 
     @Then("developer {string} is busy in week {int} {int}")
     public void developerIsBusyInWeek(String initials, int week, int year) {
-        assertTrue(fixedActivityService.isDeveloperBusy(initials, week, year));
+        assertTrue(absenceService.isDeveloperAbsent(initials, week, year));
     }
 
     @Then("developer {string} is not busy in week {int} {int}")
     public void developerIsNotBusyInWeek(String initials, int week, int year) {
-        assertFalse(fixedActivityService.isDeveloperBusy(initials, week, year));
+        assertFalse(absenceService.isDeveloperAbsent(initials, week, year));
     }
 
     // --- Available developers steps ---

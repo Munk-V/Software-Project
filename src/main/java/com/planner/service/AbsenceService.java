@@ -14,7 +14,7 @@ public class AbsenceService {
 
     public AbsenceService(AbsenceRepository absenceRepository,
                                 DeveloperRepository developerRepository) {
-        this.fixedActivityRepository = fixedActivityRepository;
+        this.absenceRepository = absenceRepository;
         this.developerRepository = developerRepository;
     }
 
@@ -23,21 +23,21 @@ public class AbsenceService {
                                                int endWeek, int endYear) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-        Absence fixedActivity = new Absence(developer, type, startWeek, startYear, endWeek, endYear);
-        fixedActivityRepository.add(fixedActivity);
-        return fixedActivity;
+        Absence absence = new Absence(developer, type, startWeek, startYear, endWeek, endYear);
+        absenceRepository.add(absence);
+        return absence;
     }
 
-    public boolean isDeveloperBusy(String developerInitials, int week, int year) {
+    public boolean isDeveloperAbsent(String developerInitials, int week, int year) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-        return fixedActivityRepository.findByDeveloper(developer).stream()
+        return absenceRepository.findByDeveloper(developer).stream()
                 .anyMatch(fa -> fa.isActiveInWeek(week, year));
     }
 
-    public List<Absence> getFixedActivitiesForDeveloper(String developerInitials) {
+    public List<Absence> getAbsencesForDeveloper(String developerInitials) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-        return fixedActivityRepository.findByDeveloper(developer);
+        return absenceRepository.findByDeveloper(developer);
     }
 }

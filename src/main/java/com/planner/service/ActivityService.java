@@ -4,7 +4,7 @@ import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
 import com.planner.repository.DeveloperRepository;
-import com.planner.repository.FixedActivityRepository;
+import com.planner.repository.AbsenceRepository;
 import com.planner.repository.ProjectRepository;
 
 import java.util.List;
@@ -14,13 +14,13 @@ public class ActivityService {
 
     private final ProjectRepository projectRepository;
     private final DeveloperRepository developerRepository;
-    private final FixedActivityRepository fixedActivityRepository;
+    private final AbsenceRepository absenceRepository;
 
     public ActivityService(ProjectRepository projectRepository, DeveloperRepository developerRepository,
-                           FixedActivityRepository fixedActivityRepository) {
+                           AbsenceRepository absenceRepository) {
         this.projectRepository = projectRepository;
         this.developerRepository = developerRepository;
-        this.fixedActivityRepository = fixedActivityRepository;
+        this.absenceRepository = absenceRepository;
     }
 
     public Activity createActivity(String projectId, String activityName) {
@@ -58,7 +58,7 @@ public class ActivityService {
                 .flatMap(a -> a.getAssignedDevelopers().stream())
                 .collect(Collectors.toList());
 
-        List<Developer> busyOnFixedActivities = fixedActivityRepository.findAll().stream()
+        List<Developer> busyOnFixedActivities = absenceRepository.findAll().stream()
                 .filter(fa -> fa.isActiveInWeek(week, year))
                 .map(fa -> fa.getDeveloper())
                 .collect(Collectors.toList());

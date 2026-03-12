@@ -2,10 +2,10 @@ package com.planner.ui;
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
-import com.planner.domain.FixedActivity;
+import com.planner.domain.Absence;
 import com.planner.domain.Project;
 import com.planner.repository.DeveloperRepository;
-import com.planner.repository.FixedActivityRepository;
+import com.planner.repository.AbsenceRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.*;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -28,7 +28,7 @@ public class MainWindow {
     private final ActivityService activityService;
     private final DeveloperService developerService;
     private final TimeRegistrationService timeRegistrationService;
-    private final FixedActivityService fixedActivityService;
+    private final AbsenceService absenceService;
 
     private final BorderPane root = new BorderPane();
     private final ListView<String> projectListView = new ListView<>();
@@ -37,12 +37,12 @@ public class MainWindow {
     public MainWindow() {
         DeveloperRepository developerRepository = new DeveloperRepository();
         ProjectRepository projectRepository = new ProjectRepository();
-        FixedActivityRepository fixedActivityRepository = new FixedActivityRepository();
+        AbsenceRepository absenceRepository = new AbsenceRepository();
         projectService = new ProjectService(projectRepository, developerRepository);
-        activityService = new ActivityService(projectRepository, developerRepository, fixedActivityRepository);
+        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
         developerService = new DeveloperService(developerRepository);
         timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        fixedActivityService = new FixedActivityService(fixedActivityRepository, developerRepository);
+        absenceService = new AbsenceService(absenceRepository, developerRepository);
 
         buildUI();
     }
@@ -69,7 +69,7 @@ public class MainWindow {
                 buildReportTab(),
                 buildProgressTab(),
                 buildAvailableDevelopersTab(),
-                buildFixedActivityTab()
+                buildAbsenceTab()
         );
         root.setCenter(tabPane);
     }
@@ -479,8 +479,8 @@ public class MainWindow {
 
     // ── Fixed activity tab ───────────────────────────────────────────────────────
 
-    private Tab buildFixedActivityTab() {
-        Tab tab = new Tab("Fixed Activities");
+    private Tab buildAbsenceTab() {
+        Tab tab = new Tab("Absences");
         VBox content = new VBox(10);
         content.setPadding(new Insets(12));
 
@@ -496,18 +496,18 @@ public class MainWindow {
         endWeek.setPromptText("End week");
         TextField endYear = new TextField(String.valueOf(LocalDate.now().getYear()));
 
-        Button registerBtn = new Button("Register Fixed Activity");
+        Button registerBtn = new Button("Register Absence");
         registerBtn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;");
         registerBtn.setOnAction(e -> {
             try {
-                fixedActivityService.registerFixedActivity(
+                absenceService.registerAbsence(
                         initialsField.getText().trim(),
-                        FixedActivity.Type.valueOf(typeBox.getValue()),
+                        Absence.Type.valueOf(typeBox.getValue()),
                         Integer.parseInt(startWeek.getText().trim()),
                         Integer.parseInt(startYear.getText().trim()),
                         Integer.parseInt(endWeek.getText().trim()),
                         Integer.parseInt(endYear.getText().trim()));
-                showInfo("Fixed activity registered for " + initialsField.getText().trim());
+                showInfo("Absence registered for " + initialsField.getText().trim());
                 initialsField.clear(); startWeek.clear(); endWeek.clear();
             } catch (Exception ex) {
                 showError(ex.getMessage());
@@ -523,7 +523,7 @@ public class MainWindow {
         form.addRow(3, new Label("End week / year:"), endWeek, endYear);
 
         content.getChildren().addAll(
-                new Label("Register vacation, sick leave, or course:"),
+                new Label("Register absence (vacation, sick leave, course):"),
                 form, registerBtn);
         tab.setContent(content);
         return tab;
