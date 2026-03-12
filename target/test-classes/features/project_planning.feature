@@ -54,6 +54,32 @@ Feature: Project planning
     When available developers in week 11 2026 are requested
     Then developer "huba" is not in the available list
 
+  # --- Set deadline scenarios ---
+
+  Scenario: Set a deadline for a project
+    Given a project with name "WebShop" exists
+    When a deadline is set to week 20 year 2026 for the project
+    Then the project has deadline week 20 year 2026
+
+  Scenario: Cannot set an invalid deadline week
+    Given a project with name "WebShop" exists
+    When a deadline is set to week 99 year 2026 for the project
+    Then an error is raised with message "Deadline week must be between 1 and 53"
+
+  # --- View project progress scenarios ---
+
+  Scenario: View project progress with registered hours
+    Given a project with name "WebShop" exists
+    And the project has an activity "Design" with a budget of 50.0 hours
+    And developer "huba" has registered 25.0 hours on activity "Design"
+    When the project progress is calculated
+    Then the progress is 50.0 percent
+
+  Scenario: View project progress with no budgeted hours returns zero
+    Given a project with name "EmptyProject" exists
+    When the project progress is calculated
+    Then the progress is 0.0 percent
+
   # --- Error scenarios ---
 
   Scenario: Cannot create a project with an empty name

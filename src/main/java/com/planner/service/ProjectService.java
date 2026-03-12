@@ -36,6 +36,18 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
+    public void setDeadline(String projectId, int week, int year) {
+        Project project = getProject(projectId);
+        project.setDeadline(week, year);
+    }
+
+    public double getProjectProgress(String projectId) {
+        Project project = getProject(projectId);
+        double budgeted = project.getTotalBudgetedHours();
+        if (budgeted == 0) return 0;
+        return (project.getTotalRegisteredHours() / budgeted) * 100;
+    }
+
     public void assignProjectLeader(String projectId, String developerInitials) {
         Project project = getProject(projectId);
         Developer developer = developerRepository.findByInitials(developerInitials)

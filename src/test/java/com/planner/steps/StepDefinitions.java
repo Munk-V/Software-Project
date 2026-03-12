@@ -36,6 +36,7 @@ public class StepDefinitions {
     private Project currentProject;
     private List<Developer> availableDevelopers;
     private Exception thrownException;
+    private double calculatedProgress;
 
     @Before
     public void setUp() {
@@ -193,6 +194,36 @@ public class StepDefinitions {
     @Then("developer {string} is not in the available list")
     public void developerIsNotInAvailableList(String initials) {
         assertFalse(availableDevelopers.stream().anyMatch(d -> d.getInitials().equals(initials)));
+    }
+
+    // --- Set deadline steps ---
+
+    @When("a deadline is set to week {int} year {int} for the project")
+    public void aDeadlineIsSetForTheProject(int week, int year) {
+        try {
+            projectService.setDeadline(currentProject.getId(), week, year);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @Then("the project has deadline week {int} year {int}")
+    public void theProjectHasDeadline(int week, int year) {
+        Project project = projectService.getProject(currentProject.getId());
+        assertEquals(week, project.getDeadlineWeek());
+        assertEquals(year, project.getDeadlineYear());
+    }
+
+    // --- View project progress steps ---
+
+    @When("the project progress is calculated")
+    public void theProjectProgressIsCalculated() {
+        calculatedProgress = projectService.getProjectProgress(currentProject.getId());
+    }
+
+    @Then("the progress is {double} percent")
+    public void theProgressIs(double expectedPercent) {
+        assertEquals(expectedPercent, calculatedProgress, 0.001);
     }
 
     // --- Error scenario steps ---

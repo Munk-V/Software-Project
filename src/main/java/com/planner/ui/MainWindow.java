@@ -67,6 +67,7 @@ public class MainWindow {
                 buildActivitiesTab(),
                 buildTimeRegistrationTab(),
                 buildReportTab(),
+                buildProgressTab(),
                 buildAvailableDevelopersTab(),
                 buildFixedActivityTab()
         );
@@ -230,12 +231,36 @@ public class MainWindow {
             if (id != null) refreshActivityTable(table, id);
         });
 
+        // Set deadline
+        TextField deadlineWeekField = new TextField();
+        deadlineWeekField.setPromptText("Week (e.g. 20)");
+        TextField deadlineYearField = new TextField(String.valueOf(LocalDate.now().getYear()));
+        Button setDeadlineBtn = new Button("Set Project Deadline");
+        setDeadlineBtn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;");
+        setDeadlineBtn.setOnAction(e -> {
+            String projectId = getSelectedProjectId();
+            if (projectId == null) { showError("Select a project first."); return; }
+            try {
+                int week = Integer.parseInt(deadlineWeekField.getText().trim());
+                int year = Integer.parseInt(deadlineYearField.getText().trim());
+                projectService.setDeadline(projectId, week, year);
+                showInfo("Deadline set to week " + week + "/" + year);
+                deadlineWeekField.clear();
+            } catch (Exception ex) {
+                showError(ex.getMessage());
+            }
+        });
+        HBox deadlineRow = new HBox(8, new Label("Deadline — Week:"), deadlineWeekField,
+                new Label("Year:"), deadlineYearField, setDeadlineBtn);
+        deadlineRow.setAlignment(Pos.CENTER_LEFT);
+
         content.getChildren().addAll(
                 new Label("Activities for selected project:"),
                 table, new Separator(),
                 form, addActivity, new Separator(),
                 devRow, addDev, new Separator(),
-                leaderRow
+                leaderRow, new Separator(),
+                deadlineRow
         );
         tab.setContent(new ScrollPane(content));
         return tab;
@@ -326,6 +351,90 @@ public class MainWindow {
         content.getChildren().addAll(new Label("Project report (select project then click generate):"),
                 generateBtn, table, totalLabel);
         tab.setContent(content);
+        return tab;
+    }
+
+    // ── Project progress tab ─────────────────────────────────────────────────────
+
+    private Tab buildProgressTab() {
+        Tab tab = new Tab("Project Progress");
+        VBox content = new VBox(12);
+        content.setPadding(new Insets(12));
+
+        Label projectInfoLabel = new Label();
+        Label deadlineLabel = new Label();
+        ProgressBar progressBar = new ProgressBar(0);
+        progressBar.setPrefWidth(400);
+        Label progressLabel = new Label("0%");
+        Label remainingLabel = new Label();
+
+        TableView<Activity> table = new TableView<>();
+        TableColumn<Activity, String> nameCol = new TableColumn<>("Activity");
+        nameCol.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
+        TableColumn<Activity, Number> budgetCol = new TableColumn<>("Budgeted (h)");
+        budgetCol.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getBudgetedHours()));
+        TableColumn<Activity, Number> regCol = new TableColumn<>("Registered (h)");
+        regCol.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getTotalRegisteredHours()));
+        TableColumn<Activity, String> pctCol = new TableColumn<>("Progress");
+        pctCol.setCellValueFactory(d -> {
+            Activity a = d.getValue();
+            if (a.getBudgetedHours() == 0) return new SimpleStringProperty("—");
+            double pct = (a.getTotalRegisteredHours() / a.getBudgetedHours()) * 100;
+            return new SimpleStringProperty(String.format("%.0f%%", pct));
+        });
+        TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
+        statusCol.setCellValueFactory(d -> {
+            Activity a = d.getValue();
+            double remaining = a.getBudgetedHours() - a.getTotalRegisteredHours();
+            if (remaining > 0) return new SimpleStringProperty(String.format("%.1f h left", remaining));
+            if (remaining == 0) return new SimpleStringProperty("Complete");
+            return new SimpleStringProperty(String.format("%.1f h over budget", -remaining));
+        });
+        table.getColumns().addAll(nameCol, budgetCol, regCol, pctCol, statusCol);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        Button viewBtn = new Button("View Progress");
+        viewBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
+        viewBtn.setOnAction(e -> {
+            String projectId = getSelectedProjectId();
+            if (projectId == null) { showError("Select a project first."); return; }
+
+            Project project = projectService.getProject(projectId);
+            double pct = projectService.getProjectProgress(projectId);
+
+            projectInfoLabel.setText("Project: [" + project.getId() + "] " + project.getName()
+                    + (project.getProjectLeader() != null
+                    ? "  |  Leader: " + project.getProjectLeader().getInitials() : ""));
+
+            deadlineLabel.setText(project.hasDeadline()
+                    ? "Deadline: Week " + project.getDeadlineWeek() + "/" + project.getDeadlineYear()
+                    : "Deadline: not set");
+
+            progressBar.setProgress(pct / 100.0);
+            progressLabel.setText(String.format("%.0f%%  (%.1f / %.1f hours)",
+                    pct, project.getTotalRegisteredHours(), project.getTotalBudgetedHours()));
+            remainingLabel.setText(String.format("Remaining: %.1f hours",
+                    project.getTotalBudgetedHours() - project.getTotalRegisteredHours()));
+
+            table.setItems(FXCollections.observableArrayList(project.getActivities()));
+        });
+
+        HBox barRow = new HBox(10, progressBar, progressLabel);
+        barRow.setAlignment(Pos.CENTER_LEFT);
+
+        content.getChildren().addAll(
+                viewBtn,
+                new Separator(),
+                projectInfoLabel,
+                deadlineLabel,
+                new Label("Overall progress:"),
+                barRow,
+                remainingLabel,
+                new Separator(),
+                new Label("Per activity:"),
+                table
+        );
+        tab.setContent(new ScrollPane(content));
         return tab;
     }
 

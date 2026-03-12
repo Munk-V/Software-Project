@@ -1,6 +1,6 @@
 package com.planner.domain;
 
-public class FixedActivity {
+public class Absence {
 
     public enum Type {
         VACATION, SICK_LEAVE, COURSE, OTHER
@@ -13,7 +13,7 @@ public class FixedActivity {
     private final int endWeek;
     private final int endYear;
 
-    public FixedActivity(Developer developer, Type type,
+    public Absence(Developer developer, Type type,
                          int startWeek, int startYear,
                          int endWeek, int endYear) {
         this.developer = developer;

@@ -1,29 +1,29 @@
 package com.planner.service;
 
 import com.planner.domain.Developer;
-import com.planner.domain.FixedActivity;
+import com.planner.domain.Absence;
 import com.planner.repository.DeveloperRepository;
-import com.planner.repository.FixedActivityRepository;
+import com.planner.repository.AbsenceRepository;
 
 import java.util.List;
 
-public class FixedActivityService {
+public class AbsenceService {
 
-    private final FixedActivityRepository fixedActivityRepository;
+    private final AbsenceRepository absenceRepository;
     private final DeveloperRepository developerRepository;
 
-    public FixedActivityService(FixedActivityRepository fixedActivityRepository,
+    public AbsenceService(AbsenceRepository absenceRepository,
                                 DeveloperRepository developerRepository) {
         this.fixedActivityRepository = fixedActivityRepository;
         this.developerRepository = developerRepository;
     }
 
-    public FixedActivity registerFixedActivity(String developerInitials, FixedActivity.Type type,
+    public Absence registerAbsence(String developerInitials, Absence.Type type,
                                                int startWeek, int startYear,
                                                int endWeek, int endYear) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-        FixedActivity fixedActivity = new FixedActivity(developer, type, startWeek, startYear, endWeek, endYear);
+        Absence fixedActivity = new Absence(developer, type, startWeek, startYear, endWeek, endYear);
         fixedActivityRepository.add(fixedActivity);
         return fixedActivity;
     }
@@ -35,7 +35,7 @@ public class FixedActivityService {
                 .anyMatch(fa -> fa.isActiveInWeek(week, year));
     }
 
-    public List<FixedActivity> getFixedActivitiesForDeveloper(String developerInitials) {
+    public List<Absence> getFixedActivitiesForDeveloper(String developerInitials) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
         return fixedActivityRepository.findByDeveloper(developer);

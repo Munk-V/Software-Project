@@ -9,6 +9,8 @@ public class Project {
     private final String name;
     private Developer projectLeader;
     private final List<Activity> activities = new ArrayList<>();
+    private int deadlineWeek;
+    private int deadlineYear;
 
     public Project(String id, String name) {
         this.id = id;
@@ -33,6 +35,26 @@ public class Project {
 
     public List<Activity> getActivities() {
         return activities;
+    }
+
+    public int getDeadlineWeek() {
+        return deadlineWeek;
+    }
+
+    public int getDeadlineYear() {
+        return deadlineYear;
+    }
+
+    public void setDeadline(int week, int year) {
+        if (week < 1 || week > 53) {
+            throw new IllegalArgumentException("Deadline week must be between 1 and 53");
+        }
+        this.deadlineWeek = week;
+        this.deadlineYear = year;
+    }
+
+    public boolean hasDeadline() {
+        return deadlineYear > 0;
     }
 
     public void addActivity(Activity activity) {
