@@ -53,3 +53,41 @@ Feature: Project planning
     When developer "huba" registers vacation from week 10 2026 to week 12 2026
     When available developers in week 11 2026 are requested
     Then developer "huba" is not in the available list
+
+  # --- Error scenarios ---
+
+  Scenario: Cannot create a project with an empty name
+    When a developer tries to create a project with an empty name
+    Then an error is raised with message "Project name cannot be empty"
+
+  Scenario: Cannot create an activity for a non-existent project
+    When a developer tries to create an activity "Design" for project "99999"
+    Then an error is raised with message "Project not found: 99999"
+
+  Scenario: Cannot assign a non-existent developer to an activity
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When a developer tries to add unknown initials "zzzz" to activity "Requirements"
+    Then an error is raised with message "Developer not found: zzzz"
+
+  Scenario: Cannot register zero hours on an activity
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When developer "huba" tries to register 0.0 hours on activity "Requirements"
+    Then an error is raised with message "Hours must be a positive multiple of 0.5"
+
+  Scenario: Cannot register hours not a multiple of 0.5
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When developer "huba" tries to register 1.3 hours on activity "Requirements"
+    Then an error is raised with message "Hours must be a positive multiple of 0.5"
+
+  Scenario: Cannot assign a non-existent developer as project leader
+    Given a project with name "WebShop" exists
+    When a developer tries to assign unknown initials "zzzz" as project leader
+    Then an error is raised with message "Developer not found: zzzz"
+
+  Scenario: View project status with no activities shows zero hours
+    Given a project with name "EmptyProject" exists
+    When a report is generated for the project
+    Then the total budgeted hours are 0.0 and total registered hours are 0.0

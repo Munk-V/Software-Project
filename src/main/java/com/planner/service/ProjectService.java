@@ -18,6 +18,9 @@ public class ProjectService {
     }
 
     public Project createProject(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Project name cannot be empty");
+        }
         String id = projectRepository.generateProjectId();
         Project project = new Project(id, name);
         projectRepository.add(project);

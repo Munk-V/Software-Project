@@ -35,6 +35,7 @@ public class StepDefinitions {
 
     private Project currentProject;
     private List<Developer> availableDevelopers;
+    private Exception thrownException;
 
     @Before
     public void setUp() {
@@ -192,5 +193,64 @@ public class StepDefinitions {
     @Then("developer {string} is not in the available list")
     public void developerIsNotInAvailableList(String initials) {
         assertFalse(availableDevelopers.stream().anyMatch(d -> d.getInitials().equals(initials)));
+    }
+
+    // --- Error scenario steps ---
+
+    @When("a developer tries to create a project with an empty name")
+    public void aDeveloperTriesToCreateProjectWithEmptyName() {
+        try {
+            projectService.createProject("");
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("a developer tries to create an activity {string} for project {string}")
+    public void aDeveloperTriesToCreateActivityForNonExistentProject(String activityName, String projectId) {
+        try {
+            activityService.createActivity(projectId, activityName);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("a developer tries to add unknown initials {string} to activity {string}")
+    public void aDeveloperTriesToAddUnknownDeveloperToActivity(String initials, String activityName) {
+        try {
+            activityService.addDeveloperToActivity(currentProject.getId(), activityName, initials);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("developer {string} tries to register {double} hours on activity {string}")
+    public void developerTriesToRegisterInvalidHours(String initials, double hours, String activityName) {
+        try {
+            timeRegistrationService.registerTime(initials, currentProject.getId(), activityName, java.time.LocalDate.now(), hours);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("a developer tries to assign unknown initials {string} as project leader")
+    public void aDeveloperTriesToAssignUnknownProjectLeader(String initials) {
+        try {
+            projectService.assignProjectLeader(currentProject.getId(), initials);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @Then("an error is raised with message {string}")
+    public void anErrorIsRaisedWithMessage(String expectedMessage) {
+        assertNotNull(thrownException, "Expected an exception but none was thrown");
+        assertEquals(expectedMessage, thrownException.getMessage());
+    }
+
+    @Then("the total budgeted hours are {double} and total registered hours are {double}")
+    public void theTotalHoursAre(double budgeted, double registered) {
+        assertEquals(budgeted, currentProject.getTotalBudgetedHours(), 0.001);
+        assertEquals(registered, currentProject.getTotalRegisteredHours(), 0.001);
     }
 }
