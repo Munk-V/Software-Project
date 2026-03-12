@@ -1,0 +1,15 @@
+com/planner/service/TimeRegistrationService.class
+com/planner/domain/Activity.class
+com/planner/domain/FixedActivity.class
+com/planner/repository/FixedActivityRepository.class
+com/planner/domain/FixedActivity$Type.class
+com/planner/repository/DeveloperRepository.class
+com/planner/service/ProjectService.class
+com/planner/service/ActivityService.class
+com/planner/domain/TimeRegistration.class
+com/planner/ui/ConsoleUI.class
+com/planner/domain/Project.class
+com/planner/repository/ProjectRepository.class
+com/planner/service/DeveloperService.class
+com/planner/service/FixedActivityService.class
+com/planner/domain/Developer.class
