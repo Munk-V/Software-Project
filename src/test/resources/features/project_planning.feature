@@ -3,14 +3,34 @@ Feature: Project planning
   Background:
     Given the system has a developer with initials "huba"
 
+  # ─────────────────────────────────────────
+  # UC1: Create Project
+  # ─────────────────────────────────────────
+
   Scenario: Create a project
     When a developer creates a project with name "WebShop"
     Then a project with name "WebShop" exists in the system
+
+  Scenario: Cannot create a project with an empty name
+    When a developer tries to create a project with an empty name
+    Then an error is raised with message "Project name cannot be empty"
+
+  # ─────────────────────────────────────────
+  # UC2: Create Activity
+  # ─────────────────────────────────────────
 
   Scenario: Create an activity and add it to a project
     Given a project with name "WebShop" exists
     When a developer creates an activity "Requirements" for the project
     Then the project "WebShop" has an activity named "Requirements"
+
+  Scenario: Cannot create an activity for a non-existent project
+    When a developer tries to create an activity "Design" for project "99999"
+    Then an error is raised with message "Project not found: 99999"
+
+  # ─────────────────────────────────────────
+  # UC3: Add Developer to Activity
+  # ─────────────────────────────────────────
 
   Scenario: Add a developer to an activity
     Given a project with name "WebShop" exists
@@ -18,16 +38,37 @@ Feature: Project planning
     When developer "huba" is added to the activity "Requirements"
     Then activity "Requirements" has developer "huba" assigned
 
-  Scenario: Assign a project leader
+  Scenario: Cannot assign a non-existent developer to an activity
     Given a project with name "WebShop" exists
-    When developer "huba" is assigned as project leader
-    Then the project leader of "WebShop" is "huba"
+    And the project has an activity named "Requirements"
+    When a developer tries to add unknown initials "zzzz" to activity "Requirements"
+    Then an error is raised with message "Developer not found: zzzz"
+
+  # ─────────────────────────────────────────
+  # UC4: Register Time on Activity
+  # ─────────────────────────────────────────
 
   Scenario: Register time on an activity
     Given a project with name "WebShop" exists
     And the project has an activity named "Requirements"
     When developer "huba" registers 2.5 hours on activity "Requirements"
     Then activity "Requirements" has 2.5 registered hours
+
+  Scenario: Cannot register zero hours on an activity
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When developer "huba" tries to register 0.0 hours on activity "Requirements"
+    Then an error is raised with message "Hours must be a positive multiple of 0.5"
+
+  Scenario: Cannot register hours not a multiple of 0.5
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When developer "huba" tries to register 1.3 hours on activity "Requirements"
+    Then an error is raised with message "Hours must be a positive multiple of 0.5"
+
+  # ─────────────────────────────────────────
+  # UC5: Generate Project Report
+  # ─────────────────────────────────────────
 
   Scenario: Generate project report
     Given a project with name "WebShop" exists
@@ -36,10 +77,23 @@ Feature: Project planning
     When a report is generated for the project
     Then the report shows 100.0 budgeted hours and 30.0 registered hours for "Requirements"
 
+  Scenario: View project status with no activities shows zero hours
+    Given a project with name "EmptyProject" exists
+    When a report is generated for the project
+    Then the total budgeted hours are 0.0 and total registered hours are 0.0
+
+  # ─────────────────────────────────────────
+  # UC6: Register Absence
+  # ─────────────────────────────────────────
+
   Scenario: Register vacation as a fixed activity
     When developer "huba" registers vacation from week 20 2026 to week 22 2026
     Then developer "huba" is busy in week 21 2026
     And developer "huba" is not busy in week 19 2026
+
+  # ─────────────────────────────────────────
+  # UC7: View Available Developers
+  # ─────────────────────────────────────────
 
   Scenario: Available developers excludes developers assigned to activities
     Given a project with name "WebShop" exists
@@ -54,7 +108,23 @@ Feature: Project planning
     When available developers in week 11 2026 are requested
     Then developer "huba" is not in the available list
 
-  # --- Set deadline scenarios ---
+  # ─────────────────────────────────────────
+  # UC8: Assign Project Leader
+  # ─────────────────────────────────────────
+
+  Scenario: Assign a project leader
+    Given a project with name "WebShop" exists
+    When developer "huba" is assigned as project leader
+    Then the project leader of "WebShop" is "huba"
+
+  Scenario: Cannot assign a non-existent developer as project leader
+    Given a project with name "WebShop" exists
+    When a developer tries to assign unknown initials "zzzz" as project leader
+    Then an error is raised with message "Developer not found: zzzz"
+
+  # ─────────────────────────────────────────
+  # UC9: Set Project Deadline
+  # ─────────────────────────────────────────
 
   Scenario: Set a deadline for a project
     Given a project with name "WebShop" exists
@@ -66,7 +136,9 @@ Feature: Project planning
     When a deadline is set to week 99 year 2026 for the project
     Then an error is raised with message "Deadline week must be between 1 and 53"
 
-  # --- View project progress scenarios ---
+  # ─────────────────────────────────────────
+  # UC10: View Project Progress
+  # ─────────────────────────────────────────
 
   Scenario: View project progress with registered hours
     Given a project with name "WebShop" exists
@@ -79,41 +151,3 @@ Feature: Project planning
     Given a project with name "EmptyProject" exists
     When the project progress is calculated
     Then the progress is 0.0 percent
-
-  # --- Error scenarios ---
-
-  Scenario: Cannot create a project with an empty name
-    When a developer tries to create a project with an empty name
-    Then an error is raised with message "Project name cannot be empty"
-
-  Scenario: Cannot create an activity for a non-existent project
-    When a developer tries to create an activity "Design" for project "99999"
-    Then an error is raised with message "Project not found: 99999"
-
-  Scenario: Cannot assign a non-existent developer to an activity
-    Given a project with name "WebShop" exists
-    And the project has an activity named "Requirements"
-    When a developer tries to add unknown initials "zzzz" to activity "Requirements"
-    Then an error is raised with message "Developer not found: zzzz"
-
-  Scenario: Cannot register zero hours on an activity
-    Given a project with name "WebShop" exists
-    And the project has an activity named "Requirements"
-    When developer "huba" tries to register 0.0 hours on activity "Requirements"
-    Then an error is raised with message "Hours must be a positive multiple of 0.5"
-
-  Scenario: Cannot register hours not a multiple of 0.5
-    Given a project with name "WebShop" exists
-    And the project has an activity named "Requirements"
-    When developer "huba" tries to register 1.3 hours on activity "Requirements"
-    Then an error is raised with message "Hours must be a positive multiple of 0.5"
-
-  Scenario: Cannot assign a non-existent developer as project leader
-    Given a project with name "WebShop" exists
-    When a developer tries to assign unknown initials "zzzz" as project leader
-    Then an error is raised with message "Developer not found: zzzz"
-
-  Scenario: View project status with no activities shows zero hours
-    Given a project with name "EmptyProject" exists
-    When a report is generated for the project
-    Then the total budgeted hours are 0.0 and total registered hours are 0.0
