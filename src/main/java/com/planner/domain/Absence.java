@@ -49,6 +49,7 @@ public class Absence {
     }
 
     public boolean isActiveInWeek(int week, int year) {
+        // hehey
         int actStart = startYear * 100 + startWeek;
         int actEnd = endYear * 100 + endWeek;
         int target = year * 100 + week;
