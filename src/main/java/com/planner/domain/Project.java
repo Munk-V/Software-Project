@@ -9,6 +9,8 @@ public class Project {
     private final String name;
     private Developer projectLeader;
     private final List<Activity> activities = new ArrayList<>();
+    private int startWeek;
+    private int startYear;
     private int deadlineWeek;
     private int deadlineYear;
 
@@ -35,6 +37,23 @@ public class Project {
 
     public List<Activity> getActivities() {
         return activities;
+    }
+
+    public int getStartWeek() {
+        return startWeek;
+    }
+
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public void setStart(int week, int year) {
+        this.startWeek = week;
+        this.startYear = year;
+    }
+
+    public boolean hasStart() {
+        return startYear > 0;
     }
 
     public int getDeadlineWeek() {

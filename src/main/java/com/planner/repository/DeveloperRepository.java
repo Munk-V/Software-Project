@@ -2,6 +2,9 @@ package com.planner.repository;
 
 import com.planner.domain.Developer;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +14,23 @@ public class DeveloperRepository {
     private final List<Developer> developers = new ArrayList<>();
 
     public DeveloperRepository() {
-        // System must always contain "huba" as per requirements
-        developers.add(new Developer("huba"));
+        loadFromFile();
+        // Ensure "huba" is always present as per requirements
+        if (!exists("huba")) {
+            developers.add(0, new Developer("huba"));
+        }
+    }
+
+    private void loadFromFile() {
+        try (InputStream is = getClass().getResourceAsStream("/developers.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+            reader.lines()
+                    .map(String::trim)
+                    .filter(line -> !line.isEmpty())
+                    .forEach(initials -> developers.add(new Developer(initials)));
+        } catch (Exception e) {
+            developers.add(new Developer("huba"));
+        }
     }
 
     public void add(Developer developer) {

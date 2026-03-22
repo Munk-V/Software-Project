@@ -25,4 +25,16 @@ public class DeveloperService {
     public boolean developerExists(String initials) {
         return developerRepository.exists(initials);
     }
+
+    public Developer registerDeveloper(String initials) {
+        if (initials == null || initials.isBlank()) {
+            throw new IllegalArgumentException("Developer initials cannot be empty");
+        }
+        if (developerRepository.exists(initials)) {
+            throw new IllegalArgumentException("Developer already exists: " + initials);
+        }
+        Developer developer = new Developer(initials);
+        developerRepository.add(developer);
+        return developer;
+    }
 }

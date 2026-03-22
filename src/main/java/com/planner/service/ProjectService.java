@@ -41,6 +41,11 @@ public class ProjectService {
         project.setDeadline(week, year);
     }
 
+    public void setStart(String projectId, int week, int year) {
+        Project project = getProject(projectId);
+        project.setStart(week, year);
+    }
+
     public double getProjectProgress(String projectId) {
         Project project = getProject(projectId);
         double budgeted = project.getTotalBudgetedHours();
