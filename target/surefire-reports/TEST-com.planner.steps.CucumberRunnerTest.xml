@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.planner.steps.CucumberRunnerTest" time="0.746" tests="20" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.planner.steps.CucumberRunnerTest" time="0.937" tests="25" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,7 +13,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="DK"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/viktormunk/Documents/GitHub/Software Project/target/surefire/surefirebooter-20260326114118560_3.jar /Users/viktormunk/Documents/GitHub/Software Project/target/surefire 2026-03-26T11-41-18_430-jvmRun1 surefire-20260326114118560_1tmp surefire_0-20260326114118560_2tmp"/>
+    <property name="sun.java.command" value="/Users/viktormunk/Documents/GitHub/Software Project/target/surefire/surefirebooter-20260326114832627_3.jar /Users/viktormunk/Documents/GitHub/Software Project/target/surefire 2026-03-26T11-48-32_466-jvmRun1 surefire-20260326114832627_1tmp surefire_0-20260326114832627_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/viktormunk/Documents/GitHub/Software Project/target/test-classes:/Users/viktormunk/Documents/GitHub/Software Project/target/classes:/Users/viktormunk/.m2/repository/org/openjfx/javafx-controls/21/javafx-controls-21.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-controls/21/javafx-controls-21-mac.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-graphics/21/javafx-graphics-21.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-graphics/21/javafx-graphics-21-mac.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-base/21/javafx-base-21.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-base/21/javafx-base-21-mac.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-fxml/21/javafx-fxml-21.jar:/Users/viktormunk/.m2/repository/org/openjfx/javafx-fxml/21/javafx-fxml-21-mac.jar:/Users/viktormunk/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.2/junit-jupiter-5.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/Users/viktormunk/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.2/junit-jupiter-params-5.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-java/7.15.0/cucumber-java-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-core/7.15.0/cucumber-core-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-gherkin/7.15.0/cucumber-gherkin-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-gherkin-messages/7.15.0/cucumber-gherkin-messages-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/gherkin/26.2.0/gherkin-26.2.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/messages/22.0.0/messages-22.0.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/tag-expressions/6.0.0/tag-expressions-6.0.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-expressions/17.0.1/cucumber-expressions-17.0.1.jar:/Users/viktormunk/.m2/repository/io/cucumber/datatable/7.15.0/datatable-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-plugin/7.15.0/cucumber-plugin-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/docstring/7.15.0/docstring-7.15.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/html-formatter/20.4.0/html-formatter-20.4.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/junit-xml-formatter/0.2.0/junit-xml-formatter-0.2.0.jar:/Users/viktormunk/.m2/repository/io/cucumber/ci-environment/10.0.0/ci-environment-10.0.0.jar:/Users/viktormunk/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/viktormunk/.m2/repository/io/cucumber/cucumber-junit-platform-engine/7.15.0/cucumber-junit-platform-engine-7.15.0.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-engine/1.10.1/junit-platform-engine-1.10.1.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-suite/1.10.2/junit-platform-suite-1.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-suite-api/1.10.2/junit-platform-suite-api-1.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-suite-engine/1.10.2/junit-platform-suite-engine-1.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-suite-commons/1.10.2/junit-platform-suite-commons-1.10.2.jar:/Users/viktormunk/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.2/junit-platform-launcher-1.10.2.jar:"/>
@@ -30,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/viktormunk/Documents/GitHub/Software Project/target/surefire/surefirebooter-20260326114118560_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/viktormunk/Documents/GitHub/Software Project/target/surefire/surefirebooter-20260326114832627_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="21.0.10+7-LTS"/>
@@ -59,7 +59,7 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="Create a project" classname="Project planning" time="0.173">
+  <testcase name="Create a project" classname="Project planning" time="0.207">
     <system-out><![CDATA[
 Scenario: Create a project                                &amp#27;[90m# features/project_planning.feature:10&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m   &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -67,7 +67,7 @@ Scenario: Create a project                                &amp#27;[90m# features
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32ma project with name &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m exists in the system&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.aProjectWithNameExistsInTheSystem(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot create a project with an empty name" classname="Project planning" time="0.033">
+  <testcase name="Cannot create a project with an empty name" classname="Project planning" time="0.038">
     <system-out><![CDATA[
 Scenario: Cannot create a project with an empty name                  &amp#27;[90m# features/project_planning.feature:14&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m               &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -84,7 +84,7 @@ Scenario: Create an activity and add it to a project                  &amp#27;[9
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe project &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m has an activity named &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m     &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectHasAnActivityNamed(java.lang.String,java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot create an activity for a non-existent project" classname="Project planning" time="0.012">
+  <testcase name="Cannot create an activity for a non-existent project" classname="Project planning" time="0.014">
     <system-out><![CDATA[
 Scenario: Cannot create an activity for a non-existent project              &amp#27;[90m# features/project_planning.feature:27&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                     &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -92,7 +92,7 @@ Scenario: Cannot create an activity for a non-existent project              &amp
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Project not found: 99999"&amp#27;[0m           &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Add a developer to an activity" classname="Project planning" time="0.03">
+  <testcase name="Add a developer to an activity" classname="Project planning" time="0.029">
     <system-out><![CDATA[
 Scenario: Add a developer to an activity                        &amp#27;[90m# features/project_planning.feature:35&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m         &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -102,7 +102,7 @@ Scenario: Add a developer to an activity                        &amp#27;[90m# fe
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mactivity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m has developer &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m assigned&amp#27;[0m    &amp#27;[90m# com.planner.steps.StepDefinitions.activityHasDeveloperAssigned(java.lang.String,java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot assign a non-existent developer to an activity" classname="Project planning" time="0.014">
+  <testcase name="Cannot assign a non-existent developer to an activity" classname="Project planning" time="0.02">
     <system-out><![CDATA[
 Scenario: Cannot assign a non-existent developer to an activity                    &amp#27;[90m# features/project_planning.feature:41&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                            &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -112,7 +112,7 @@ Scenario: Cannot assign a non-existent developer to an activity                 
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Developer not found: zzzz"&amp#27;[0m                 &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Register time on an activity" classname="Project planning" time="0.026">
+  <testcase name="Register time on an activity" classname="Project planning" time="0.074">
     <system-out><![CDATA[
 Scenario: Register time on an activity                                 &amp#27;[90m# features/project_planning.feature:51&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -122,7 +122,7 @@ Scenario: Register time on an activity                                 &amp#27;[
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mactivity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m has &amp#27;[0m&amp#27;[32m&amp#27;[1m2.5&amp#27;[0m&amp#27;[32m registered hours&amp#27;[0m                &amp#27;[90m# com.planner.steps.StepDefinitions.activityHasRegisteredHours(java.lang.String,double)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot register zero hours on an activity" classname="Project planning" time="0.012">
+  <testcase name="Cannot register zero hours on an activity" classname="Project planning" time="0.018">
     <system-out><![CDATA[
 Scenario: Cannot register zero hours on an activity                               &amp#27;[90m# features/project_planning.feature:57&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                           &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -132,7 +132,7 @@ Scenario: Cannot register zero hours on an activity                             
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Hours must be a positive multiple of 0.5"&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot register hours not a multiple of 0.5" classname="Project planning" time="0.01">
+  <testcase name="Cannot register hours not a multiple of 0.5" classname="Project planning" time="0.014">
     <system-out><![CDATA[
 Scenario: Cannot register hours not a multiple of 0.5                             &amp#27;[90m# features/project_planning.feature:63&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                           &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -142,7 +142,7 @@ Scenario: Cannot register hours not a multiple of 0.5                           
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Hours must be a positive multiple of 0.5"&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Generate project report" classname="Project planning" time="0.013">
+  <testcase name="Generate project report" classname="Project planning" time="0.024">
     <system-out><![CDATA[
 Scenario: Generate project report                                                         &amp#27;[90m# features/project_planning.feature:73&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                                   &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -153,7 +153,7 @@ Scenario: Generate project report                                               
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe report shows &amp#27;[0m&amp#27;[32m&amp#27;[1m100.0&amp#27;[0m&amp#27;[32m budgeted hours and &amp#27;[0m&amp#27;[32m&amp#27;[1m30.0&amp#27;[0m&amp#27;[32m registered hours for &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.theReportShowsBudgetedAndRegisteredHours(double,double,java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="View project status with no activities shows zero hours" classname="Project planning" time="0.014">
+  <testcase name="View project status with no activities shows zero hours" classname="Project planning" time="0.019">
     <system-out><![CDATA[
 Scenario: View project status with no activities shows zero hours          &amp#27;[90m# features/project_planning.feature:80&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                    &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -162,7 +162,7 @@ Scenario: View project status with no activities shows zero hours          &amp#
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe total budgeted hours are &amp#27;[0m&amp#27;[32m&amp#27;[1m0.0&amp#27;[0m&amp#27;[32m and total registered hours are &amp#27;[0m&amp#27;[32m&amp#27;[1m0.0&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.theTotalHoursAre(double,double)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Register vacation as a fixed activity" classname="Project planning" time="0.026">
+  <testcase name="Register vacation as a fixed activity" classname="Project planning" time="0.017">
     <system-out><![CDATA[
 Scenario: Register vacation as a fixed activity                              &amp#27;[90m# features/project_planning.feature:89&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                      &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -171,7 +171,7 @@ Scenario: Register vacation as a fixed activity                              &am
   &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m is not busy in week &amp#27;[0m&amp#27;[32m&amp#27;[1m19&amp#27;[0m&amp#27;[32m &amp#27;[0m&amp#27;[32m&amp#27;[1m2026&amp#27;[0m                           &amp#27;[90m# com.planner.steps.StepDefinitions.developerIsNotBusyInWeek(java.lang.String,int,int)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Available developers excludes developers assigned to activities" classname="Project planning" time="0.025">
+  <testcase name="Available developers excludes developers assigned to activities" classname="Project planning" time="0.018">
     <system-out><![CDATA[
 Scenario: Available developers excludes developers assigned to activities &amp#27;[90m# features/project_planning.feature:98&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                   &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -192,7 +192,7 @@ Scenario: Available developers excludes developers on vacation               &am
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m is not in the available list&amp#27;[0m                         &amp#27;[90m# com.planner.steps.StepDefinitions.developerIsNotInAvailableList(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Assign a project leader" classname="Project planning" time="0.016">
+  <testcase name="Assign a project leader" classname="Project planning" time="0.01">
     <system-out><![CDATA[
 Scenario: Assign a project leader                       &amp#27;[90m# features/project_planning.feature:115&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -201,7 +201,7 @@ Scenario: Assign a project leader                       &amp#27;[90m# features/p
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe project leader of &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m is &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m        &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectLeaderIs(java.lang.String,java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot assign a non-existent developer as project leader" classname="Project planning" time="0.009">
+  <testcase name="Cannot assign a non-existent developer as project leader" classname="Project planning" time="0.011">
     <system-out><![CDATA[
 Scenario: Cannot assign a non-existent developer as project leader           &amp#27;[90m# features/project_planning.feature:120&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                      &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -210,7 +210,7 @@ Scenario: Cannot assign a non-existent developer as project leader           &am
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Developer not found: zzzz"&amp#27;[0m           &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Set a deadline for a project" classname="Project planning" time="0.008">
+  <testcase name="Set a deadline for a project" classname="Project planning" time="0.012">
     <system-out><![CDATA[
 Scenario: Set a deadline for a project                        &amp#27;[90m# features/project_planning.feature:129&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m       &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -219,7 +219,7 @@ Scenario: Set a deadline for a project                        &amp#27;[90m# feat
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe project has deadline week &amp#27;[0m&amp#27;[32m&amp#27;[1m20&amp#27;[0m&amp#27;[32m year &amp#27;[0m&amp#27;[32m&amp#27;[1m2026&amp#27;[0m             &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectHasDeadline(int,int)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="Cannot set an invalid deadline week" classname="Project planning" time="0.011">
+  <testcase name="Cannot set an invalid deadline week" classname="Project planning" time="0.018">
     <system-out><![CDATA[
 Scenario: Cannot set an invalid deadline week                                   &amp#27;[90m# features/project_planning.feature:134&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                         &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -228,7 +228,7 @@ Scenario: Cannot set an invalid deadline week                                   
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Deadline week must be between 1 and 53"&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="View project progress with registered hours" classname="Project planning" time="0.011">
+  <testcase name="View project progress with registered hours" classname="Project planning" time="0.015">
     <system-out><![CDATA[
 Scenario: View project progress with registered hours                  &amp#27;[90m# features/project_planning.feature:143&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
@@ -239,13 +239,65 @@ Scenario: View project progress with registered hours                  &amp#27;[
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe progress is &amp#27;[0m&amp#27;[32m&amp#27;[1m50.0&amp#27;[0m&amp#27;[32m percent&amp#27;[0m                                    &amp#27;[90m# com.planner.steps.StepDefinitions.theProgressIs(double)&amp#27;[0m
 ]]></system-out>
   </testcase>
-  <testcase name="View project progress with no budgeted hours returns zero" classname="Project planning" time="0.007">
+  <testcase name="View project progress with no budgeted hours returns zero" classname="Project planning" time="0.011">
     <system-out><![CDATA[
 Scenario: View project progress with no budgeted hours returns zero &amp#27;[90m# features/project_planning.feature:150&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m             &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
   &amp#27;[32mGiven &amp#27;[0m&amp#27;[32ma project with name &amp#27;[0m&amp#27;[32m&amp#27;[1m"EmptyProject"&amp#27;[0m&amp#27;[32m exists&amp#27;[0m                   &amp#27;[90m# com.planner.steps.StepDefinitions.aProjectWithNameExists(java.lang.String)&amp#27;[0m
   &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe project progress is calculated&amp#27;[0m                           &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectProgressIsCalculated()&amp#27;[0m
   &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe progress is &amp#27;[0m&amp#27;[32m&amp#27;[1m0.0&amp#27;[0m&amp#27;[32m percent&amp#27;[0m                                  &amp#27;[90m# com.planner.steps.StepDefinitions.theProgressIs(double)&amp#27;[0m
+]]></system-out>
+  </testcase>
+  <testcase name="Edit a time registration" classname="Project planning" time="0.02">
+    <system-out><![CDATA[
+Scenario: Edit a time registration                                                                      &amp#27;[90m# features/project_planning.feature:159&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                                                 &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32ma project with name &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m exists&amp#27;[0m                                                            &amp#27;[90m# com.planner.steps.StepDefinitions.aProjectWithNameExists(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe project has an activity named &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m                                                  &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectHasAnActivityNamed(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m registers &amp#27;[0m&amp#27;[32m&amp#27;[1m2.0&amp#27;[0m&amp#27;[32m hours on activity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m on date &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m              &amp#27;[90m# com.planner.steps.StepDefinitions.developerRegistersHoursOnActivityOnDate(java.lang.String,double,java.lang.String,java.lang.String)&amp#27;[0m
+  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m edits the registration on &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m&amp#27;[32m for activity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m to &amp#27;[0m&amp#27;[32m&amp#27;[1m4.0&amp#27;[0m&amp#27;[32m hours&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.developerEditsTimeRegistration(java.lang.String,java.lang.String,java.lang.String,double)&amp#27;[0m
+  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mactivity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m has &amp#27;[0m&amp#27;[32m&amp#27;[1m4.0&amp#27;[0m&amp#27;[32m registered hours&amp#27;[0m                                                 &amp#27;[90m# com.planner.steps.StepDefinitions.activityHasRegisteredHours(java.lang.String,double)&amp#27;[0m
+]]></system-out>
+  </testcase>
+  <testcase name="Cannot edit time registration to invalid hours" classname="Project planning" time="0.01">
+    <system-out><![CDATA[
+Scenario: Cannot edit time registration to invalid hours                                                        &amp#27;[90m# features/project_planning.feature:166&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                                                         &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32ma project with name &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m exists&amp#27;[0m                                                                    &amp#27;[90m# com.planner.steps.StepDefinitions.aProjectWithNameExists(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe project has an activity named &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m                                                          &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectHasAnActivityNamed(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m registers &amp#27;[0m&amp#27;[32m&amp#27;[1m2.0&amp#27;[0m&amp#27;[32m hours on activity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m on date &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m                      &amp#27;[90m# com.planner.steps.StepDefinitions.developerRegistersHoursOnActivityOnDate(java.lang.String,double,java.lang.String,java.lang.String)&amp#27;[0m
+  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m tries to edit the registration on &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m&amp#27;[32m for activity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m to &amp#27;[0m&amp#27;[32m&amp#27;[1m0.0&amp#27;[0m&amp#27;[32m hours&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.developerTriesToEditTimeRegistration(java.lang.String,java.lang.String,java.lang.String,double)&amp#27;[0m
+  &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Hours must be a positive multiple of 0.5"&amp#27;[0m                               &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
+]]></system-out>
+  </testcase>
+  <testcase name="View today&apos;s registered hours across activities" classname="Project planning" time="0.011">
+    <system-out><![CDATA[
+Scenario: View today's registered hours across activities                                  &amp#27;[90m# features/project_planning.feature:177&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                                    &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32ma project with name &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m exists&amp#27;[0m                                               &amp#27;[90m# com.planner.steps.StepDefinitions.aProjectWithNameExists(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe project has an activity named &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m                                     &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectHasAnActivityNamed(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe project has an activity named &amp#27;[0m&amp#27;[32m&amp#27;[1m"Design"&amp#27;[0m                                           &amp#27;[90m# com.planner.steps.StepDefinitions.theProjectHasAnActivityNamed(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m registers &amp#27;[0m&amp#27;[32m&amp#27;[1m2.0&amp#27;[0m&amp#27;[32m hours on activity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Requirements"&amp#27;[0m&amp#27;[32m on date &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.developerRegistersHoursOnActivityOnDate(java.lang.String,double,java.lang.String,java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mdeveloper &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m registers &amp#27;[0m&amp#27;[32m&amp#27;[1m3.0&amp#27;[0m&amp#27;[32m hours on activity &amp#27;[0m&amp#27;[32m&amp#27;[1m"Design"&amp#27;[0m&amp#27;[32m on date &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m       &amp#27;[90m# com.planner.steps.StepDefinitions.developerRegistersHoursOnActivityOnDate(java.lang.String,double,java.lang.String,java.lang.String)&amp#27;[0m
+  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe total hours for developer &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m on date &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m&amp#27;[32m are requested&amp#27;[0m             &amp#27;[90m# com.planner.steps.StepDefinitions.totalHoursForDeveloperOnDateRequested(java.lang.String,java.lang.String)&amp#27;[0m
+  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe total hours for the day is &amp#27;[0m&amp#27;[32m&amp#27;[1m5.0&amp#27;[0m                                                  &amp#27;[90m# com.planner.steps.StepDefinitions.totalHoursForTheDayIs(double)&amp#27;[0m
+]]></system-out>
+  </testcase>
+  <testcase name="View today&apos;s registered hours when none registered" classname="Project planning" time="0.01">
+    <system-out><![CDATA[
+Scenario: View today's registered hours when none registered                   &amp#27;[90m# features/project_planning.feature:186&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                        &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
+  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe total hours for developer &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m&amp#27;[32m on date &amp#27;[0m&amp#27;[32m&amp#27;[1m"2026-03-01"&amp#27;[0m&amp#27;[32m are requested&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.totalHoursForDeveloperOnDateRequested(java.lang.String,java.lang.String)&amp#27;[0m
+  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe total hours for the day is &amp#27;[0m&amp#27;[32m&amp#27;[1m0.0&amp#27;[0m                                      &amp#27;[90m# com.planner.steps.StepDefinitions.totalHoursForTheDayIs(double)&amp#27;[0m
+]]></system-out>
+  </testcase>
+  <testcase name="Cannot create an activity with an empty name" classname="Project planning" time="0.012">
+    <system-out><![CDATA[
+Scenario: Cannot create an activity with an empty name                            &amp#27;[90m# features/project_planning.feature:194&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mthe system has a developer with initials &amp#27;[0m&amp#27;[32m&amp#27;[1m"huba"&amp#27;[0m                           &amp#27;[90m# com.planner.steps.StepDefinitions.theSystemHasADeveloperWithInitials(java.lang.String)&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32ma project with name &amp#27;[0m&amp#27;[32m&amp#27;[1m"WebShop"&amp#27;[0m&amp#27;[32m exists&amp#27;[0m                                      &amp#27;[90m# com.planner.steps.StepDefinitions.aProjectWithNameExists(java.lang.String)&amp#27;[0m
+  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32ma developer tries to create an activity with an empty name for the project&amp#27;[0m &amp#27;[90m# com.planner.steps.StepDefinitions.aDeveloperTriesToCreateActivityWithEmptyName()&amp#27;[0m
+  &amp#27;[32mThen &amp#27;[0m&amp#27;[32man error is raised with message &amp#27;[0m&amp#27;[32m&amp#27;[1m"Activity name cannot be empty"&amp#27;[0m            &amp#27;[90m# com.planner.steps.StepDefinitions.anErrorIsRaisedWithMessage(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
 </testsuite>

@@ -37,6 +37,7 @@ public class StepDefinitions {
     private List<Developer> availableDevelopers;
     private Exception thrownException;
     private double calculatedProgress;
+    private double todayHours;
 
     @Before
     public void setUp() {
@@ -268,6 +269,47 @@ public class StepDefinitions {
     public void aDeveloperTriesToAssignUnknownProjectLeader(String initials) {
         try {
             projectService.assignProjectLeader(currentProject.getId(), initials);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @Given("developer {string} registers {double} hours on activity {string} on date {string}")
+    public void developerRegistersHoursOnActivityOnDate(String initials, double hours, String activityName, String dateStr) {
+        timeRegistrationService.registerTime(initials, currentProject.getId(), activityName,
+                LocalDate.parse(dateStr), hours);
+    }
+
+    @When("developer {string} edits the registration on {string} for activity {string} to {double} hours")
+    public void developerEditsTimeRegistration(String initials, String dateStr, String activityName, double newHours) {
+        timeRegistrationService.editTimeRegistration(initials, currentProject.getId(), activityName,
+                LocalDate.parse(dateStr), newHours);
+    }
+
+    @When("developer {string} tries to edit the registration on {string} for activity {string} to {double} hours")
+    public void developerTriesToEditTimeRegistration(String initials, String dateStr, String activityName, double newHours) {
+        try {
+            timeRegistrationService.editTimeRegistration(initials, currentProject.getId(), activityName,
+                    LocalDate.parse(dateStr), newHours);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("the total hours for developer {string} on date {string} are requested")
+    public void totalHoursForDeveloperOnDateRequested(String initials, String dateStr) {
+        todayHours = timeRegistrationService.getTodayHours(initials, LocalDate.parse(dateStr));
+    }
+
+    @Then("the total hours for the day is {double}")
+    public void totalHoursForTheDayIs(double expected) {
+        assertEquals(expected, todayHours, 0.001);
+    }
+
+    @When("a developer tries to create an activity with an empty name for the project")
+    public void aDeveloperTriesToCreateActivityWithEmptyName() {
+        try {
+            activityService.createActivity(currentProject.getId(), "");
         } catch (Exception e) {
             thrownException = e;
         }

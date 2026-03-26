@@ -151,3 +151,47 @@ Feature: Project planning
     Given a project with name "EmptyProject" exists
     When the project progress is calculated
     Then the progress is 0.0 percent
+
+  # ─────────────────────────────────────────
+  # UC11: Edit Time Registration
+  # ─────────────────────────────────────────
+
+  Scenario: Edit a time registration
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    And developer "huba" registers 2.0 hours on activity "Requirements" on date "2026-03-01"
+    When developer "huba" edits the registration on "2026-03-01" for activity "Requirements" to 4.0 hours
+    Then activity "Requirements" has 4.0 registered hours
+
+  Scenario: Cannot edit time registration to invalid hours
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    And developer "huba" registers 2.0 hours on activity "Requirements" on date "2026-03-01"
+    When developer "huba" tries to edit the registration on "2026-03-01" for activity "Requirements" to 0.0 hours
+    Then an error is raised with message "Hours must be a positive multiple of 0.5"
+
+  # ─────────────────────────────────────────
+  # UC12: View Today's Registered Hours
+  # ─────────────────────────────────────────
+
+  Scenario: View today's registered hours across activities
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    And the project has an activity named "Design"
+    And developer "huba" registers 2.0 hours on activity "Requirements" on date "2026-03-01"
+    And developer "huba" registers 3.0 hours on activity "Design" on date "2026-03-01"
+    When the total hours for developer "huba" on date "2026-03-01" are requested
+    Then the total hours for the day is 5.0
+
+  Scenario: View today's registered hours when none registered
+    When the total hours for developer "huba" on date "2026-03-01" are requested
+    Then the total hours for the day is 0.0
+
+  # ─────────────────────────────────────────
+  # UC2 Error: Cannot create activity with empty name
+  # ─────────────────────────────────────────
+
+  Scenario: Cannot create an activity with an empty name
+    Given a project with name "WebShop" exists
+    When a developer tries to create an activity with an empty name for the project
+    Then an error is raised with message "Activity name cannot be empty"
