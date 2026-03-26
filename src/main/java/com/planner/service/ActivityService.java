@@ -24,6 +24,9 @@ public class ActivityService {
     }
 
     public Activity createActivity(String projectId, String activityName) {
+        if (activityName == null || activityName.isBlank()) {
+            throw new IllegalArgumentException("Activity name cannot be empty");
+        }
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
         Activity activity = new Activity(activityName);
