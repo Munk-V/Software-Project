@@ -529,8 +529,69 @@ public class MainWindow {
         form.addRow(2, new Label("Hours:"), hoursField);
         form.addRow(3, new Label("Date:"), datePicker);
 
-        content.getChildren().addAll(new Label("Register time on an activity:"), form, registerBtn);
-        tab.setContent(content);
+        // ── See today's hours ──
+        Label todayTitle = new Label("Today's registered hours:");
+        todayTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        ComboBox<String> todayDevCombo = new ComboBox<>(developerInitialsList);
+        todayDevCombo.setPromptText("Select developer...");
+        DatePicker todayPicker = new DatePicker(LocalDate.now());
+        Label todayResultLabel = new Label();
+        Button checkTodayBtn = new Button("Check Hours");
+        checkTodayBtn.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
+        checkTodayBtn.setOnAction(e -> {
+            String initials = todayDevCombo.getValue();
+            if (initials == null) { showError("Select a developer."); return; }
+            double total = timeRegistrationService.getTodayHours(initials, todayPicker.getValue());
+            todayResultLabel.setText(initials + " has registered " + total + " hours on " + todayPicker.getValue());
+        });
+        HBox todayRow = new HBox(10, todayDevCombo, todayPicker, checkTodayBtn);
+        HBox.setHgrow(todayDevCombo, Priority.ALWAYS);
+
+        // ── Edit time registration ──
+        Label editTitle = new Label("Edit time registration:");
+        editTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        ComboBox<String> editDevCombo = new ComboBox<>(developerInitialsList);
+        editDevCombo.setPromptText("Select developer...");
+        ComboBox<String> editActivityCombo = new ComboBox<>(activityNames);
+        editActivityCombo.setPromptText("Select activity...");
+        DatePicker editDatePicker = new DatePicker(LocalDate.now());
+        TextField editHoursField = new TextField();
+        editHoursField.setPromptText("New hours (e.g. 3.5)");
+        Button editBtn = new Button("Update Registration");
+        editBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white;");
+        editBtn.setOnAction(e -> {
+            String projectId = getSelectedProjectId();
+            if (projectId == null) { showError("Select a project first."); return; }
+            String initials = editDevCombo.getValue();
+            String actName = editActivityCombo.getValue();
+            if (initials == null) { showError("Select a developer."); return; }
+            if (actName == null) { showError("Select an activity."); return; }
+            try {
+                double newHours = Double.parseDouble(editHoursField.getText().trim());
+                timeRegistrationService.editTimeRegistration(initials, projectId, actName, editDatePicker.getValue(), newHours);
+                refreshOverview(projectId);
+                showInfo("Updated registration to " + newHours + " hours.");
+                editHoursField.clear();
+            } catch (Exception ex) {
+                showError(ex.getMessage());
+            }
+        });
+
+        GridPane editForm = new GridPane();
+        editForm.setHgap(10);
+        editForm.setVgap(8);
+        editForm.addRow(0, new Label("Developer:"), editDevCombo);
+        editForm.addRow(1, new Label("Activity:"), editActivityCombo);
+        editForm.addRow(2, new Label("Date:"), editDatePicker);
+        editForm.addRow(3, new Label("New hours:"), editHoursField);
+
+        content.getChildren().addAll(
+                new Label("Register time on an activity:"), form, registerBtn,
+                new Separator(),
+                todayTitle, todayRow, todayResultLabel,
+                new Separator(),
+                editTitle, editForm, editBtn);
+        tab.setContent(new ScrollPane(content));
         return tab;
     }
 
