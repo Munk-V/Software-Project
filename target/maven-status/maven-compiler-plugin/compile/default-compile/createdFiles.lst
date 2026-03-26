@@ -5,6 +5,8 @@ com/planner/repository/DeveloperRepository.class
 com/planner/service/ProjectService.class
 com/planner/service/ActivityService.class
 com/planner/domain/TimeRegistration.class
+com/planner/ui/ConsoleUI.class
+com/planner/ui/MainWindow$1.class
 com/planner/service/AbsenceService.class
 com/planner/domain/Absence.class
 com/planner/ui/App.class
@@ -12,4 +14,5 @@ com/planner/domain/Absence$Type.class
 com/planner/domain/Project.class
 com/planner/repository/ProjectRepository.class
 com/planner/service/DeveloperService.class
+com/planner/ui/MainWindow.class
 com/planner/domain/Developer.class

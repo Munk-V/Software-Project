@@ -62,13 +62,6 @@ public class MainWindow {
     }
 
     private void buildUI() {
-        Label title = new Label("Software Project Planner");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        HBox topBar = new HBox(title);
-        topBar.setPadding(new Insets(12, 16, 12, 16));
-        topBar.setStyle("-fx-background-color: #2c3e50;");
-        title.setStyle("-fx-text-fill: white;");
-        root.setTop(topBar);
 
         root.setLeft(buildProjectPanel());
         refreshDeveloperList();
@@ -93,7 +86,6 @@ public class MainWindow {
         VBox panel = new VBox(8);
         panel.setPadding(new Insets(10));
         panel.setPrefWidth(200);
-        panel.setStyle("-fx-background-color: #ecf0f1;");
 
         Label header = new Label("Projects");
         header.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -124,7 +116,6 @@ public class MainWindow {
 
         Button createBtn = new Button("+ Create Project");
         createBtn.setMaxWidth(Double.MAX_VALUE);
-        createBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white;");
         createBtn.setOnAction(e -> {
             String name = nameField.getText().trim();
             if (name.isEmpty()) { showError("Project name cannot be empty."); return; }
@@ -363,7 +354,6 @@ public class MainWindow {
         form.addRow(3, new Label("End week / year:"), endWeek, endYear);
 
         Button addActivity = new Button("Add Activity");
-        addActivity.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
         addActivity.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -404,7 +394,6 @@ public class MainWindow {
         devForm.addRow(1, new Label("Developer:"), devInitialsCombo);
 
         Button addDev = new Button("Add Developer to Activity");
-        addDev.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
         addDev.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -426,7 +415,6 @@ public class MainWindow {
         TextField leaderField = new TextField();
         leaderField.setPromptText("Developer initials");
         Button assignLeader = new Button("Assign Project Leader");
-        assignLeader.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white;");
         assignLeader.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -448,7 +436,6 @@ public class MainWindow {
         deadlineWeekField.setPromptText("Week (e.g. 20)");
         TextField deadlineYearField = new TextField(String.valueOf(LocalDate.now().getYear()));
         Button setDeadlineBtn = new Button("Set Project Deadline");
-        setDeadlineBtn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;");
         setDeadlineBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -502,7 +489,6 @@ public class MainWindow {
         DatePicker datePicker = new DatePicker(LocalDate.now());
 
         Button registerBtn = new Button("Register Time");
-        registerBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white;");
         registerBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -537,7 +523,6 @@ public class MainWindow {
         DatePicker todayPicker = new DatePicker(LocalDate.now());
         Label todayResultLabel = new Label();
         Button checkTodayBtn = new Button("Check Hours");
-        checkTodayBtn.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
         checkTodayBtn.setOnAction(e -> {
             String initials = todayDevCombo.getValue();
             if (initials == null) { showError("Select a developer."); return; }
@@ -558,7 +543,6 @@ public class MainWindow {
         TextField editHoursField = new TextField();
         editHoursField.setPromptText("New hours (e.g. 3.5)");
         Button editBtn = new Button("Update Registration");
-        editBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white;");
         editBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -622,7 +606,6 @@ public class MainWindow {
         Label totalLabel = new Label();
 
         Button generateBtn = new Button("Generate Report");
-        generateBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
         generateBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -652,7 +635,6 @@ public class MainWindow {
         ListView<String> resultList = new ListView<>();
 
         Button checkBtn = new Button("Check Availability");
-        checkBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white;");
         checkBtn.setOnAction(e -> {
             try {
                 int week = Integer.parseInt(weekField.getText().trim());
@@ -698,7 +680,6 @@ public class MainWindow {
         TextField endYear = new TextField(String.valueOf(LocalDate.now().getYear()));
 
         Button registerBtn = new Button("Register Absence");
-        registerBtn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;");
         registerBtn.setOnAction(e -> {
             try {
                 String initials = initialsField.getText().trim();
@@ -820,7 +801,6 @@ public class MainWindow {
         actForm.addRow(3, new Label("End week/year:"), actEndWeek, actEndYear);
 
         Button createActBtn = new Button("Create Activity");
-        createActBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
 
         // Assign developer form
         Label assignLabel = new Label("Assign developer to activity:");
@@ -833,7 +813,6 @@ public class MainWindow {
         assignDevCombo.setPromptText("Select developer...");
         assignDevCombo.setMaxWidth(Double.MAX_VALUE);
         Button assignBtn = new Button("Assign Developer");
-        assignBtn.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
 
         // When a project is selected in the left list
         myProjectsList.getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
