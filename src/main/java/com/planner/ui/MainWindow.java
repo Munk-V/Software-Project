@@ -74,8 +74,7 @@ public class MainWindow {
                 buildActivitiesTab(),
                 buildTimeRegistrationTab(),
                 buildReportTab(),
-                buildAvailableDevelopersTab(),
-                buildAbsenceTab()
+                buildAvailableDevelopersTab()
         );
         root.setCenter(tabPane);
     }
@@ -546,12 +545,56 @@ public class MainWindow {
         editForm.addRow(2, new Label("Date:"), editDatePicker);
         editForm.addRow(3, new Label("New hours:"), editHoursField);
 
+        // ── Absence section ──
+        Label absenceTitle = new Label("Register absence:");
+        absenceTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        ComboBox<String> absInitialsCombo = new ComboBox<>(developerInitialsList);
+        absInitialsCombo.setPromptText("Select developer...");
+        ComboBox<String> typeBox = new ComboBox<>(
+                FXCollections.observableArrayList("VACATION", "SICK_LEAVE", "COURSE", "OTHER"));
+        typeBox.setValue("VACATION");
+        TextField absStartWeek = new TextField(); absStartWeek.setPromptText("Start week");
+        TextField absStartYear = new TextField(String.valueOf(LocalDate.now().getYear()));
+        TextField absEndWeek = new TextField(); absEndWeek.setPromptText("End week");
+        TextField absEndYear = new TextField(String.valueOf(LocalDate.now().getYear()));
+
+        Button absRegisterBtn = new Button("Register Absence");
+        absRegisterBtn.setOnAction(e -> {
+            String initials = absInitialsCombo.getValue();
+            if (initials == null) { showError("Select a developer."); return; }
+            try {
+                absenceService.registerAbsence(
+                        initials,
+                        Absence.Type.valueOf(typeBox.getValue()),
+                        Integer.parseInt(absStartWeek.getText().trim()),
+                        Integer.parseInt(absStartYear.getText().trim()),
+                        Integer.parseInt(absEndWeek.getText().trim()),
+                        Integer.parseInt(absEndYear.getText().trim()));
+                showInfo("Absence registered for " + initials + ".");
+                absStartWeek.clear(); absEndWeek.clear();
+                String selectedId = projectListView.getSelectionModel().getSelectedItem();
+                if (selectedId != null) refreshOverview(selectedId);
+            } catch (Exception ex) {
+                showError(ex.getMessage());
+            }
+        });
+
+        GridPane absForm = new GridPane();
+        absForm.setHgap(10);
+        absForm.setVgap(8);
+        absForm.addRow(0, new Label("Developer:"), absInitialsCombo);
+        absForm.addRow(1, new Label("Type:"), typeBox);
+        absForm.addRow(2, new Label("Start week / year:"), absStartWeek, absStartYear);
+        absForm.addRow(3, new Label("End week / year:"), absEndWeek, absEndYear);
+
         content.getChildren().addAll(
                 new Label("Register time on an activity:"), form, registerBtn,
                 new Separator(),
                 todayTitle, todayRow, todayResultLabel,
                 new Separator(),
-                editTitle, editForm, editBtn);
+                editTitle, editForm, editBtn,
+                new Separator(),
+                absenceTitle, absForm, absRegisterBtn);
         tab.setContent(new ScrollPane(content));
         return tab;
     }
@@ -637,59 +680,6 @@ public class MainWindow {
         return tab;
     }
 
-    // ── Absence tab ───────────────────────────────────────────────────────────────
-
-    private Tab buildAbsenceTab() {
-        Tab tab = new Tab("Absences");
-        VBox content = new VBox(10);
-        content.setPadding(new Insets(12));
-
-        TextField initialsField = new TextField();
-        initialsField.setPromptText("Developer initials");
-        ComboBox<String> typeBox = new ComboBox<>(
-                FXCollections.observableArrayList("VACATION", "SICK_LEAVE", "COURSE", "OTHER"));
-        typeBox.setValue("VACATION");
-        TextField startWeek = new TextField();
-        startWeek.setPromptText("Start week");
-        TextField startYear = new TextField(String.valueOf(LocalDate.now().getYear()));
-        TextField endWeek = new TextField();
-        endWeek.setPromptText("End week");
-        TextField endYear = new TextField(String.valueOf(LocalDate.now().getYear()));
-
-        Button registerBtn = new Button("Register Absence");
-        registerBtn.setOnAction(e -> {
-            try {
-                String initials = initialsField.getText().trim();
-                absenceService.registerAbsence(
-                        initials,
-                        Absence.Type.valueOf(typeBox.getValue()),
-                        Integer.parseInt(startWeek.getText().trim()),
-                        Integer.parseInt(startYear.getText().trim()),
-                        Integer.parseInt(endWeek.getText().trim()),
-                        Integer.parseInt(endYear.getText().trim()));
-                showInfo("Absence registered for " + initials + ".");
-                initialsField.clear(); startWeek.clear(); endWeek.clear();
-                String selectedId = projectListView.getSelectionModel().getSelectedItem();
-                if (selectedId != null) refreshOverview(selectedId);
-            } catch (Exception ex) {
-                showError(ex.getMessage());
-            }
-        });
-
-        GridPane form = new GridPane();
-        form.setHgap(10);
-        form.setVgap(8);
-        form.addRow(0, new Label("Initials:"), initialsField);
-        form.addRow(1, new Label("Type:"), typeBox);
-        form.addRow(2, new Label("Start week / year:"), startWeek, startYear);
-        form.addRow(3, new Label("End week / year:"), endWeek, endYear);
-
-        content.getChildren().addAll(
-                new Label("Register absence (vacation, sick leave, course):"),
-                form, registerBtn);
-        tab.setContent(content);
-        return tab;
-    }
 
     // ── My Projects tab (project leader view) ────────────────────────────────────
 
