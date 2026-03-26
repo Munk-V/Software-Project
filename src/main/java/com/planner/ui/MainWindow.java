@@ -431,28 +431,6 @@ public class MainWindow {
         HBox leaderRow = new HBox(8, new Label("Project leader:"), leaderField, assignLeader);
         leaderRow.setAlignment(Pos.CENTER_LEFT);
 
-        // Set deadline
-        TextField deadlineWeekField = new TextField();
-        deadlineWeekField.setPromptText("Week (e.g. 20)");
-        TextField deadlineYearField = new TextField(String.valueOf(LocalDate.now().getYear()));
-        Button setDeadlineBtn = new Button("Set Project Deadline");
-        setDeadlineBtn.setOnAction(e -> {
-            String projectId = getSelectedProjectId();
-            if (projectId == null) { showError("Select a project first."); return; }
-            try {
-                int week = Integer.parseInt(deadlineWeekField.getText().trim());
-                int year = Integer.parseInt(deadlineYearField.getText().trim());
-                projectService.setDeadline(projectId, week, year);
-                refreshOverview(projectId);
-                deadlineWeekField.clear();
-                showInfo("Deadline set to week " + week + "/" + year);
-            } catch (Exception ex) {
-                showError(ex.getMessage());
-            }
-        });
-        HBox deadlineRow = new HBox(8, new Label("Deadline — Week:"), deadlineWeekField,
-                new Label("Year:"), deadlineYearField, setDeadlineBtn);
-        deadlineRow.setAlignment(Pos.CENTER_LEFT);
 
         projectListView.getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
             String id = getSelectedProjectId();
@@ -464,8 +442,7 @@ public class MainWindow {
                 table, new Separator(),
                 form, addActivity, new Separator(),
                 devLabel, devForm, addDev, new Separator(),
-                leaderRow, new Separator(),
-                deadlineRow
+                leaderRow
         );
         tab.setContent(new ScrollPane(content));
         return tab;
