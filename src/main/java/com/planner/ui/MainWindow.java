@@ -56,7 +56,7 @@ public class MainWindow {
         activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
         developerService = new DeveloperService(developerRepository);
         timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        absenceService = new AbsenceService(absenceRepository, developerRepository);
+        absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
 
         buildUI();
     }
@@ -650,6 +650,8 @@ public class MainWindow {
                         Integer.parseInt(endYear.getText().trim()));
                 showInfo("Absence registered for " + initials + ".");
                 initialsField.clear(); startWeek.clear(); endWeek.clear();
+                String selectedId = projectListView.getSelectionModel().getSelectedItem();
+                if (selectedId != null) refreshOverview(selectedId);
             } catch (Exception ex) {
                 showError(ex.getMessage());
             }

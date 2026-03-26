@@ -34,7 +34,7 @@ public class ConsoleUI {
         this.activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
         this.developerService = new DeveloperService(developerRepository);
         this.timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        this.absenceService = new AbsenceService(absenceRepository, developerRepository);
+        this.absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
     }
 
     public void start() {
