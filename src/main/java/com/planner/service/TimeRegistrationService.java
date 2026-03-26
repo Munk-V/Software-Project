@@ -1,5 +1,5 @@
 package com.planner.service;
-
+//Nat
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.TimeRegistration;
@@ -19,7 +19,7 @@ public class TimeRegistrationService {
         this.developerRepository = developerRepository;
     }
 
-    public TimeRegistration registerTime(String developerInitials, String projectId,
+    public TimeRegistration registerTime(String developerInitials, String projectId, //Houres ar e registerd in half houre intervals
                                          String activityName, LocalDate date, double hours) {
         if (hours <= 0 || hours % 0.5 != 0) {
             throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
