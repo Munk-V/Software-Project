@@ -1,4 +1,4 @@
-com/planner/unit/ActivityServiceTest.class
-com/planner/unit/ProjectServiceTest.class
-com/planner/steps/CucumberRunnerTest.class
-com/planner/steps/StepDefinitions.class
+com\planner\steps\CucumberRunnerTest.class
+com\planner\unit\ActivityServiceTest.class
+com\planner\unit\ProjectServiceTest.class
+com\planner\steps\StepDefinitions.class

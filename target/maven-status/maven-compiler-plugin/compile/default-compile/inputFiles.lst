@@ -1,16 +1,16 @@
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/domain/Absence.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/domain/Activity.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/domain/Developer.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/domain/Project.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/domain/TimeRegistration.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/repository/AbsenceRepository.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/repository/DeveloperRepository.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/repository/ProjectRepository.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/service/AbsenceService.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/service/ActivityService.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/service/DeveloperService.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/service/ProjectService.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/service/TimeRegistrationService.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/ui/App.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/ui/ConsoleUI.java
-/Users/viktormunk/Documents/GitHub/Software Project/src/main/java/com/planner/ui/MainWindow.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\domain\Absence.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\domain\Activity.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\domain\Developer.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\domain\Project.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\domain\TimeRegistration.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\repository\AbsenceRepository.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\repository\DeveloperRepository.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\repository\ProjectRepository.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\service\AbsenceService.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\service\ActivityService.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\service\DeveloperService.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\service\ProjectService.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\service\TimeRegistrationService.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\ui\App.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\ui\ConsoleUI.java
+C:\Users\nicol\OneDrive\Dokumenter\GitHub\Software-Project\src\main\java\com\planner\ui\MainWindow.java

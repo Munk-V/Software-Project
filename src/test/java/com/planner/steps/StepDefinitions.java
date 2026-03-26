@@ -48,7 +48,7 @@ public class StepDefinitions {
         activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
         developerService = new DeveloperService(developerRepository);
         timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        absenceService = new AbsenceService(absenceRepository, developerRepository);
+        absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
     }
 
     @Given("the system has a developer with initials {string}")
@@ -169,7 +169,16 @@ public class StepDefinitions {
         absenceService.registerAbsence(initials, Absence.Type.VACATION,
                 startWeek, startYear, endWeek, endYear);
     }
-
+    
+    @When("developer {string} tries to register vacation from week {int} {int} to week {int} {int}")
+    public void developer_tries_to_register_vacation_from_week_to_week(String initials, Integer startWeek, Integer startYear, Integer endWeek, Integer endYear) {
+        try {
+            absenceService.registerAbsence(initials, Absence.Type.VACATION,
+                startWeek, startYear, endWeek, endYear);
+        } catch (Exception e) {
+        thrownException = e;
+    }
+    }
     @Then("developer {string} is busy in week {int} {int}")
     public void developerIsBusyInWeek(String initials, int week, int year) {
         assertTrue(absenceService.isDeveloperAbsent(initials, week, year));

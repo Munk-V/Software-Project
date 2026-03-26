@@ -86,6 +86,14 @@ Feature: Project planning
   # UC6: Register Absence
   # ─────────────────────────────────────────
 
+  Scenario: Vacation is denied if developer is busy with an activity
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    And the activity has weeks 10 2026 to 12 2026
+    And developer "huba" is added to the activity "Requirements"
+    When developer "huba" tries to register vacation from week 11 2026 to week 11 2026
+    Then an error is raised with message "Vacation denied: developer is assigned to an activity in that period"
+
   Scenario: Register vacation as a fixed activity
     When developer "huba" registers vacation from week 20 2026 to week 22 2026
     Then developer "huba" is busy in week 21 2026
