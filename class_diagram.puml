@@ -1,0 +1,238 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+skinparam packageFontSize 12
+skinparam shadowing false
+skinparam dpi 150
+skinparam classBackgroundColor White
+skinparam classBorderColor Black
+skinparam packageBorderColor Black
+skinparam packageBackgroundColor White
+skinparam ArrowColor Black
+skinparam packageStyle rectangle
+skinparam nodesep 40
+skinparam ranksep 60
+skinparam defaultFontName Arial
+hide circle
+hide empty members
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  UI  (top)
+' ─────────────────────────────────────────────────────────────────────────────
+
+package "com.planner.ui" {
+
+    class App {
+        --
+        start(stage : Stage)
+        main(args : String[])
+    }
+
+    class MainWindow {
+        --
+        getRoot() : BorderPane
+    }
+
+    App ..> MainWindow
+}
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  SERVICE
+' ─────────────────────────────────────────────────────────────────────────────
+
+package "com.planner.service" {
+
+    class ProjectService {
+        --
+        createProject(String) : Project
+        getProject(String) : Project
+        getAllProjects() : List<Project>
+        setStart(String, int, int)
+        setDeadline(String, int, int)
+        getProjectProgress(String) : double
+        assignProjectLeader(String, String)
+    }
+
+    class ActivityService {
+        --
+        createActivity(String, String) : Activity
+        setActivityDetails(String, String, double, int, int, int, int)
+        addDeveloperToActivity(String, String, String)
+        getAvailableDevelopers(int, int) : List<Developer>
+        getActivity(String, String) : Activity
+    }
+
+    class DeveloperService {
+        --
+        registerDeveloper(String) : Developer
+        getDeveloper(String) : Developer
+        getAllDevelopers() : List<Developer>
+        developerExists(String) : boolean
+    }
+
+    class TimeRegistrationService {
+        --
+        registerTime(String, String, String, LocalDate, double) : TimeRegistration
+        editTimeRegistration(String, String, String, LocalDate, double)
+        getTodayHours(String, LocalDate) : double
+    }
+
+    class AbsenceService {
+        --
+        registerAbsence(String, Absence.Type, int, int, int, int) : Absence
+        isDeveloperAbsent(String, int, int) : boolean
+        getAbsencesForDeveloper(String) : List<Absence>
+    }
+}
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  REPOSITORY
+' ─────────────────────────────────────────────────────────────────────────────
+
+package "com.planner.repository" {
+
+    class ProjectRepository {
+        --
+        generateProjectId() : String
+        add(p : Project)
+        findById(id : String) : Optional<Project>
+        findAll() : List<Project>
+    }
+
+    class DeveloperRepository {
+        --
+        add(dev : Developer)
+        findByInitials(initials : String) : Optional<Developer>
+        findAll() : List<Developer>
+        exists(initials : String) : boolean
+    }
+
+    class AbsenceRepository {
+        --
+        add(a : Absence)
+        findByDeveloper(dev : Developer) : List<Absence>
+        findAll() : List<Absence>
+    }
+}
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  DOMAIN  (bottom)
+' ─────────────────────────────────────────────────────────────────────────────
+
+package "com.planner.domain" {
+
+    class Developer {
+        initials : String
+    }
+
+    class Project {
+        id : String
+        name : String
+        startWeek : int
+        startYear : int
+        deadlineWeek : int
+        deadlineYear : int
+        --
+        setStart(week, year : int)
+        setDeadline(week, year : int)
+        hasStart() : boolean
+        hasDeadline() : boolean
+        addActivity(a : Activity)
+        getTotalBudgetedHours() : double
+        getTotalRegisteredHours() : double
+    }
+
+    class Activity {
+        name : String
+        budgetedHours : double
+        startWeek : int
+        startYear : int
+        endWeek : int
+        endYear : int
+        --
+        setBudgetedHours(hours : double)
+        addDeveloper(dev : Developer)
+        addTimeRegistration(reg : TimeRegistration)
+        getTotalRegisteredHours() : double
+    }
+
+    class TimeRegistration {
+        date : LocalDate
+        hours : double
+        --
+        setHours(hours : double)
+        setDate(date : LocalDate)
+    }
+
+    class Absence {
+        startWeek : int
+        startYear : int
+        endWeek : int
+        endYear : int
+        --
+        isActiveInWeek(week, year : int) : boolean
+    }
+
+    enum "Absence::Type" as AbsenceType {
+        VACATION
+        SICK_LEAVE
+        COURSE
+        OTHER
+    }
+}
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  FORCED LAYER ORDER
+' ─────────────────────────────────────────────────────────────────────────────
+
+App               -[hidden]->  ProjectService
+ProjectService    -[hidden]->  ProjectRepository
+ProjectRepository -[hidden]->  Project
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  UI DEPENDENCIES
+' ─────────────────────────────────────────────────────────────────────────────
+
+MainWindow ..> ProjectService
+MainWindow ..> ActivityService
+MainWindow ..> DeveloperService
+MainWindow ..> TimeRegistrationService
+MainWindow ..> AbsenceService
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  SERVICE → REPOSITORY
+' ─────────────────────────────────────────────────────────────────────────────
+
+ProjectService          ..>  ProjectRepository
+ProjectService          ..>  DeveloperRepository
+ActivityService         ..>  ProjectRepository
+ActivityService         ..>  DeveloperRepository
+ActivityService         ..>  AbsenceRepository
+DeveloperService        ..>  DeveloperRepository
+TimeRegistrationService ..>  ProjectRepository
+TimeRegistrationService ..>  DeveloperRepository
+AbsenceService          ..>  AbsenceRepository
+AbsenceService          ..>  DeveloperRepository
+AbsenceService          ..>  ProjectRepository
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  REPOSITORY → DOMAIN
+' ─────────────────────────────────────────────────────────────────────────────
+
+ProjectRepository   "1"  o-->  "* {ordered}"  Project
+DeveloperRepository "1"  o-->  "* {ordered}"  Developer
+AbsenceRepository   "1"  o-->  "*"            Absence
+
+' ─────────────────────────────────────────────────────────────────────────────
+'  DOMAIN ASSOCIATIONS
+' ─────────────────────────────────────────────────────────────────────────────
+
+Project        "1"      *-->  "* {ordered}"  Activity
+Project        "0..*"    -->  "0..1"         Developer
+Activity       "1"      *-->  "* {ordered}"  TimeRegistration
+Activity       "0..*"    -->  "0..*"         Developer
+TimeRegistration "0..*"  -->  "1"            Developer
+Absence        "0..*"    -->  "1"            Developer
+Absence                  -->                 AbsenceType
+
+@enduml
