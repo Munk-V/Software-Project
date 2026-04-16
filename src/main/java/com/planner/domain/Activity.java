@@ -20,19 +20,19 @@ public class Activity {
     public Activity(String name) {
         this.name = name;
     }
-
+    // String is used for names, like getName = "Name"
     public String getName() {
         return name;
     }
-
+    // Double is used for decimal numbers, such as hours = 2.5
     public double getBudgetedHours() {
         return budgetedHours;
     }
-
+    // void is used when nothing needs to be returned, used when it returns nothing, such as startweek = week, saves week does return.
     public void setBudgetedHours(double hours) {
         this.budgetedHours = hours;
     }
-
+    // int is used for numbers without decimals, like week number = 10
     public int getStartWeek() {
         return startWeek;
     }
