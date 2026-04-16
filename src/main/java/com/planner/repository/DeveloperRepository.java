@@ -38,10 +38,17 @@ public class DeveloperRepository {
     }
 
     public Optional<Developer> findByInitials(String initials) {
-        return developers.stream()
-                .filter(d -> d.getInitials().equalsIgnoreCase(initials))
-                .findFirst();
+        // For loop through the developers
+    for (Developer dev : developers) {
+        if (dev.getInitials().equalsIgnoreCase(initials)) {
+            // Return the dev
+            return Optional.of(dev);
+        }
     }
+    // safety if initials does not exist
+    return Optional.empty();
+    }
+
 
     public List<Developer> findAll() {
         return new ArrayList<>(developers);
