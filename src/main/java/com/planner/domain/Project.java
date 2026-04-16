@@ -62,7 +62,7 @@ public class Project { // Needs to be accessed by other modules; hence pulic cla
     }
     public void setDeadline(int week, int year) {
         if (week < 1 || week > 53) {
-            throw new IllegalArgumentException("Deadline week must be between 1 and 53 weeks");
+            throw new IllegalArgumentException("Deadline week must be between 1 and 53");
         }
         // disecting the input
         this.deadlineWeek = week;

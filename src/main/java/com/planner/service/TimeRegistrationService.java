@@ -19,8 +19,16 @@ public class TimeRegistrationService {
         this.developerRepository = developerRepository;
     }
 
-    public TimeRegistration registerTime(String developerInitials, String projectId, //Houres ar e registerd in half houre intervals
+    public TimeRegistration registerTime(String developerInitials, String projectId, //Hours are registered in half-hour intervals
                                          String activityName, LocalDate date, double hours) {
+        // Pre-conditions
+        assert developerInitials != null : "developerInitials must not be null";
+        assert projectId != null : "projectId must not be null";
+        assert activityName != null : "activityName must not be null";
+        assert date != null : "date must not be null";
+        assert hours > 0 : "hours must be positive";
+        assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
+
         if (hours <= 0 || hours % 0.5 != 0) {
             throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
         }
@@ -37,6 +45,11 @@ public class TimeRegistrationService {
 
         TimeRegistration registration = new TimeRegistration(developer, activity, date, hours);
         activity.addTimeRegistration(registration);
+
+        // Post-conditions
+        assert activity.getTimeRegistrations().contains(registration) : "registration must be stored on activity";
+        assert registration.getHours() == hours : "registered hours must match input";
+
         return registration;
     }
 

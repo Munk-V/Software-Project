@@ -18,12 +18,22 @@ public class ProjectService {
     }
 
     public Project createProject(String name) {
+        // Pre-conditions
+        assert name != null : "name must not be null";
+        assert !name.isBlank() : "name must not be blank";
+
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
         String id = projectRepository.generateProjectId();
         Project project = new Project(id, name);
         projectRepository.add(project);
+
+        // Post-conditions
+        assert project != null : "created project must not be null";
+        assert project.getName().equals(name) : "project name must match input";
+        assert projectRepository.findById(project.getId()).isPresent() : "project must be stored in repository";
+
         return project;
     }
 
