@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DeveloperRepository {
+public class DeveloperRepository implements IDeveloperRepository {
 
     private final List<Developer> developers = new ArrayList<>();
 

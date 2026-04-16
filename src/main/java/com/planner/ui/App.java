@@ -8,7 +8,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        MainWindow mainWindow = new MainWindow();
+        AppContext context = new AppContext();
+        MainWindow mainWindow = new MainWindow(context);
         Scene scene = new Scene(mainWindow.getRoot(), 900, 600);
         stage.setTitle("Software Project Planner");
         stage.setScene(scene);

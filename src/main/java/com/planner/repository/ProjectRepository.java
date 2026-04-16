@@ -1,5 +1,6 @@
 package com.planner.repository;
 
+import com.planner.domain.Activity;
 import com.planner.domain.Project;
 
 import java.time.Year;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProjectRepository {
+public class ProjectRepository implements IProjectRepository {
 
     private final List<Project> projects = new ArrayList<>();
     private int projectCounter = 1;
@@ -31,5 +32,12 @@ public class ProjectRepository {
 
     public List<Project> findAll() {
         return new ArrayList<>(projects);
+    }
+
+    public Optional<Activity> findActivity(String projectId, String activityName) {
+        return findById(projectId)
+                .flatMap(p -> p.getActivities().stream()
+                        .filter(a -> a.getName().equals(activityName))
+                        .findFirst());
     }
 }

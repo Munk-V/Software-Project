@@ -4,12 +4,10 @@ import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
 import com.planner.domain.Absence;
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.AbsenceRepository;
-import com.planner.repository.ProjectRepository;
-import com.planner.service.ActivityService;
-import com.planner.service.DeveloperService;
 import com.planner.service.AbsenceService;
+import com.planner.service.ActivityService;
+import com.planner.service.AvailabilityService;
+import com.planner.service.DeveloperService;
 import com.planner.service.ProjectService;
 import com.planner.service.TimeRegistrationService;
 
@@ -21,20 +19,19 @@ public class ConsoleUI {
 
     private final ProjectService projectService;
     private final ActivityService activityService;
+    private final AvailabilityService availabilityService;
     private final DeveloperService developerService;
     private final TimeRegistrationService timeRegistrationService;
     private final AbsenceService absenceService;
     private final Scanner scanner = new Scanner(System.in);
 
-    public ConsoleUI() {
-        DeveloperRepository developerRepository = new DeveloperRepository();
-        ProjectRepository projectRepository = new ProjectRepository();
-        AbsenceRepository absenceRepository = new AbsenceRepository();
-        this.projectService = new ProjectService(projectRepository, developerRepository);
-        this.activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
-        this.developerService = new DeveloperService(developerRepository);
-        this.timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        this.absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
+    public ConsoleUI(AppContext context) {
+        this.projectService = context.projectService;
+        this.activityService = context.activityService;
+        this.availabilityService = context.availabilityService;
+        this.developerService = context.developerService;
+        this.timeRegistrationService = context.timeRegistrationService;
+        this.absenceService = context.absenceService;
     }
 
     public void start() {
@@ -172,7 +169,7 @@ public class ConsoleUI {
         int week = Integer.parseInt(scanner.nextLine().trim());
         System.out.print("Year: ");
         int year = Integer.parseInt(scanner.nextLine().trim());
-        List<Developer> available = activityService.getAvailableDevelopers(week, year);
+        List<Developer> available = availabilityService.getAvailableDevelopers(week, year);
         if (available.isEmpty()) {
             System.out.println("No available developers in week " + week + "/" + year);
         } else {
@@ -182,6 +179,6 @@ public class ConsoleUI {
     }
 
     public static void main(String[] args) {
-        new ConsoleUI().start();
+        new ConsoleUI(new AppContext()).start();
     }
 }

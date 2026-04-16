@@ -99,6 +99,14 @@ Feature: Project planning
     Then developer "huba" is busy in week 21 2026
     And developer "huba" is not busy in week 19 2026
 
+  Scenario: Cannot register absence with week number out of range
+    When developer "huba" tries to register vacation from week 54 2026 to week 54 2026
+    Then an error is raised with message "Week must be between 1 and 53"
+
+  Scenario: Cannot register absence when start week is after end week
+    When developer "huba" tries to register vacation from week 20 2026 to week 10 2026
+    Then an error is raised with message "Start week must be before or equal to end week"
+
   # ─────────────────────────────────────────
   # UC7: View Available Developers
   # ─────────────────────────────────────────
@@ -203,3 +211,25 @@ Feature: Project planning
     Given a project with name "WebShop" exists
     When a developer tries to create an activity with an empty name for the project
     Then an error is raised with message "Activity name cannot be empty"
+
+  # ─────────────────────────────────────────
+  # UC2 Error: Invalid activity details
+  # ─────────────────────────────────────────
+
+  Scenario: Cannot set negative budgeted hours on an activity
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When a developer tries to set budget -5.0 on activity "Requirements"
+    Then an error is raised with message "Budgeted hours cannot be negative"
+
+  Scenario: Cannot set activity start week out of range
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When a developer tries to set activity "Requirements" weeks 54 2026 to 55 2026
+    Then an error is raised with message "Start week must be between 1 and 53"
+
+  Scenario: Cannot set activity end week before start week
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    When a developer tries to set activity "Requirements" weeks 15 2026 to 10 2026
+    Then an error is raised with message "Start week must be before or equal to end week"

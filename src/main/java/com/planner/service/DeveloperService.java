@@ -1,15 +1,15 @@
 package com.planner.service;
 
 import com.planner.domain.Developer;
-import com.planner.repository.DeveloperRepository;
+import com.planner.repository.IDeveloperRepository;
 
 import java.util.List;
 
 public class DeveloperService {
 
-    private final DeveloperRepository developerRepository;
+    private final IDeveloperRepository developerRepository;
 
-    public DeveloperService(DeveloperRepository developerRepository) {
+    public DeveloperService(IDeveloperRepository developerRepository) {
         this.developerRepository = developerRepository;
     }
 

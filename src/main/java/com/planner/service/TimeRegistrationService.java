@@ -1,25 +1,24 @@
 package com.planner.service;
-//Nat
+
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.TimeRegistration;
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.ProjectRepository;
+import com.planner.repository.IDeveloperRepository;
+import com.planner.repository.IProjectRepository;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class TimeRegistrationService {
 
-    private final ProjectRepository projectRepository;
-    private final DeveloperRepository developerRepository;
+    private final IProjectRepository projectRepository;
+    private final IDeveloperRepository developerRepository;
 
-    public TimeRegistrationService(ProjectRepository projectRepository, DeveloperRepository developerRepository) {
+    public TimeRegistrationService(IProjectRepository projectRepository, IDeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
         this.developerRepository = developerRepository;
     }
 
-    public TimeRegistration registerTime(String developerInitials, String projectId, //Hours are registered in half-hour intervals
+    public TimeRegistration registerTime(String developerInitials, String projectId,
                                          String activityName, LocalDate date, double hours) {
         // Pre-conditions
         assert developerInitials != null : "developerInitials must not be null";
@@ -36,11 +35,7 @@ public class TimeRegistrationService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
-        Activity activity = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId))
-                .getActivities().stream()
-                .filter(a -> a.getName().equals(activityName))
-                .findFirst()
+        Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
 
         TimeRegistration registration = new TimeRegistration(developer, activity, date, hours);
@@ -62,11 +57,7 @@ public class TimeRegistrationService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
-        Activity activity = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId))
-                .getActivities().stream()
-                .filter(a -> a.getName().equals(activityName))
-                .findFirst()
+        Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
 
         TimeRegistration registration = activity.getTimeRegistrations().stream()

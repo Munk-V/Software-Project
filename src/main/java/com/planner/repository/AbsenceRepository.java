@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AbsenceRepository {
+public class AbsenceRepository implements IAbsenceRepository {
 
     private final List<Absence> absences = new ArrayList<>();
 

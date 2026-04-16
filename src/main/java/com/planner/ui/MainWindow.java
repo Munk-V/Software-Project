@@ -4,9 +4,6 @@ import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Absence;
 import com.planner.domain.Project;
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.AbsenceRepository;
-import com.planner.repository.ProjectRepository;
 import com.planner.service.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,6 +23,7 @@ public class MainWindow {
 
     private final ProjectService projectService;
     private final ActivityService activityService;
+    private final AvailabilityService availabilityService;
     private final DeveloperService developerService;
     private final TimeRegistrationService timeRegistrationService;
     private final AbsenceService absenceService;
@@ -48,16 +46,13 @@ public class MainWindow {
     private final TableView<Activity> overviewTable = new TableView<>();
     private final TableView<Developer> devStatusTable = new TableView<>();
 
-    public MainWindow() {
-        DeveloperRepository developerRepository = new DeveloperRepository();
-        ProjectRepository projectRepository = new ProjectRepository();
-        AbsenceRepository absenceRepository = new AbsenceRepository();
-        projectService = new ProjectService(projectRepository, developerRepository);
-        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
-        developerService = new DeveloperService(developerRepository);
-        timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
-
+    public MainWindow(AppContext context) {
+        this.projectService = context.projectService;
+        this.activityService = context.activityService;
+        this.availabilityService = context.availabilityService;
+        this.developerService = context.developerService;
+        this.timeRegistrationService = context.timeRegistrationService;
+        this.absenceService = context.absenceService;
         buildUI();
     }
 
@@ -713,7 +708,7 @@ public class MainWindow {
             try {
                 int week = Integer.parseInt(weekField.getText().trim());
                 int year = Integer.parseInt(yearField.getText().trim());
-                List<Developer> available = activityService.getAvailableDevelopers(week, year);
+                List<Developer> available = availabilityService.getAvailableDevelopers(week, year);
                 ObservableList<String> items = FXCollections.observableArrayList();
                 if (available.isEmpty()) {
                     items.add("No available developers in week " + week + "/" + year);

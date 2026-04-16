@@ -8,6 +8,7 @@ import com.planner.repository.DeveloperRepository;
 import com.planner.repository.AbsenceRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.ActivityService;
+import com.planner.service.AvailabilityService;
 import com.planner.service.DeveloperService;
 import com.planner.service.AbsenceService;
 import com.planner.service.ProjectService;
@@ -29,6 +30,7 @@ public class StepDefinitions {
     private AbsenceRepository absenceRepository;
     private ProjectService projectService;
     private ActivityService activityService;
+    private AvailabilityService availabilityService;
     private DeveloperService developerService;
     private TimeRegistrationService timeRegistrationService;
     private AbsenceService absenceService;
@@ -45,7 +47,8 @@ public class StepDefinitions {
         projectRepository = new ProjectRepository();
         absenceRepository = new AbsenceRepository();
         projectService = new ProjectService(projectRepository, developerRepository);
-        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
+        activityService = new ActivityService(projectRepository, developerRepository);
+        availabilityService = new AvailabilityService(projectRepository, developerRepository, absenceRepository);
         developerService = new DeveloperService(developerRepository);
         timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
         absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
@@ -193,7 +196,7 @@ public class StepDefinitions {
 
     @When("available developers in week {int} {int} are requested")
     public void availableDevelopersAreRequested(int week, int year) {
-        availableDevelopers = activityService.getAvailableDevelopers(week, year);
+        availableDevelopers = availabilityService.getAvailableDevelopers(week, year);
     }
 
     @Then("developer {string} is in the available list")
@@ -319,6 +322,24 @@ public class StepDefinitions {
     public void aDeveloperTriesToCreateActivityWithEmptyName() {
         try {
             activityService.createActivity(currentProject.getId(), "");
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("a developer tries to set budget {double} on activity {string}")
+    public void aDeveloperTriesToSetBudgetOnActivity(double budget, String activityName) {
+        try {
+            activityService.setActivityDetails(currentProject.getId(), activityName, budget, 0, 0, 0, 0);
+        } catch (Exception e) {
+            thrownException = e;
+        }
+    }
+
+    @When("a developer tries to set activity {string} weeks {int} {int} to {int} {int}")
+    public void aDeveloperTriesToSetActivityWeeks(String activityName, int startWeek, int startYear, int endWeek, int endYear) {
+        try {
+            activityService.setActivityDetails(currentProject.getId(), activityName, 10.0, startWeek, startYear, endWeek, endYear);
         } catch (Exception e) {
             thrownException = e;
         }

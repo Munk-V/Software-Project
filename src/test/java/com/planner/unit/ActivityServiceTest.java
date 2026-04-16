@@ -2,7 +2,6 @@ package com.planner.unit;
 
 import com.planner.domain.Activity;
 import com.planner.domain.Project;
-import com.planner.repository.AbsenceRepository;
 import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.ActivityService;
@@ -22,8 +21,7 @@ public class ActivityServiceTest {
     public void setUp() {
         ProjectRepository projectRepository = new ProjectRepository();
         DeveloperRepository developerRepository = new DeveloperRepository();
-        AbsenceRepository absenceRepository = new AbsenceRepository();
-        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
+        activityService = new ActivityService(projectRepository, developerRepository);
         projectService = new ProjectService(projectRepository, developerRepository);
         Project project = projectService.createProject("TestProject");
         projectId = project.getId();
