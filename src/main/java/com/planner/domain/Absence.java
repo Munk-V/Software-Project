@@ -1,4 +1,5 @@
 package com.planner.domain;
+// Nicolai
 
 public class Absence {
 

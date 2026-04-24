@@ -4,7 +4,7 @@ Feature: Project planning
     Given the system has a developer with initials "huba"
 
   # ─────────────────────────────────────────
-  # UC1: Create Project
+  # UC1: Create Project  (Vedanta)
   # ─────────────────────────────────────────
 
   Scenario: Create a project
@@ -16,7 +16,7 @@ Feature: Project planning
     Then an error is raised with message "Project name cannot be empty"
 
   # ─────────────────────────────────────────
-  # UC2: Create Activity
+  # UC2: Create Activity  (Viktor)
   # ─────────────────────────────────────────
 
   Scenario: Create an activity and add it to a project
@@ -29,7 +29,7 @@ Feature: Project planning
     Then an error is raised with message "Project not found: 99999"
 
   # ─────────────────────────────────────────
-  # UC3: Add Developer to Activity
+  # UC3: Add Developer to Activity  (Mathias)
   # ─────────────────────────────────────────
 
   Scenario: Add a developer to an activity
@@ -45,7 +45,7 @@ Feature: Project planning
     Then an error is raised with message "Developer not found: zzzz"
 
   # ─────────────────────────────────────────
-  # UC4: Register Time on Activity
+  # UC4: Register Time on Activity  (Nat)
   # ─────────────────────────────────────────
 
   Scenario: Register time on an activity
@@ -67,7 +67,7 @@ Feature: Project planning
     Then an error is raised with message "Hours must be a positive multiple of 0.5"
 
   # ─────────────────────────────────────────
-  # UC5: Generate Project Report
+  # UC5: Generate Project Report  (Vedanta)
   # ─────────────────────────────────────────
 
   Scenario: Generate project report
@@ -83,7 +83,7 @@ Feature: Project planning
     Then the total budgeted hours are 0.0 and total registered hours are 0.0
 
   # ─────────────────────────────────────────
-  # UC6: Register Absence
+  # UC6: Register Absence  (Nicolai)
   # ─────────────────────────────────────────
 
   Scenario: Vacation is denied if developer is busy with an activity
@@ -92,7 +92,15 @@ Feature: Project planning
     And the activity has weeks 10 2026 to 12 2026
     And developer "huba" is added to the activity "Requirements"
     When developer "huba" tries to register vacation from week 11 2026 to week 11 2026
-    Then an error is raised with message "Vacation denied: developer is assigned to an activity in that period"
+    Then an error is raised with message "Absence denied: developer is assigned to an activity in that period"
+
+  Scenario: Sick leave is denied if developer is busy with an activity
+    Given a project with name "WebShop" exists
+    And the project has an activity named "Requirements"
+    And the activity has weeks 20 2026 to 30 2026
+    And developer "huba" is added to the activity "Requirements"
+    When developer "huba" tries to register sick leave from week 20 2026 to week 30 2026
+    Then an error is raised with message "Absence denied: developer is assigned to an activity in that period"
 
   Scenario: Register vacation as a fixed activity
     When developer "huba" registers vacation from week 20 2026 to week 22 2026
@@ -108,7 +116,7 @@ Feature: Project planning
     Then an error is raised with message "Start week must be before or equal to end week"
 
   # ─────────────────────────────────────────
-  # UC7: View Available Developers
+  # UC7: View Available Developers  (Mathias)
   # ─────────────────────────────────────────
 
   Scenario: Available developers excludes developers assigned to activities
@@ -125,7 +133,7 @@ Feature: Project planning
     Then developer "huba" is not in the available list
 
   # ─────────────────────────────────────────
-  # UC8: Assign Project Leader
+  # UC8: Assign Project Leader  (Vedanta)
   # ─────────────────────────────────────────
 
   Scenario: Assign a project leader
@@ -139,7 +147,7 @@ Feature: Project planning
     Then an error is raised with message "Developer not found: zzzz"
 
   # ─────────────────────────────────────────
-  # UC9: Set Project Deadline
+  # UC9: Set Project Deadline  (Vedanta)
   # ─────────────────────────────────────────
 
   Scenario: Set a deadline for a project
@@ -153,7 +161,7 @@ Feature: Project planning
     Then an error is raised with message "Deadline week must be between 1 and 53"
 
   # ─────────────────────────────────────────
-  # UC10: View Project Progress
+  # UC10: View Project Progress  (Vedanta)
   # ─────────────────────────────────────────
 
   Scenario: View project progress with registered hours
@@ -169,7 +177,7 @@ Feature: Project planning
     Then the progress is 0.0 percent
 
   # ─────────────────────────────────────────
-  # UC11: Edit Time Registration
+  # UC11: Edit Time Registration  (Nat)
   # ─────────────────────────────────────────
 
   Scenario: Edit a time registration
@@ -187,7 +195,7 @@ Feature: Project planning
     Then an error is raised with message "Hours must be a positive multiple of 0.5"
 
   # ─────────────────────────────────────────
-  # UC12: View Today's Registered Hours
+  # UC12: View Today's Registered Hours  (Nat)
   # ─────────────────────────────────────────
 
   Scenario: View today's registered hours across activities
@@ -204,7 +212,7 @@ Feature: Project planning
     Then the total hours for the day is 0.0
 
   # ─────────────────────────────────────────
-  # UC2 Error: Cannot create activity with empty name
+  # UC2 Error: Cannot create activity with empty name  (Viktor)
   # ─────────────────────────────────────────
 
   Scenario: Cannot create an activity with an empty name
@@ -213,7 +221,7 @@ Feature: Project planning
     Then an error is raised with message "Activity name cannot be empty"
 
   # ─────────────────────────────────────────
-  # UC2 Error: Invalid activity details
+  # UC2 Error: Invalid activity details  (Viktor)
   # ─────────────────────────────────────────
 
   Scenario: Cannot set negative budgeted hours on an activity

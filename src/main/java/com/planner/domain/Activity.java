@@ -1,4 +1,5 @@
 package com.planner.domain;
+// Viktor
 
 import java.util.ArrayList;
 import java.util.List;

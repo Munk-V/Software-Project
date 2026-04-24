@@ -1,4 +1,5 @@
 package com.planner.service;
+// Nicolai
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
@@ -48,8 +49,8 @@ public class AbsenceService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
-        if (type == Absence.Type.VACATION && isDeveloperBusyInPeriod(developer, startWeek, startYear, endWeek, endYear)) {
-            throw new IllegalArgumentException("Vacation denied: developer is assigned to an activity in that period");
+        if (isDeveloperBusyInPeriod(developer, startWeek, startYear, endWeek, endYear)) {
+            throw new IllegalArgumentException("Absence denied: developer is assigned to an activity in that period");
         }
 
         Absence absence = new Absence(developer, type, startWeek, startYear, endWeek, endYear);

@@ -1,5 +1,5 @@
 package com.planner.domain;
-//
+// Vedanta
 
 import java.util.ArrayList; // for the activities for the project
 import java.util.List;

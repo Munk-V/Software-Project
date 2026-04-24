@@ -1,4 +1,5 @@
 package com.planner.ui;
+// DELT – se per-metode kommentarer nedenfor (fordeling pr. tab)
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
@@ -76,6 +77,7 @@ public class MainWindow {
 
     // ── Left panel ───────────────────────────────────────────────────────────────
 
+    // Vedanta
     private VBox buildProjectPanel() {
         VBox panel = new VBox(8);
         panel.setPadding(new Insets(10));
@@ -145,6 +147,7 @@ public class MainWindow {
 
     // ── Overview tab ─────────────────────────────────────────────────────────────
 
+    // Mathias
     private Tab buildOverviewTab() {
         Tab tab = new Tab("Overview");
         VBox content = new VBox(10);
@@ -228,6 +231,7 @@ public class MainWindow {
         return tab;
     }
 
+    // Mathias
     private void refreshOverview(String projectId) {
         Project project = projectService.getProject(projectId);
         double pct = projectService.getProjectProgress(projectId);
@@ -309,6 +313,7 @@ public class MainWindow {
 
     // ── Activities tab ────────────────────────────────────────────────────────────
 
+    // Viktor
     private Tab buildActivitiesTab() {
         Tab tab = new Tab("Activities");
         VBox content = new VBox(10);
@@ -468,12 +473,14 @@ public class MainWindow {
 
     // ── Time registration tab ─────────────────────────────────────────────────────
 
+    // Nat (UI-helper)
     private Label formLabel(String text) {
         Label l = new Label(text);
         l.setMinWidth(90);
         return l;
     }
 
+    // Nat (tid-sektioner) + Nicolai (absence-sektion – markeret længere nede)
     private Tab buildTimeRegistrationTab() {
         Tab tab = new Tab("Register Time");
         VBox content = new VBox(14);
@@ -583,7 +590,7 @@ public class MainWindow {
             new HBox(12, formLabel("New hours :"), editHoursField)
         );
 
-        // ── Absence section ──
+        // ── Absence section ── (Nicolai)
         Label absenceTitle = new Label("Register absence:");
         absenceTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         ComboBox<String> absInitialsCombo = new ComboBox<>(developerInitialsList);
@@ -646,6 +653,7 @@ public class MainWindow {
 
     // ── Report tab ────────────────────────────────────────────────────────────────
 
+    // Vedanta
     private Tab buildReportTab() {
         Tab tab = new Tab("Report");
         VBox content = new VBox(10);
@@ -693,6 +701,7 @@ public class MainWindow {
 
     // ── Available developers tab ──────────────────────────────────────────────────
 
+    // Mathias
     private Tab buildAvailableDevelopersTab() {
         Tab tab = new Tab("Available Developers");
         VBox content = new VBox(10);
@@ -736,6 +745,7 @@ public class MainWindow {
 
     // ── My Projects tab (project leader view) ────────────────────────────────────
 
+    // Vedanta
     private Tab buildMyProjectsTab() {
         Tab tab = new Tab("My Projects");
         SplitPane split = new SplitPane();
@@ -965,6 +975,7 @@ public class MainWindow {
 
     // ── Helpers ───────────────────────────────────────────────────────────────────
 
+    // Viktor
     private void refreshActivityTable(TableView<Activity> table, String projectId) {
         Project p = projectService.getProject(projectId);
         table.setItems(FXCollections.observableArrayList(p.getActivities()));
@@ -972,6 +983,7 @@ public class MainWindow {
         refreshActivityNames(projectId);
     }
 
+    // Viktor
     private void refreshActivityNames(String projectId) {
         Project p = projectService.getProject(projectId);
         activityNames.setAll(p.getActivities().stream()
@@ -979,30 +991,35 @@ public class MainWindow {
                 .collect(java.util.stream.Collectors.toList()));
     }
 
+    // Mathias
     private void refreshDeveloperList() {
         developerInitialsList.setAll(developerService.getAllDevelopers().stream()
                 .map(Developer::getInitials)
                 .collect(java.util.stream.Collectors.toList()));
     }
 
+    // Nat (UI-helper)
     private String getSelectedProjectId() {
         String selected = projectListView.getSelectionModel().getSelectedItem();
         if (selected == null) return null;
         return selected.substring(1, selected.indexOf("]"));
     }
 
+    // Nat (UI-helper)
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.setHeaderText(null);
         alert.showAndWait();
     }
 
+    // Nat (UI-helper)
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.setHeaderText(null);
         alert.showAndWait();
     }
 
+    // Nat (UI-helper)
     public BorderPane getRoot() {
         return root;
     }
