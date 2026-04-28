@@ -66,9 +66,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Assertions are for Design by Contract documentation (run with -ea manually).
-                         Tests rely on exceptions, so assertions are disabled here. -->
-                    <argLine>-da</argLine>
+                    <!-- Assertions ENABLED so Design by Contract pre-/post-conditions
+                         are checked at runtime during the test suite. -->
+                    <argLine>-ea</argLine>
                 </configuration>
             </plugin>
             <plugin>

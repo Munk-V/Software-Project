@@ -28,12 +28,6 @@ public class AbsenceService {
     public Absence registerAbsence(String developerInitials, Absence.Type type,
                                    int startWeek, int startYear,
                                    int endWeek, int endYear) {
-        // Pre-conditions
-        assert developerInitials != null : "developerInitials must not be null";
-        assert type != null : "type must not be null";
-        assert startWeek >= 1 && startWeek <= 53 : "startWeek must be between 1 and 53";
-        assert endWeek >= 1 && endWeek <= 53 : "endWeek must be between 1 and 53";
-
         if (type == null) {
             throw new IllegalArgumentException("Absence type cannot be null");
         }
@@ -45,6 +39,12 @@ public class AbsenceService {
         if (start > end) {
             throw new IllegalArgumentException("Start week must be before or equal to end week");
         }
+
+        // Pre-conditions (hold after defensive validation above)
+        assert developerInitials != null : "developerInitials must not be null";
+        assert type != null : "type must not be null";
+        assert startWeek >= 1 && startWeek <= 53 : "startWeek must be between 1 and 53";
+        assert endWeek >= 1 && endWeek <= 53 : "endWeek must be between 1 and 53";
 
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));

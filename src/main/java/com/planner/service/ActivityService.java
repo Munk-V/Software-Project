@@ -33,11 +33,6 @@ public class ActivityService {
     public void setActivityDetails(String projectId, String activityName,
                                    double budgetedHours, int startWeek, int startYear,
                                    int endWeek, int endYear) {
-        // Pre-conditions
-        assert budgetedHours >= 0 : "budgetedHours must be non-negative";
-        assert startWeek == 0 || (startWeek >= 1 && startWeek <= 53) : "startWeek must be 0 (unset) or between 1 and 53";
-        assert endWeek == 0 || (endWeek >= 1 && endWeek <= 53) : "endWeek must be 0 (unset) or between 1 and 53";
-
         if (budgetedHours < 0) {
             throw new IllegalArgumentException("Budgeted hours cannot be negative");
         }
@@ -54,6 +49,11 @@ public class ActivityService {
                 throw new IllegalArgumentException("Start week must be before or equal to end week");
             }
         }
+
+        // Pre-conditions (hold after defensive validation above)
+        assert budgetedHours >= 0 : "budgetedHours must be non-negative";
+        assert startWeek == 0 || (startWeek >= 1 && startWeek <= 53) : "startWeek must be 0 (unset) or between 1 and 53";
+        assert endWeek == 0 || (endWeek >= 1 && endWeek <= 53) : "endWeek must be 0 (unset) or between 1 and 53";
 
         Activity activity = getActivity(projectId, activityName);
         activity.setBudgetedHours(budgetedHours);

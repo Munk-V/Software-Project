@@ -21,17 +21,17 @@ public class TimeRegistrationService {
 
     public TimeRegistration registerTime(String developerInitials, String projectId,
                                          String activityName, LocalDate date, double hours) {
-        // Pre-conditions
+        if (hours <= 0 || hours % 0.5 != 0) {
+            throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
+        }
+
+        // Pre-conditions (hold after defensive validation above)
         assert developerInitials != null : "developerInitials must not be null";
         assert projectId != null : "projectId must not be null";
         assert activityName != null : "activityName must not be null";
         assert date != null : "date must not be null";
         assert hours > 0 : "hours must be positive";
         assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
-
-        if (hours <= 0 || hours % 0.5 != 0) {
-            throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
-        }
 
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
