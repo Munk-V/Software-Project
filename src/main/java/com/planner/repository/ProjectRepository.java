@@ -1,16 +1,16 @@
 package com.planner.repository;
 
-import com.planner.domain.Project;
-
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProjectRepository {
+import com.planner.domain.Project;
 
+public class ProjectRepository {
+    //memory storage
     private final List<Project> projects = new ArrayList<>();
-    private int projectCounter = 1;
+    private int projectCounter = 1; // ids generation incrementally
 
     public String generateProjectId() {
         int year = Year.now().getValue() % 100;
@@ -29,7 +29,7 @@ public class ProjectRepository {
                 .findFirst();
     }
 
-    public List<Project> findAll() {
+    public List<Project> findAll() { // return a copy
         return new ArrayList<>(projects);
     }
 }

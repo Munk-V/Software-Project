@@ -1,13 +1,14 @@
+// Vedanta s245010
 package com.planner.service;
+
+import java.util.List;
 
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
 import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
 
-import java.util.List;
-
-public class ProjectService {
+public class ProjectService { //LOgic 
 
     private final ProjectRepository projectRepository;
     private final DeveloperRepository developerRepository;
@@ -17,7 +18,7 @@ public class ProjectService {
         this.developerRepository = developerRepository;
     }
 
-    public Project createProject(String name) {
+    public Project createProject(String name) { // creates and then stores the created project
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
@@ -27,9 +28,9 @@ public class ProjectService {
         return project;
     }
 
-    public Project getProject(String id) {
+    public Project getProject(String id) { //gets the project
         return projectRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));// if the project doesnt exist
     }
 
     public List<Project> getAllProjects() {
@@ -53,7 +54,7 @@ public class ProjectService {
         return (project.getTotalRegisteredHours() / budgeted) * 100;
     }
 
-    public void assignProjectLeader(String projectId, String developerInitials) {
+    public void assignProjectLeader(String projectId, String developerInitials) { //project leader assigned
         Project project = getProject(projectId);
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
