@@ -1,10 +1,10 @@
-package com.planner.domain;
 // Viktor
+package com.planner.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// Activity belongs to a project and keeps track of budget, time period and developers
+// An activity belongs to a project and keeps track of budget, time period and developers
 public class Activity {
 
     private final String name;
@@ -13,27 +13,25 @@ public class Activity {
     private int startYear;
     private int endWeek;
     private int endYear;
-    // list of developers working on this activity
     private List<Developer> assignedDevelopers = new ArrayList<>();
-    // list of all time registrations made for this activity
     private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
     public Activity(String name) {
         this.name = name;
     }
-    // String is used for names, like getName = "Name"
+
     public String getName() {
         return name;
     }
-    // Double is used for decimal numbers, such as hours = 2.5
+
     public double getBudgetedHours() {
         return budgetedHours;
     }
-    // void is used when nothing needs to be returned, used when it returns nothing, such as startweek = week, saves week does return.
+
     public void setBudgetedHours(double hours) {
         this.budgetedHours = hours;
     }
-    // int is used for numbers without decimals, like week number = 10
+
     public int getStartWeek() {
         return startWeek;
     }
