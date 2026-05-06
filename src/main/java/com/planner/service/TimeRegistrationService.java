@@ -8,7 +8,7 @@ import com.planner.repository.IDeveloperRepository;
 import com.planner.repository.IProjectRepository;
 
 import java.time.LocalDate;
-import java.util.Optional;
+
 
 public class TimeRegistrationService {
 
@@ -34,11 +34,8 @@ public class TimeRegistrationService {
         assert hours > 0 : "hours must be positive";
         assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
 
-        Developer developer =   developerRepository.findByInitials(developerInitials);
-                if (developer == null){
-                        throw new IllegalArgumentException("Developer not found: "+ developerInitials);
-                }
-                //.orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
+        Developer developer =   developerRepository.findByInitials(developerInitials)
+                .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
         Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
@@ -76,12 +73,21 @@ public class TimeRegistrationService {
     public double getTodayHours(String developerInitials, LocalDate date) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-
-        return projectRepository.findAll().stream()
+        
+        Activity activity = projectRepository.findActivity()
                 .flatMap(p -> p.getActivities().stream())
                 .flatMap(a -> a.getTimeRegistrations().stream())
                 .filter(r -> r.getDeveloper().equals(developer) && r.getDate().equals(date))
                 .mapToDouble(TimeRegistration::getHours)
                 .sum();
+ 
+                return projectRepository.findAll().stream()
+                .flatMap(p -> p.getActivities().stream())
+                .flatMap(a -> a.getTimeRegistrations().stream())
+                .filter(r -> r.getDeveloper().equals(developer) && r.getDate().equals(date))
+                .mapToDouble(TimeRegistration::getHours)
+                .sum();
+
+                
     }
 }
