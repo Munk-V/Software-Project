@@ -1,12 +1,10 @@
 package com.planner.ui;
+// DELT – se per-metode kommentarer nedenfor (fordeling pr. tab)
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Absence;
 import com.planner.domain.Project;
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.AbsenceRepository;
-import com.planner.repository.ProjectRepository;
 import com.planner.service.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,6 +24,7 @@ public class MainWindow {
 
     private final ProjectService projectService;
     private final ActivityService activityService;
+    private final AvailabilityService availabilityService;
     private final DeveloperService developerService;
     private final TimeRegistrationService timeRegistrationService;
     private final AbsenceService absenceService;
@@ -48,27 +47,17 @@ public class MainWindow {
     private final TableView<Activity> overviewTable = new TableView<>();
     private final TableView<Developer> devStatusTable = new TableView<>();
 
-    public MainWindow() {
-        DeveloperRepository developerRepository = new DeveloperRepository();
-        ProjectRepository projectRepository = new ProjectRepository();
-        AbsenceRepository absenceRepository = new AbsenceRepository();
-        projectService = new ProjectService(projectRepository, developerRepository);
-        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
-        developerService = new DeveloperService(developerRepository);
-        timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
-        absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
-
+    public MainWindow(AppContext context) {
+        this.projectService = context.projectService;
+        this.activityService = context.activityService;
+        this.availabilityService = context.availabilityService;
+        this.developerService = context.developerService;
+        this.timeRegistrationService = context.timeRegistrationService;
+        this.absenceService = context.absenceService;
         buildUI();
     }
 
     private void buildUI() {
-        Label title = new Label("Software Project Planner");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        HBox topBar = new HBox(title);
-        topBar.setPadding(new Insets(12, 16, 12, 16));
-        topBar.setStyle("-fx-background-color: #2c3e50;");
-        title.setStyle("-fx-text-fill: white;");
-        root.setTop(topBar);
 
         root.setLeft(buildProjectPanel());
         refreshDeveloperList();
@@ -81,19 +70,18 @@ public class MainWindow {
                 buildActivitiesTab(),
                 buildTimeRegistrationTab(),
                 buildReportTab(),
-                buildAvailableDevelopersTab(),
-                buildAbsenceTab()
+                buildAvailableDevelopersTab()
         );
         root.setCenter(tabPane);
     }
 
     // ── Left panel ───────────────────────────────────────────────────────────────
 
+    // Vedanta
     private VBox buildProjectPanel() {
         VBox panel = new VBox(8);
         panel.setPadding(new Insets(10));
         panel.setPrefWidth(200);
-        panel.setStyle("-fx-background-color: #ecf0f1;");
 
         Label header = new Label("Projects");
         header.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -103,28 +91,28 @@ public class MainWindow {
 
         TextField nameField = new TextField();
         nameField.setPromptText("Project name");
+        nameField.setPrefWidth(140);
         TextField startWeekField = new TextField();
-        startWeekField.setPromptText("Start week");
+        startWeekField.setPromptText("Week");
+        startWeekField.setPrefWidth(50);
         TextField startYearField = new TextField(String.valueOf(LocalDate.now().getYear()));
+        startYearField.setPrefWidth(55);
         TextField deadlineWeekField = new TextField();
-        deadlineWeekField.setPromptText("Deadline week");
+        deadlineWeekField.setPromptText("Week");
+        deadlineWeekField.setPrefWidth(50);
         TextField deadlineYearField = new TextField(String.valueOf(LocalDate.now().getYear()));
+        deadlineYearField.setPrefWidth(55);
 
-        GridPane createForm = new GridPane();
-        createForm.setHgap(4);
-        createForm.setVgap(4);
-        createForm.setMaxWidth(Double.MAX_VALUE);
-        createForm.addRow(0, new Label("Name:"), nameField);
-        createForm.addRow(1, new Label("Start w/y:"), startWeekField, startYearField);
-        createForm.addRow(2, new Label("Deadline:"), deadlineWeekField, deadlineYearField);
-        ColumnConstraints col0 = new ColumnConstraints(); col0.setMinWidth(50);
-        ColumnConstraints col1 = new ColumnConstraints(); col1.setHgrow(javafx.scene.layout.Priority.ALWAYS);
-        ColumnConstraints col2 = new ColumnConstraints(); col2.setHgrow(javafx.scene.layout.Priority.ALWAYS);
-        createForm.getColumnConstraints().addAll(col0, col1, col2);
+        VBox createForm = new VBox(5);
+        HBox nameRow = new HBox(6, new Label("Name:"), nameField);
+        nameRow.setAlignment(Pos.CENTER_LEFT);
+        HBox startRow = new HBox(4, new Label("Start:"), startWeekField, new Label("w /"), startYearField);
+        startRow.setAlignment(Pos.CENTER_LEFT);
+        HBox deadlineRow = new HBox(4, new Label("Deadline:"), deadlineWeekField, new Label("w /"), deadlineYearField);
+        deadlineRow.setAlignment(Pos.CENTER_LEFT);
+        createForm.getChildren().addAll(nameRow, startRow, deadlineRow);
 
         Button createBtn = new Button("+ Create Project");
-        createBtn.setMaxWidth(Double.MAX_VALUE);
-        createBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white;");
         createBtn.setOnAction(e -> {
             String name = nameField.getText().trim();
             if (name.isEmpty()) { showError("Project name cannot be empty."); return; }
@@ -159,12 +147,14 @@ public class MainWindow {
 
     // ── Overview tab ─────────────────────────────────────────────────────────────
 
+    // Mathias
     private Tab buildOverviewTab() {
         Tab tab = new Tab("Overview");
         VBox content = new VBox(10);
         content.setPadding(new Insets(12));
 
-        overviewProgressBar.setPrefWidth(400);
+        overviewProgressBar.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(overviewProgressBar, Priority.ALWAYS);
         overviewInfoLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
         TableColumn<Activity, String> nameCol = new TableColumn<>("Activity");
@@ -197,7 +187,9 @@ public class MainWindow {
         });
         overviewTable.getColumns().addAll(nameCol, budgetCol, regCol, pctCol, devsCol, statusCol);
         overviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        overviewTable.setMaxWidth(Double.MAX_VALUE);
         overviewTable.setPrefHeight(200);
+        VBox.setVgrow(overviewTable, Priority.ALWAYS);
 
         // Developer status table
         TableColumn<Developer, String> devCol = new TableColumn<>("Developer");
@@ -208,11 +200,16 @@ public class MainWindow {
         devStatusCol.setCellValueFactory(d -> new SimpleStringProperty("—")); // filled in refresh
         devStatusTable.getColumns().addAll(devCol, devActivitiesCol, devStatusCol);
         devStatusTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        devStatusTable.setMaxWidth(Double.MAX_VALUE);
         devStatusTable.setPrefHeight(150);
+        VBox.setVgrow(devStatusTable, Priority.ALWAYS);
 
         HBox barRow = new HBox(10, overviewProgressBar, overviewProgressLabel);
         barRow.setAlignment(Pos.CENTER_LEFT);
+        barRow.setMaxWidth(Double.MAX_VALUE);
 
+        content.setFillWidth(true);
+        content.setMaxWidth(Double.MAX_VALUE);
         content.getChildren().addAll(
                 overviewInfoLabel,
                 overviewLeaderLabel,
@@ -228,10 +225,13 @@ public class MainWindow {
                 new Label("Project developers:"),
                 devStatusTable
         );
-        tab.setContent(new ScrollPane(content));
+        ScrollPane sp = new ScrollPane(content);
+        sp.setFitToWidth(true);
+        tab.setContent(sp);
         return tab;
     }
 
+    // Mathias
     private void refreshOverview(String projectId) {
         Project project = projectService.getProject(projectId);
         double pct = projectService.getProjectProgress(projectId);
@@ -313,6 +313,7 @@ public class MainWindow {
 
     // ── Activities tab ────────────────────────────────────────────────────────────
 
+    // Viktor
     private Tab buildActivitiesTab() {
         Tab tab = new Tab("Activities");
         VBox content = new VBox(10);
@@ -339,31 +340,38 @@ public class MainWindow {
         });
         table.getColumns().addAll(nameCol, budgetCol, weeksCol, devsCol);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(table, Priority.ALWAYS);
 
         // Create activity form
-        GridPane form = new GridPane();
-        form.setHgap(8);
-        form.setVgap(6);
         TextField activityName = new TextField();
         activityName.setPromptText("Activity name");
+        activityName.setPrefWidth(160);
         TextField budget = new TextField();
         budget.setPromptText("Budget hours");
+        budget.setPrefWidth(80);
         TextField startWeek = new TextField();
-        startWeek.setPromptText("Start week");
+        startWeek.setPromptText("Week");
+        startWeek.setPrefWidth(50);
         TextField startYear = new TextField();
-        startYear.setPromptText("Start year");
+        startYear.setPromptText("Year");
+        startYear.setPrefWidth(55);
         TextField endWeek = new TextField();
-        endWeek.setPromptText("End week");
+        endWeek.setPromptText("Week");
+        endWeek.setPrefWidth(50);
         TextField endYear = new TextField();
-        endYear.setPromptText("End year");
+        endYear.setPromptText("Year");
+        endYear.setPrefWidth(55);
 
-        form.addRow(0, new Label("Activity name:"), activityName);
-        form.addRow(1, new Label("Budget (hours):"), budget);
-        form.addRow(2, new Label("Start week / year:"), startWeek, startYear);
-        form.addRow(3, new Label("End week / year:"), endWeek, endYear);
+        VBox form = new VBox(5);
+        form.getChildren().addAll(
+            new HBox(6, new Label("Activity name:"), activityName),
+            new HBox(6, new Label("Budget (h):   "), budget),
+            new HBox(4, new Label("Start:"), startWeek, new Label("w /"), startYear),
+            new HBox(4, new Label("End:  "), endWeek,   new Label("w /"), endYear)
+        );
 
         Button addActivity = new Button("Add Activity");
-        addActivity.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
         addActivity.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -392,19 +400,18 @@ public class MainWindow {
         devLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         ComboBox<String> devActivityCombo = new ComboBox<>(activityNames);
         devActivityCombo.setPromptText("Select activity...");
-        devActivityCombo.setMaxWidth(Double.MAX_VALUE);
+        devActivityCombo.setPrefWidth(160);
         ComboBox<String> devInitialsCombo = new ComboBox<>(developerInitialsList);
         devInitialsCombo.setPromptText("Select developer...");
-        devInitialsCombo.setMaxWidth(Double.MAX_VALUE);
+        devInitialsCombo.setPrefWidth(130);
 
-        GridPane devForm = new GridPane();
-        devForm.setHgap(8);
-        devForm.setVgap(6);
-        devForm.addRow(0, new Label("Activity:"), devActivityCombo);
-        devForm.addRow(1, new Label("Developer:"), devInitialsCombo);
+        VBox devForm = new VBox(5);
+        devForm.getChildren().addAll(
+            new HBox(6, new Label("Activity:"), devActivityCombo),
+            new HBox(6, new Label("Developer:"), devInitialsCombo)
+        );
 
         Button addDev = new Button("Add Developer to Activity");
-        addDev.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
         addDev.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -424,9 +431,9 @@ public class MainWindow {
 
         // Assign project leader
         TextField leaderField = new TextField();
-        leaderField.setPromptText("Developer initials");
-        Button assignLeader = new Button("Assign Project Leader");
-        assignLeader.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white;");
+        leaderField.setPromptText("Initials");
+        leaderField.setPrefWidth(90);
+        Button assignLeader = new Button("Assign Leader");
         assignLeader.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -443,66 +450,59 @@ public class MainWindow {
         HBox leaderRow = new HBox(8, new Label("Project leader:"), leaderField, assignLeader);
         leaderRow.setAlignment(Pos.CENTER_LEFT);
 
-        // Set deadline
-        TextField deadlineWeekField = new TextField();
-        deadlineWeekField.setPromptText("Week (e.g. 20)");
-        TextField deadlineYearField = new TextField(String.valueOf(LocalDate.now().getYear()));
-        Button setDeadlineBtn = new Button("Set Project Deadline");
-        setDeadlineBtn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;");
-        setDeadlineBtn.setOnAction(e -> {
-            String projectId = getSelectedProjectId();
-            if (projectId == null) { showError("Select a project first."); return; }
-            try {
-                int week = Integer.parseInt(deadlineWeekField.getText().trim());
-                int year = Integer.parseInt(deadlineYearField.getText().trim());
-                projectService.setDeadline(projectId, week, year);
-                refreshOverview(projectId);
-                deadlineWeekField.clear();
-                showInfo("Deadline set to week " + week + "/" + year);
-            } catch (Exception ex) {
-                showError(ex.getMessage());
-            }
-        });
-        HBox deadlineRow = new HBox(8, new Label("Deadline — Week:"), deadlineWeekField,
-                new Label("Year:"), deadlineYearField, setDeadlineBtn);
-        deadlineRow.setAlignment(Pos.CENTER_LEFT);
 
         projectListView.getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
             String id = getSelectedProjectId();
             if (id != null) refreshActivityTable(table, id);
         });
 
+        content.setFillWidth(true);
+        content.setMaxWidth(Double.MAX_VALUE);
         content.getChildren().addAll(
                 new Label("Activities for selected project:"),
                 table, new Separator(),
                 form, addActivity, new Separator(),
                 devLabel, devForm, addDev, new Separator(),
-                leaderRow, new Separator(),
-                deadlineRow
+                leaderRow
         );
-        tab.setContent(new ScrollPane(content));
+        ScrollPane actSp = new ScrollPane(content);
+        actSp.setFitToWidth(true);
+        tab.setContent(actSp);
         return tab;
     }
 
     // ── Time registration tab ─────────────────────────────────────────────────────
 
+    // Nat (UI-helper)
+    private Label formLabel(String text) {
+        Label l = new Label(text);
+        l.setMinWidth(90);
+        return l;
+    }
+
+    // Nat (tid-sektioner) + Nicolai (absence-sektion – markeret længere nede)
     private Tab buildTimeRegistrationTab() {
         Tab tab = new Tab("Register Time");
-        VBox content = new VBox(10);
-        content.setPadding(new Insets(12));
+        VBox content = new VBox(14);
+        content.setPadding(new Insets(16));
+
+        // ── Register time ──
+        Label regTitle = new Label("Register time on an activity:");
+        regTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
 
         ComboBox<String> initialsCombo = new ComboBox<>(developerInitialsList);
         initialsCombo.setPromptText("Select developer...");
-        initialsCombo.setMaxWidth(Double.MAX_VALUE);
+        initialsCombo.setPrefWidth(200);
         ComboBox<String> activityCombo = new ComboBox<>(activityNames);
         activityCombo.setPromptText("Select activity...");
-        activityCombo.setMaxWidth(Double.MAX_VALUE);
+        activityCombo.setPrefWidth(200);
         TextField hoursField = new TextField();
-        hoursField.setPromptText("Hours (e.g. 2.5)");
+        hoursField.setPromptText("e.g. 2.5");
+        hoursField.setPrefWidth(100);
         DatePicker datePicker = new DatePicker(LocalDate.now());
 
         Button registerBtn = new Button("Register Time");
-        registerBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white;");
+        registerBtn.setPrefWidth(180);
         registerBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -521,44 +521,49 @@ public class MainWindow {
             }
         });
 
-        GridPane form = new GridPane();
-        form.setHgap(10);
-        form.setVgap(8);
-        form.addRow(0, new Label("Developer:"), initialsCombo);
-        form.addRow(1, new Label("Activity:"), activityCombo);
-        form.addRow(2, new Label("Hours:"), hoursField);
-        form.addRow(3, new Label("Date:"), datePicker);
+        VBox form = new VBox(8);
+        form.getChildren().addAll(
+            new HBox(12, formLabel("Developer :"), initialsCombo),
+            new HBox(12, formLabel("Activity :"), activityCombo),
+            new HBox(12, formLabel("Hours :"), hoursField),
+            new HBox(12, formLabel("Date :"), datePicker)
+        );
 
         // ── See today's hours ──
         Label todayTitle = new Label("Today's registered hours:");
         todayTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         ComboBox<String> todayDevCombo = new ComboBox<>(developerInitialsList);
         todayDevCombo.setPromptText("Select developer...");
+        todayDevCombo.setPrefWidth(160);
         DatePicker todayPicker = new DatePicker(LocalDate.now());
         Label todayResultLabel = new Label();
+        todayResultLabel.setPadding(new Insets(2, 0, 0, 0));
         Button checkTodayBtn = new Button("Check Hours");
-        checkTodayBtn.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
+        checkTodayBtn.setPrefWidth(130);
         checkTodayBtn.setOnAction(e -> {
             String initials = todayDevCombo.getValue();
             if (initials == null) { showError("Select a developer."); return; }
             double total = timeRegistrationService.getTodayHours(initials, todayPicker.getValue());
             todayResultLabel.setText(initials + " has registered " + total + " hours on " + todayPicker.getValue());
         });
-        HBox todayRow = new HBox(10, todayDevCombo, todayPicker, checkTodayBtn);
-        HBox.setHgrow(todayDevCombo, Priority.ALWAYS);
+        HBox todayRow = new HBox(12, todayDevCombo, todayPicker, checkTodayBtn);
+        todayRow.setAlignment(Pos.CENTER_LEFT);
 
         // ── Edit time registration ──
         Label editTitle = new Label("Edit time registration:");
         editTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         ComboBox<String> editDevCombo = new ComboBox<>(developerInitialsList);
         editDevCombo.setPromptText("Select developer...");
+        editDevCombo.setPrefWidth(200);
         ComboBox<String> editActivityCombo = new ComboBox<>(activityNames);
         editActivityCombo.setPromptText("Select activity...");
+        editActivityCombo.setPrefWidth(200);
         DatePicker editDatePicker = new DatePicker(LocalDate.now());
         TextField editHoursField = new TextField();
-        editHoursField.setPromptText("New hours (e.g. 3.5)");
+        editHoursField.setPromptText("e.g. 3.5");
+        editHoursField.setPrefWidth(100);
         Button editBtn = new Button("Update Registration");
-        editBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white;");
+        editBtn.setPrefWidth(180);
         editBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -577,26 +582,78 @@ public class MainWindow {
             }
         });
 
-        GridPane editForm = new GridPane();
-        editForm.setHgap(10);
-        editForm.setVgap(8);
-        editForm.addRow(0, new Label("Developer:"), editDevCombo);
-        editForm.addRow(1, new Label("Activity:"), editActivityCombo);
-        editForm.addRow(2, new Label("Date:"), editDatePicker);
-        editForm.addRow(3, new Label("New hours:"), editHoursField);
+        VBox editForm = new VBox(8);
+        editForm.getChildren().addAll(
+            new HBox(12, formLabel("Developer :"), editDevCombo),
+            new HBox(12, formLabel("Activity :"), editActivityCombo),
+            new HBox(12, formLabel("Date :"), editDatePicker),
+            new HBox(12, formLabel("New hours :"), editHoursField)
+        );
 
+        // ── Absence section ── (Nicolai)
+        Label absenceTitle = new Label("Register absence:");
+        absenceTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        ComboBox<String> absInitialsCombo = new ComboBox<>(developerInitialsList);
+        absInitialsCombo.setPromptText("Select developer...");
+        absInitialsCombo.setPrefWidth(160);
+        ComboBox<String> typeBox = new ComboBox<>(
+                FXCollections.observableArrayList("VACATION", "SICK_LEAVE", "COURSE", "OTHER"));
+        typeBox.setValue("VACATION");
+        typeBox.setPrefWidth(160);
+        TextField absStartWeek = new TextField(); absStartWeek.setPromptText("Week"); absStartWeek.setPrefWidth(55);
+        TextField absStartYear = new TextField(String.valueOf(LocalDate.now().getYear())); absStartYear.setPrefWidth(60);
+        TextField absEndWeek = new TextField(); absEndWeek.setPromptText("Week"); absEndWeek.setPrefWidth(55);
+        TextField absEndYear = new TextField(String.valueOf(LocalDate.now().getYear())); absEndYear.setPrefWidth(60);
+
+        Button absRegisterBtn = new Button("Register Absence");
+        absRegisterBtn.setPrefWidth(180);
+        absRegisterBtn.setOnAction(e -> {
+            String initials = absInitialsCombo.getValue();
+            if (initials == null) { showError("Select a developer."); return; }
+            try {
+                absenceService.registerAbsence(
+                        initials,
+                        Absence.Type.valueOf(typeBox.getValue()),
+                        Integer.parseInt(absStartWeek.getText().trim()),
+                        Integer.parseInt(absStartYear.getText().trim()),
+                        Integer.parseInt(absEndWeek.getText().trim()),
+                        Integer.parseInt(absEndYear.getText().trim()));
+                showInfo("Absence registered for " + initials + ".");
+                absStartWeek.clear(); absEndWeek.clear();
+                String selectedId = getSelectedProjectId();
+                if (selectedId != null) refreshOverview(selectedId);
+            } catch (Exception ex) {
+                showError(ex.getMessage());
+            }
+        });
+
+        VBox absForm = new VBox(8);
+        absForm.getChildren().addAll(
+            new HBox(12, formLabel("Developer :"), absInitialsCombo),
+            new HBox(12, formLabel("Type :"), typeBox),
+            new HBox(8,  formLabel("Start :"), absStartWeek, new Label("w  /"), absStartYear),
+            new HBox(8,  formLabel("End :"), absEndWeek,     new Label("w  /"), absEndYear)
+        );
+
+        content.setFillWidth(true);
+        content.setMaxWidth(Double.MAX_VALUE);
         content.getChildren().addAll(
-                new Label("Register time on an activity:"), form, registerBtn,
+                regTitle, form, registerBtn,
                 new Separator(),
                 todayTitle, todayRow, todayResultLabel,
                 new Separator(),
-                editTitle, editForm, editBtn);
-        tab.setContent(new ScrollPane(content));
+                editTitle, editForm, editBtn,
+                new Separator(),
+                absenceTitle, absForm, absRegisterBtn);
+        ScrollPane timeSp = new ScrollPane(content);
+        timeSp.setFitToWidth(true);
+        tab.setContent(timeSp);
         return tab;
     }
 
     // ── Report tab ────────────────────────────────────────────────────────────────
 
+    // Vedanta
     private Tab buildReportTab() {
         Tab tab = new Tab("Report");
         VBox content = new VBox(10);
@@ -618,11 +675,12 @@ public class MainWindow {
         });
         table.getColumns().addAll(nameCol, budgetCol, registeredCol, statusCol);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(table, Priority.ALWAYS);
 
         Label totalLabel = new Label();
 
         Button generateBtn = new Button("Generate Report");
-        generateBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
         generateBtn.setOnAction(e -> {
             String projectId = getSelectedProjectId();
             if (projectId == null) { showError("Select a project first."); return; }
@@ -632,6 +690,8 @@ public class MainWindow {
                     project.getTotalBudgetedHours(), project.getTotalRegisteredHours()));
         });
 
+        content.setFillWidth(true);
+        content.setMaxWidth(Double.MAX_VALUE);
         content.getChildren().addAll(
                 new Label("Project report (select project then click generate):"),
                 generateBtn, table, totalLabel);
@@ -641,6 +701,7 @@ public class MainWindow {
 
     // ── Available developers tab ──────────────────────────────────────────────────
 
+    // Mathias
     private Tab buildAvailableDevelopersTab() {
         Tab tab = new Tab("Available Developers");
         VBox content = new VBox(10);
@@ -652,12 +713,11 @@ public class MainWindow {
         ListView<String> resultList = new ListView<>();
 
         Button checkBtn = new Button("Check Availability");
-        checkBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white;");
         checkBtn.setOnAction(e -> {
             try {
                 int week = Integer.parseInt(weekField.getText().trim());
                 int year = Integer.parseInt(yearField.getText().trim());
-                List<Developer> available = activityService.getAvailableDevelopers(week, year);
+                List<Developer> available = availabilityService.getAvailableDevelopers(week, year);
                 ObservableList<String> items = FXCollections.observableArrayList();
                 if (available.isEmpty()) {
                     items.add("No available developers in week " + week + "/" + year);
@@ -673,68 +733,19 @@ public class MainWindow {
         HBox row = new HBox(8, new Label("Week:"), weekField, new Label("Year:"), yearField, checkBtn);
         row.setAlignment(Pos.CENTER_LEFT);
 
+        resultList.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(resultList, Priority.ALWAYS);
+        content.setFillWidth(true);
+        content.setMaxWidth(Double.MAX_VALUE);
         content.getChildren().addAll(new Label("Find available developers for a given week:"), row, resultList);
         tab.setContent(content);
         return tab;
     }
 
-    // ── Absence tab ───────────────────────────────────────────────────────────────
-
-    private Tab buildAbsenceTab() {
-        Tab tab = new Tab("Absences");
-        VBox content = new VBox(10);
-        content.setPadding(new Insets(12));
-
-        TextField initialsField = new TextField();
-        initialsField.setPromptText("Developer initials");
-        ComboBox<String> typeBox = new ComboBox<>(
-                FXCollections.observableArrayList("VACATION", "SICK_LEAVE", "COURSE", "OTHER"));
-        typeBox.setValue("VACATION");
-        TextField startWeek = new TextField();
-        startWeek.setPromptText("Start week");
-        TextField startYear = new TextField(String.valueOf(LocalDate.now().getYear()));
-        TextField endWeek = new TextField();
-        endWeek.setPromptText("End week");
-        TextField endYear = new TextField(String.valueOf(LocalDate.now().getYear()));
-
-        Button registerBtn = new Button("Register Absence");
-        registerBtn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white;");
-        registerBtn.setOnAction(e -> {
-            try {
-                String initials = initialsField.getText().trim();
-                absenceService.registerAbsence(
-                        initials,
-                        Absence.Type.valueOf(typeBox.getValue()),
-                        Integer.parseInt(startWeek.getText().trim()),
-                        Integer.parseInt(startYear.getText().trim()),
-                        Integer.parseInt(endWeek.getText().trim()),
-                        Integer.parseInt(endYear.getText().trim()));
-                showInfo("Absence registered for " + initials + ".");
-                initialsField.clear(); startWeek.clear(); endWeek.clear();
-                String selectedId = projectListView.getSelectionModel().getSelectedItem();
-                if (selectedId != null) refreshOverview(selectedId);
-            } catch (Exception ex) {
-                showError(ex.getMessage());
-            }
-        });
-
-        GridPane form = new GridPane();
-        form.setHgap(10);
-        form.setVgap(8);
-        form.addRow(0, new Label("Initials:"), initialsField);
-        form.addRow(1, new Label("Type:"), typeBox);
-        form.addRow(2, new Label("Start week / year:"), startWeek, startYear);
-        form.addRow(3, new Label("End week / year:"), endWeek, endYear);
-
-        content.getChildren().addAll(
-                new Label("Register absence (vacation, sick leave, course):"),
-                form, registerBtn);
-        tab.setContent(content);
-        return tab;
-    }
 
     // ── My Projects tab (project leader view) ────────────────────────────────────
 
+    // Vedanta
     private Tab buildMyProjectsTab() {
         Tab tab = new Tab("My Projects");
         SplitPane split = new SplitPane();
@@ -748,7 +759,7 @@ public class MainWindow {
         whoLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         ComboBox<String> leaderCombo = new ComboBox<>(developerInitialsList);
         leaderCombo.setPromptText("Select your initials...");
-        leaderCombo.setMaxWidth(Double.MAX_VALUE);
+        leaderCombo.setPrefWidth(160);
 
         Label myProjectsLabel = new Label("Your projects as leader:");
         ListView<String> myProjectsList = new ListView<>();
@@ -820,7 +831,6 @@ public class MainWindow {
         actForm.addRow(3, new Label("End week/year:"), actEndWeek, actEndYear);
 
         Button createActBtn = new Button("Create Activity");
-        createActBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
 
         // Assign developer form
         Label assignLabel = new Label("Assign developer to activity:");
@@ -828,12 +838,11 @@ public class MainWindow {
         ObservableList<String> myActNames = FXCollections.observableArrayList();
         ComboBox<String> assignActCombo = new ComboBox<>(myActNames);
         assignActCombo.setPromptText("Select activity...");
-        assignActCombo.setMaxWidth(Double.MAX_VALUE);
+        assignActCombo.setPrefWidth(160);
         ComboBox<String> assignDevCombo = new ComboBox<>(developerInitialsList);
         assignDevCombo.setPromptText("Select developer...");
-        assignDevCombo.setMaxWidth(Double.MAX_VALUE);
+        assignDevCombo.setPrefWidth(130);
         Button assignBtn = new Button("Assign Developer");
-        assignBtn.setStyle("-fx-background-color: #8e44ad; -fx-text-fill: white;");
 
         // When a project is selected in the left list
         myProjectsList.getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
@@ -892,10 +901,11 @@ public class MainWindow {
             } catch (Exception ex) { showError(ex.getMessage()); }
         });
 
-        GridPane assignForm = new GridPane();
-        assignForm.setHgap(8); assignForm.setVgap(6);
-        assignForm.addRow(0, new Label("Activity:"), assignActCombo);
-        assignForm.addRow(1, new Label("Developer:"), assignDevCombo);
+        VBox assignForm = new VBox(5);
+        assignForm.getChildren().addAll(
+            new HBox(8, new Label("Activity:  "), assignActCombo),
+            new HBox(8, new Label("Developer:"), assignDevCombo)
+        );
 
         // Project team overview
         Label teamLabel = new Label("Project team (all assigned developers):");
@@ -965,6 +975,7 @@ public class MainWindow {
 
     // ── Helpers ───────────────────────────────────────────────────────────────────
 
+    // Viktor
     private void refreshActivityTable(TableView<Activity> table, String projectId) {
         Project p = projectService.getProject(projectId);
         table.setItems(FXCollections.observableArrayList(p.getActivities()));
@@ -972,6 +983,7 @@ public class MainWindow {
         refreshActivityNames(projectId);
     }
 
+    // Viktor
     private void refreshActivityNames(String projectId) {
         Project p = projectService.getProject(projectId);
         activityNames.setAll(p.getActivities().stream()
@@ -979,30 +991,35 @@ public class MainWindow {
                 .collect(java.util.stream.Collectors.toList()));
     }
 
+    // Mathias
     private void refreshDeveloperList() {
         developerInitialsList.setAll(developerService.getAllDevelopers().stream()
                 .map(Developer::getInitials)
                 .collect(java.util.stream.Collectors.toList()));
     }
 
+    // Nat (UI-helper)
     private String getSelectedProjectId() {
         String selected = projectListView.getSelectionModel().getSelectedItem();
         if (selected == null) return null;
         return selected.substring(1, selected.indexOf("]"));
     }
 
+    // Nat (UI-helper)
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.setHeaderText(null);
         alert.showAndWait();
     }
 
+    // Nat (UI-helper)
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.setHeaderText(null);
         alert.showAndWait();
     }
 
+    // Nat (UI-helper)
     public BorderPane getRoot() {
         return root;
     }

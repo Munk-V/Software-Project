@@ -1,4 +1,5 @@
 package com.planner.repository;
+// Mathias
 
 import com.planner.domain.Developer;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DeveloperRepository {
+public class DeveloperRepository implements IDeveloperRepository {
 
     private final List<Developer> developers = new ArrayList<>();
 
@@ -38,10 +39,17 @@ public class DeveloperRepository {
     }
 
     public Optional<Developer> findByInitials(String initials) {
-        return developers.stream()
-                .filter(d -> d.getInitials().equalsIgnoreCase(initials))
-                .findFirst();
+        // For loop through the developers
+    for (Developer dev : developers) {
+        if (dev.getInitials().equalsIgnoreCase(initials)) {
+            // Return the dev
+            return Optional.of(dev);
+        }
     }
+    // safety if initials does not exist
+    return Optional.empty();
+    }
+
 
     public List<Developer> findAll() {
         return new ArrayList<>(developers);

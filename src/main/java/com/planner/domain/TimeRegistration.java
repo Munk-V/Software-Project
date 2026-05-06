@@ -1,5 +1,6 @@
 package com.planner.domain;
-//Nat
+// Nat
+
 import java.time.LocalDate;
 
 public class TimeRegistration {

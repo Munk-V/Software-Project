@@ -1,18 +1,19 @@
 package com.planner.service;
+// Vedanta
 
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.ProjectRepository;
+import com.planner.repository.IDeveloperRepository;
+import com.planner.repository.IProjectRepository;
 
 import java.util.List;
 
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
-    private final DeveloperRepository developerRepository;
+    private final IProjectRepository projectRepository;
+    private final IDeveloperRepository developerRepository;
 
-    public ProjectService(ProjectRepository projectRepository, DeveloperRepository developerRepository) {
+    public ProjectService(IProjectRepository projectRepository, IDeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
         this.developerRepository = developerRepository;
     }
@@ -21,9 +22,19 @@ public class ProjectService {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
+        // Pre-conditions (hold after defensive validation above)
+        assert name != null : "name must not be null";
+        assert !name.isBlank() : "name must not be blank";
+
         String id = projectRepository.generateProjectId();
         Project project = new Project(id, name);
         projectRepository.add(project);
+
+        // Post-conditions
+        assert project != null : "created project must not be null";
+        assert project.getName().equals(name) : "project name must match input";
+        assert projectRepository.findById(project.getId()).isPresent() : "project must be stored in repository";
+
         return project;
     }
 
