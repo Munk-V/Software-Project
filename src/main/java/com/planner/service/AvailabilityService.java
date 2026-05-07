@@ -1,14 +1,16 @@
 package com.planner.service;
-// Mathias
+// Nat
 
+import com.planner.domain.Absence;
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
+import com.planner.domain.Project;
 import com.planner.repository.IAbsenceRepository;
 import com.planner.repository.IDeveloperRepository;
 import com.planner.repository.IProjectRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AvailabilityService {
 
@@ -26,21 +28,36 @@ public class AvailabilityService {
 
     public List<Developer> getAvailableDevelopers(int week, int year) {
         List<Developer> allDevelopers = developerRepository.findAll();
+        List<Developer> busyDevelopers = new ArrayList<>();
+        List<Developer> freeDevelopers = new ArrayList<>();
 
-        List<Developer> busyOnProjects = projectRepository.findAll().stream()
-                .flatMap(p -> p.getActivities().stream())
-                .filter(a -> isActiveInWeek(a, week, year))
-                .flatMap(a -> a.getAssignedDevelopers().stream())
-                .collect(Collectors.toList());
+        List<Project> projects = projectRepository.findAll();
+        for (Project project : projects) {
+            List<Activity> activities = project.getActivities();
+            for (Activity activity : activities) {
+                if (isActiveInWeek(activity, week, year)){
+                    List<Developer> developers = activity.getAssignedDevelopers();
+                    for (Developer developer : developers) {
+                        busyDevelopers.add(developer);
+                    }
+                }
+            }
+        }
 
-        List<Developer> busyOnAbsences = absenceRepository.findAll().stream()
-                .filter(fa -> fa.isActiveInWeek(week, year))
-                .map(fa -> fa.getDeveloper())
-                .collect(Collectors.toList());
+        List<Absence> Absences = absenceRepository.findAll();
+        for (Absence absence : Absences) {
+            if (absence.isActiveInWeek(week, year)){
+                busyDevelopers.add(absence.getDeveloper());
+            }
+        }
 
-        return allDevelopers.stream()
-                .filter(d -> !busyOnProjects.contains(d) && !busyOnAbsences.contains(d))
-                .collect(Collectors.toList());
+        for (Developer developer : allDevelopers) {
+            if (!busyDevelopers.contains(developer)){
+                freeDevelopers.add(developer);
+            }
+        }
+        return freeDevelopers;
+                
     }
 
     private boolean isActiveInWeek(Activity activity, int week, int year) {
