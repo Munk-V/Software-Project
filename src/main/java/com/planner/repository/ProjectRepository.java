@@ -14,7 +14,24 @@ public class ProjectRepository {
 
     public String generateProjectId() {
         int year = Year.now().getValue() % 100;
-        String id = String.format("%02d%03d", year, projectCounter);
+
+        String yearPart;
+        if (year < 10) {
+            yearPart = "0" + year;
+        } else {
+            yearPart = "" + year;
+        }
+
+        String counterPart;
+        if (projectCounter < 10) {
+            counterPart = "00" + projectCounter;
+        } else if (projectCounter < 100) {
+            counterPart = "0" + projectCounter;
+        } else {
+            counterPart = "" + projectCounter;
+        }
+
+        String id = yearPart + counterPart;
         projectCounter++;
         return id;
     }
@@ -24,9 +41,12 @@ public class ProjectRepository {
     }
 
     public Optional<Project> findById(String id) {
-        return projects.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+        for (Project p : projects) {
+            if (p.getId().equals(id)) {
+                return Optional.of(p);
+            }
+        }
+        return Optional.empty();
     }
 
     public List<Project> findAll() { // return a copy
