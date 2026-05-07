@@ -9,6 +9,7 @@ import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.AbsenceService;
 import com.planner.service.ActivityService;
+import com.planner.service.AvailabilityService;
 import com.planner.service.DeveloperService;
 import com.planner.service.ProjectService;
 import com.planner.service.TimeRegistrationService;
@@ -48,6 +49,7 @@ public class MainWindow {
     private final DeveloperService developerService;
     private final TimeRegistrationService timeRegistrationService;
     private final AbsenceService absenceService;
+    private final AvailabilityService availabilityService;
 
     private final BorderPane root = new BorderPane();
 
@@ -68,10 +70,11 @@ public class MainWindow {
         AbsenceRepository absenceRepository = new AbsenceRepository();
 
         projectService = new ProjectService(projectRepository, developerRepository);
-        activityService = new ActivityService(projectRepository, developerRepository, absenceRepository);
+        activityService = new ActivityService(projectRepository, developerRepository);
         developerService = new DeveloperService(developerRepository);
         timeRegistrationService = new TimeRegistrationService(projectRepository, developerRepository);
         absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
+        availabilityService = new AvailabilityService(projectRepository, developerRepository, absenceRepository);
 
         buildUI();
         refreshDevelopers();
@@ -373,7 +376,7 @@ public class MainWindow {
         checkAvailable.setOnAction(e -> runAction(() -> {
             int week = parseInt(availableWeek);
             int year = parseInt(availableYear);
-            List<Developer> developers = activityService.getAvailableDevelopers(week, year);
+            List<Developer> developers = availabilityService.getAvailableDevelopers(week, year);
             ObservableList<String> items = FXCollections.observableArrayList();
             if (developers.isEmpty()) {
                 items.add("No available developers");
