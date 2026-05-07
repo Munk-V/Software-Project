@@ -23,7 +23,7 @@ public class TimeRegistrationService {
     }
 
     public TimeRegistration registerTime(String developerInitials, String projectId,String activityName, LocalDate date, double hours) {
-        if (hours <= 0 || hours % 0.5 != 0) {
+        if (hours <= 0 || hours % 0.5 != 0.0) {
             throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
         }
 
