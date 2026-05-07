@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.planner.domain.Activity;
 import com.planner.domain.Project;
 
-public class ProjectRepository {
+public class ProjectRepository implements IProjectRepository{
     //memory storage
     private final List<Project> projects = new ArrayList<>();
     private int projectCounter = 1; // ids generation incrementally
 
+    @Override
     public String generateProjectId() { // the projects need IDs, because we cant just rely on names
         int year = Year.now().getValue() % 100;
         String yearPart; // zero padding 
@@ -34,11 +36,11 @@ public class ProjectRepository {
         projectCounter++;
         return id;
     }
-
+    @Override
     public void add(Project project) {
         projects.add(project);
     }
-
+    @Override
     public Optional<Project> findById(String id) {
         for (Project p : projects) {
             if (p.getId().equals(id)) {
@@ -47,16 +49,21 @@ public class ProjectRepository {
         }
         return Optional.empty();
     }
-
+    @Override
     public List<Project> findAll() { // return a copy
         return new ArrayList<>(projects);
     }
-
-    // Needs to be redone
-    public Optional<Activity> findActivity(String projectId, String activityName) {
-        return findById(projectId)
-                .flatMap(p -> p.getActivities().stream()
-                        .filter(a -> a.getName().equals(activityName))
-                        .findFirst());
-    }
+    @Override
+	public Optional<Activity> findActivity(String projectId, String activityName) {
+		for (Project p : projects) {
+			if (p.getId().equals(projectId)) {
+				for (Activity a : p.getActivities()) {
+					if (a.getName().equals(activityName)) {
+						return Optional.of(a);
+					}
+				}
+			}
+		}
+		return Optional.empty();
+	}
 }
