@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
 
 public class MainWindow {
 
+    // logic layer
     private final ProjectService projectService;
     private final ActivityService activityService;
     private final DeveloperService developerService;
@@ -53,10 +54,13 @@ public class MainWindow {
 
     private final BorderPane root = new BorderPane();
 
+
+    // shared state, so all selections in the project stays synchronized
     private final ObservableList<String> projectItems = FXCollections.observableArrayList();
     private final ObservableList<String> developerItems = FXCollections.observableArrayList();
     private final ObservableList<String> activityItems = FXCollections.observableArrayList();
 
+    // ui components 
     private final ListView<String> projectList = new ListView<>(projectItems);
     private final TableView<Activity> activityTable = new TableView<>();
     private final TableView<Activity> reportTable = new TableView<>();
@@ -65,6 +69,8 @@ public class MainWindow {
     private final Label reportTotalLabel = new Label("");
 
     public MainWindow(AppContext context) {
+
+        // repos for data storage
         DeveloperRepository developerRepository = new DeveloperRepository();
         ProjectRepository projectRepository = new ProjectRepository();
         AbsenceRepository absenceRepository = new AbsenceRepository();
@@ -80,6 +86,8 @@ public class MainWindow {
         refreshDevelopers();
     }
 
+    // builds the main layout.
+    // project selector to the left and all features in the center
     private void buildUI() {
         root.setPadding(new Insets(10));
         root.setLeft(buildProjectPanel());
@@ -93,13 +101,14 @@ public class MainWindow {
                 buildAbsenceAndAvailabilityTab(),
                 buildReportTab()
         );
-
         root.setCenter(tabs);
     }
 
     private VBox buildProjectPanel() {
         projectList.setPrefWidth(200);
         projectList.setPrefHeight(400);
+
+        // Updates the selected project, when the user wants to cick on a project in the list to the left.
         projectList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> refreshSelectedProject());
 
         VBox box = new VBox(8,
@@ -110,6 +119,7 @@ public class MainWindow {
         return box;
     }
 
+    // all fields for project tab
     private Tab buildProjectTab() {
         TextField projectName = new TextField();
         TextField startWeek = new TextField();
@@ -126,6 +136,8 @@ public class MainWindow {
         leaderBox.setPromptText("Project leader");
 
         Button createProject = new Button("Create project");
+
+        // creates the project, THEN optionally adds all deadlines and activities
         createProject.setOnAction(e -> runAction(() -> {
             Project project = projectService.createProject(projectName.getText().trim());
 
@@ -155,7 +167,7 @@ public class MainWindow {
         addDeveloper.setOnAction(e -> runAction(() -> {
             developerService.registerDeveloper(newDeveloper.getText().trim());
             newDeveloper.clear();
-            refreshDevelopers();
+            refreshDevelopers();// keeps all oter boxes updated with the new developer
         }));
 
         VBox content = page(
@@ -180,6 +192,8 @@ public class MainWindow {
     }
 
     private Tab buildActivityTab() {
+
+        //all activity fields
         setupActivityTable(activityTable);
         activityTable.setPrefHeight(250);
         
@@ -210,13 +224,8 @@ public class MainWindow {
 
             if (!budget.getText().isBlank()) {
                 activityService.setActivityDetails(
-                        projectId,
-                        name,
-                        parseDouble(budget),
-                        optionalInt(startWeek),
-                        optionalInt(startYear),
-                        optionalInt(endWeek),
-                        optionalInt(endYear)
+                        projectId, name,parseDouble(budget), optionalInt(startWeek),
+                        optionalInt(startYear), optionalInt(endWeek), optionalInt(endYear)
                 );
             }
 
@@ -232,7 +241,7 @@ public class MainWindow {
         Button assignDeveloper = new Button("Assign developer");
         assignDeveloper.setOnAction(e -> runAction(() -> {
             activityService.addDeveloperToActivity(
-                    requireProjectId(),
+                    requireProjectId(), 
                     requireValue(activityBox.getValue(), "Choose an activity."),
                     requireValue(developerBox.getValue(), "Choose a developer.")
             );
@@ -258,6 +267,7 @@ public class MainWindow {
         return tab("Activities", content);
     }
 
+    // builds tabs for time registration
     private Tab buildTimeTab() {
         ComboBox<String> regDeveloper = new ComboBox<>(developerItems);
         ComboBox<String> regActivity = new ComboBox<>(activityItems);
@@ -284,10 +294,8 @@ public class MainWindow {
         Button registerTime = new Button("Register time");
         registerTime.setOnAction(e -> runAction(() -> {
             timeRegistrationService.registerTime(
-                    requireValue(regDeveloper.getValue(), "Choose a developer."),
-                    requireProjectId(),
-                    requireValue(regActivity.getValue(), "Choose an activity."),
-                    regDate.getValue(),
+                    requireValue(regDeveloper.getValue(), "Choose a developer."), requireProjectId(),
+                    requireValue(regActivity.getValue(), "Choose an activity."), regDate.getValue(),
                     parseDouble(regHours)
             );
             regHours.clear();
@@ -297,10 +305,8 @@ public class MainWindow {
         Button editTime = new Button("Edit time");
         editTime.setOnAction(e -> runAction(() -> {
             timeRegistrationService.editTimeRegistration(
-                    requireValue(editDeveloper.getValue(), "Choose a developer."),
-                    requireProjectId(),
-                    requireValue(editActivity.getValue(), "Choose an activity."),
-                    editDate.getValue(),
+                    requireValue(editDeveloper.getValue(), "Choose a developer."), requireProjectId(),
+                    requireValue(editActivity.getValue(), "Choose an activity."), editDate.getValue(),
                     parseDouble(editHours)
             );
             editHours.clear();
@@ -406,11 +412,20 @@ public class MainWindow {
         reportTable.setPrefHeight(300);
 
         Button generateReport = new Button("Generate report for selected project");
+        // generate the report
         generateReport.setOnAction(e -> runAction(() -> {
             Project project = projectService.getProject(requireProjectId());
-            List<Activity> activitiesWithHours = project.getActivities().stream()
-                    .filter(a -> a.getTotalRegisteredHours() > 0)
-                    .collect(Collectors.toList());
+
+            // only include activities with registered hours 
+            List<Activity> activitiesWithHours = new java.util.ArrayList<>();
+
+            for (Activity activity : project.getActivities()) {
+                if (activity.getTotalRegisteredHours() > 0) {
+                    activitiesWithHours.add(activity);
+                }
+            }
+
+            // updates and summarizes table
             reportTable.setItems(FXCollections.observableArrayList(activitiesWithHours));
             reportTotalLabel.setText("Budgeted: " + project.getTotalBudgetedHours()
                     + " h, registered: " + project.getTotalRegisteredHours() + " h");
