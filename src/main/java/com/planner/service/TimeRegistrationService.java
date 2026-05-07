@@ -22,8 +22,7 @@ public class TimeRegistrationService {
         this.developerRepository = developerRepository;
     }
 
-    public TimeRegistration registerTime(String developerInitials, String projectId,
-                                         String activityName, LocalDate date, double hours) {
+    public TimeRegistration registerTime(String developerInitials, String projectId,String activityName, LocalDate date, double hours) {
         if (hours <= 0 || hours % 0.5 != 0) {
             throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
         }
@@ -55,8 +54,7 @@ public class TimeRegistrationService {
         return registration;
     }
 
-    public void editTimeRegistration(String developerInitials, String projectId,
-                                     String activityName, LocalDate date, double newHours) {
+    public void editTimeRegistration(String developerInitials, String projectId,String activityName, LocalDate date, double newHours) {
         if (newHours <= 0 || newHours % 0.5 != 0) {
             throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
         }
