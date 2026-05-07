@@ -4,9 +4,9 @@ package com.planner.service;
 import java.util.List;
 
 import com.planner.domain.Developer;
-import com.planner.domain.Project;  
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.ProjectRepository;
+import com.planner.domain.Project;
+import com.planner.repository.IDeveloperRepository;
+import com.planner.repository.IProjectRepository;
 
 public class ProjectService { //LOgic 
 
