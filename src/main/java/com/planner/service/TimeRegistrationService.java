@@ -1,20 +1,19 @@
 package com.planner.service;
 // Nat
-
+//The service layer code for rgistering time, 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
 import com.planner.domain.TimeRegistration;
 import com.planner.repository.IDeveloperRepository;
 import com.planner.repository.IProjectRepository;
-
 import java.time.LocalDate;
 import java.util.List;
 
 
 
 public class TimeRegistrationService {
-
+// Creates an instance of the repocitory level classes, for ProjectRepocitory and DeveloperRepocitory.
     private final IProjectRepository projectRepository;
     private final IDeveloperRepository developerRepository;
 
@@ -65,12 +64,17 @@ public class TimeRegistrationService {
         Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
 
-        TimeRegistration registration = activity.getTimeRegistrations().stream()
-                .filter(r -> r.getDeveloper().equals(developer) && r.getDate().equals(date))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No time registration found for that date"));
+        List<TimeRegistration> registration = activity.getTimeRegistrations();
+        for (TimeRegistration timeRegistration : registration) {
+                if (timeRegistration.getDeveloper().equals(developer) && timeRegistration.getDate().equals(date)){
+                        timeRegistration.setHours(newHours);
+                }
+                 else{
+                    throw new IllegalArgumentException("No time registration found for that date");
+                 }
+        }
+                
 
-        registration.setHours(newHours);
     }
 
     public double getTodayHours(String developerInitials, LocalDate date) {
