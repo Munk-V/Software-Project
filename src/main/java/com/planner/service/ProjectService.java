@@ -64,17 +64,24 @@ public class ProjectService { //LOgic
         project.setStart(week, year);
     }
 
-    public double getProjectProgress(String projectId) {
-        Project project = getProject(projectId);
-        double budgeted = project.getTotalBudgetedHours();
-        if (budgeted == 0) return 0;
-        return (project.getTotalRegisteredHours() / budgeted) * 100;
-    }
+	public double getProjectProgress(String projectId) {
+		Project project = getProject(projectId);
+		double budgeted = project.getTotalBudgetedHours();
+		if (budgeted == 0) return 0;
+		return (project.getTotalRegisteredHours() / budgeted) * 100;
+	}
 
-    public void assignProjectLeader(String projectId, String developerInitials) { //project leader assigned
-        Project project = getProject(projectId);
-        Developer developer = developerRepository.findByInitials(developerInitials)
-                .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-        project.setProjectLeader(developer);
-    }
+	public void assignProjectLeader(String projectId, String developerInitials) {
+		Project project = getProject(projectId);
+		Developer developer = null;
+		for (Developer d : developerRepository.findAll()) {
+			if (d.getInitials().equals(developerInitials)) {
+				developer = d;
+			}
+		}
+		if (developer == null) {
+			throw new IllegalArgumentException("Developer not found: " + developerInitials);
+		}
+		project.setProjectLeader(developer);
+	}
 }
