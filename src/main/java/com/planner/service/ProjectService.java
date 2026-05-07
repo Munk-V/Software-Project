@@ -34,13 +34,21 @@ public class ProjectService { //LOgic
 		String id = projectRepository.generateProjectId();
 		Project project = new Project(id, name);
 		projectRepository.add(project);
-		return project;
+		return project;       
 	}
 
-    public Project getProject(String id) { //gets the project
-        return projectRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));// if the project doesnt exist
-    }
+	public Project getProject(String id) {
+		Project found = null;
+		for (Project p : projectRepository.findAll()) {
+			if (p.getId().equals(id)) {
+				found = p;
+			}
+		}
+		if (found == null) {
+			throw new IllegalArgumentException("Project not found: " + id);
+		}
+		return found;
+	}
 
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
