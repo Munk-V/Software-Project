@@ -142,7 +142,7 @@ Feature: Project planning
   Scenario: Cannot set an invalid deadline week
     Given a project with name "WebShop" exists
     When a deadline is set to week 99 year 2026 for the project
-    Then an error is raised with message "Deadline week must be between 1 and 53"
+    Then an error is raised with message "Deadline week must be between 1 and 53 weeks"
 
   # ─────────────────────────────────────────
   # UC10: View Project Progress
