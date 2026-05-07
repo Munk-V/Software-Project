@@ -1,5 +1,6 @@
 package com.planner.domain;
-//Nat
+// Nat
+
 import java.time.LocalDate;
 
 public class TimeRegistration {
@@ -36,7 +37,7 @@ public class TimeRegistration {
         this.hours = hours;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDate date) { //Dont think this makes sense
         this.date = date;
     }
 }

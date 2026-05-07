@@ -51,4 +51,12 @@ public class ProjectRepository {
     public List<Project> findAll() { // return a copy
         return new ArrayList<>(projects);
     }
+
+    // Needs to be redone
+    public Optional<Activity> findActivity(String projectId, String activityName) {
+        return findById(projectId)
+                .flatMap(p -> p.getActivities().stream()
+                        .filter(a -> a.getName().equals(activityName))
+                        .findFirst());
+    }
 }

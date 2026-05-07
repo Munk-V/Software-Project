@@ -1,4 +1,5 @@
 package com.planner.domain;
+// Nicolai
 
 public class Absence {
 
@@ -13,9 +14,7 @@ public class Absence {
     private final int endWeek;
     private final int endYear;
 
-    public Absence(Developer developer, Type type,
-                         int startWeek, int startYear,
-                         int endWeek, int endYear) {
+    public Absence(Developer developer, Type type, int startWeek, int startYear, int endWeek, int endYear) {
         this.developer = developer;
         this.type = type;
         this.startWeek = startWeek;
@@ -51,6 +50,7 @@ public class Absence {
     public boolean isActiveInWeek(int week, int year) {
 
         // ex: 2026*100 = 202600 -> + week(23)= 202623. 
+        // solution got from AI. very clever though
         // for comparison purposes.
         int actStart = startYear * 100 + startWeek;
         int actEnd = endYear * 100 + endWeek;

@@ -1,4 +1,5 @@
 package com.planner.repository;
+// Mathias
 
 import com.planner.domain.Developer;
 
@@ -9,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DeveloperRepository {
+/// Nicolai: I have vommented out all things AI
+public class DeveloperRepository implements IDeveloperRepository {
 
     private final List<Developer> developers = new ArrayList<>();
 
+    // need to be redone as well
     public DeveloperRepository() {
         loadFromFile();
         // Ensure "huba" is always present as per requirements
@@ -21,6 +24,7 @@ public class DeveloperRepository {
         }
     }
 
+    // same her
     private void loadFromFile() {
         try (InputStream is = getClass().getResourceAsStream("/developers.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
@@ -37,11 +41,19 @@ public class DeveloperRepository {
         developers.add(developer);
     }
 
+    // Good here
     public Optional<Developer> findByInitials(String initials) {
-        return developers.stream()
-                .filter(d -> d.getInitials().equalsIgnoreCase(initials))
-                .findFirst();
+        // For loop through the developers
+    for (Developer dev : developers) {
+        if (dev.getInitials().equalsIgnoreCase(initials)) {
+            // Return the dev
+            return Optional.of(dev);
+        }
     }
+    // safety if initials does not exist
+    return Optional.empty();
+    }
+
 
     public List<Developer> findAll() {
         return new ArrayList<>(developers);

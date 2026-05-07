@@ -1,9 +1,10 @@
+// Viktor
 package com.planner.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// Activity belongs to a project and keeps track of budget, time period and developers
+// An activity belongs to a project and keeps track of budget, time period and developers
 public class Activity {
 
     private final String name;
@@ -12,9 +13,7 @@ public class Activity {
     private int startYear;
     private int endWeek;
     private int endYear;
-    // list of developers working on this activity
     private List<Developer> assignedDevelopers = new ArrayList<>();
-    // list of all time registrations made for this activity
     private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
     public Activity(String name) {

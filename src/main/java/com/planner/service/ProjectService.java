@@ -10,10 +10,10 @@ import com.planner.repository.ProjectRepository;
 
 public class ProjectService { //LOgic 
 
-    private final ProjectRepository projectRepository;
-    private final DeveloperRepository developerRepository;
+    private final IProjectRepository projectRepository;
+    private final IDeveloperRepository developerRepository;
 
-    public ProjectService(ProjectRepository projectRepository, DeveloperRepository developerRepository) {
+    public ProjectService(IProjectRepository projectRepository, IDeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
         this.developerRepository = developerRepository;
     }

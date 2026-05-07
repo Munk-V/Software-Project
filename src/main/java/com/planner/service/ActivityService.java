@@ -1,90 +1,111 @@
+// Viktor
 package com.planner.service;
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
-import com.planner.repository.DeveloperRepository;
-import com.planner.repository.AbsenceRepository;
-import com.planner.repository.ProjectRepository;
+import com.planner.repository.IDeveloperRepository;
+import com.planner.repository.IProjectRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+// Handles all business logic for activities in a project
 public class ActivityService {
 
-    private final ProjectRepository projectRepository;
-    private final DeveloperRepository developerRepository;
-    private final AbsenceRepository absenceRepository;
+    private final IProjectRepository projectRepository;
+    private final IDeveloperRepository developerRepository;
 
-    public ActivityService(ProjectRepository projectRepository, DeveloperRepository developerRepository,
-                           AbsenceRepository absenceRepository) {
+    public ActivityService(IProjectRepository projectRepository, IDeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
         this.developerRepository = developerRepository;
-        this.absenceRepository = absenceRepository;
     }
 
+    // Creates a new activity inside the given project
     public Activity createActivity(String projectId, String activityName) {
-        if (activityName == null || activityName.isBlank()) {
+        if (activityName == null || activityName.trim().isEmpty()) {
             throw new IllegalArgumentException("Activity name cannot be empty");
         }
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
+
+        Optional<Project> result = projectRepository.findById(projectId);
+        if (!result.isPresent()) {
+            throw new IllegalArgumentException("Project not found: " + projectId);
+        }
+        Project project = result.get();
+
         Activity activity = new Activity(activityName);
         project.addActivity(activity);
         return activity;
     }
 
+    // Sets budget and time period on an activity. Week 0 means not yet planned
     public void setActivityDetails(String projectId, String activityName,
                                    double budgetedHours, int startWeek, int startYear,
                                    int endWeek, int endYear) {
+        if (budgetedHours < 0) {
+            throw new IllegalArgumentException("Budgeted hours cannot be negative");
+        }
+        if (startWeek != 0 && (startWeek < 1 || startWeek > 53)) {
+            throw new IllegalArgumentException("Start week must be between 1 and 53");
+        }
+        if (endWeek != 0 && (endWeek < 1 || endWeek > 53)) {
+            throw new IllegalArgumentException("End week must be between 1 and 53");
+        }
+        // check that start is not after end. We multiply year by 100 and add week to compare two dates easily
+        if (startWeek != 0 && endWeek != 0) {
+            int start = startYear * 100 + startWeek;
+            int end = endYear * 100 + endWeek;
+            if (start > end) {
+                throw new IllegalArgumentException("Start week must be before or equal to end week");
+            }
+        }
+
+        // Assert needs to be redone
+        assert budgetedHours >= 0 : "budgetedHours must be non-negative";
+        assert startWeek == 0 || (startWeek >= 1 && startWeek <= 53) : "startWeek must be 0 or between 1 and 53";
+        assert endWeek == 0 || (endWeek >= 1 && endWeek <= 53) : "endWeek must be 0 or between 1 and 53";
+
         Activity activity = getActivity(projectId, activityName);
         activity.setBudgetedHours(budgetedHours);
         activity.setStartWeek(startWeek);
         activity.setStartYear(startYear);
         activity.setEndWeek(endWeek);
         activity.setEndYear(endYear);
+
+        // Also here 
+        assert activity.getBudgetedHours() == budgetedHours : "budgeted hours must match input";
+        assert activity.getStartWeek() == startWeek : "start week must match input";
+        assert activity.getEndWeek() == endWeek : "end week must match input";
     }
 
+    // Looks up the developer by initials and adds them to the activity
     public void addDeveloperToActivity(String projectId, String activityName, String developerInitials) {
         Activity activity = getActivity(projectId, activityName);
-        Developer developer = developerRepository.findByInitials(developerInitials)
-                .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
+
+        Optional<Developer> result = developerRepository.findByInitials(developerInitials);
+        if (!result.isPresent()) {
+            throw new IllegalArgumentException("Developer not found: " + developerInitials);
+        }
+        Developer developer = result.get();
+
         activity.addDeveloper(developer);
     }
 
-    public List<Developer> getAvailableDevelopers(int week, int year) {
-        List<Developer> allDevelopers = developerRepository.findAll();
-
-        List<Developer> busyOnProjects = projectRepository.findAll().stream()
-                .flatMap(p -> p.getActivities().stream())
-                .filter(a -> isActiveInWeek(a, week, year))
-                .flatMap(a -> a.getAssignedDevelopers().stream())
-                .collect(Collectors.toList());
-
-        List<Developer> busyOnFixedActivities = absenceRepository.findAll().stream()
-                .filter(fa -> fa.isActiveInWeek(week, year))
-                .map(fa -> fa.getDeveloper())
-                .collect(Collectors.toList());
-
-        return allDevelopers.stream()
-                .filter(d -> !busyOnProjects.contains(d) && !busyOnFixedActivities.contains(d))
-                .collect(Collectors.toList());
-    }
-
+    // Finds a specific activity in a project and throws an exception if it does not exist
     public Activity getActivity(String projectId, String activityName) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
-        return project.getActivities().stream()
-                .filter(a -> a.getName().equals(activityName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
+        Optional<Activity> result = projectRepository.findActivity(projectId, activityName);
+        if (!result.isPresent()) {
+            throw new IllegalArgumentException("Activity not found: " + activityName);
+        }
+        return result.get();
     }
 
-    private boolean isActiveInWeek(Activity activity, int week, int year) {
-        if (activity.getStartYear() == 0) return false;
-        int actStart = activity.getStartYear() * 100 + activity.getStartWeek();
-        int actEnd = activity.getEndYear() * 100 + activity.getEndWeek();
-        int target = year * 100 + week;
-        return target >= actStart && target <= actEnd;
+    // Returns all activities belonging to the given project
+    public List<Activity> getActivitiesForProject(String projectId) {
+        Optional<Project> result = projectRepository.findById(projectId);
+        if (!result.isPresent()) {
+            throw new IllegalArgumentException("Project not found: " + projectId);
+        }
+        return result.get().getActivities();
     }
 }

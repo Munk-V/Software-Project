@@ -1,5 +1,5 @@
 package com.planner.domain;
-//
+// Vedanta
 
 import java.util.ArrayList; // activities in the project
 import java.util.List;
@@ -61,7 +61,7 @@ public class Project { // accessed by other modules; hence pulic class
     }
     public void setDeadline(int week, int year) {
         if (week < 1 || week > 53) {
-            throw new IllegalArgumentException("Deadline week must be between 1 and 53 weeks");
+            throw new IllegalArgumentException("Deadline week must be between 1 and 53");
         }
         // disecting the input
         this.deadlineWeek = week;
@@ -75,11 +75,14 @@ public class Project { // accessed by other modules; hence pulic class
     public void addActivity(Activity activity) { // acitivities for the project
         activities.add(activity);
     }
+
+    // needs to be redone ( nicolai )
     public double getTotalBudgetedHours() { // get from the 'activity'
         return activities.stream()
                 .mapToDouble(Activity::getBudgetedHours)
                 .sum();
     }
+    // same here
     public double getTotalRegisteredHours() {  // get from the 'registeration'
         return activities.stream()
                 .mapToDouble(Activity::getTotalRegisteredHours)
