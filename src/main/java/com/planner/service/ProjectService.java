@@ -18,15 +18,24 @@ public class ProjectService { //LOgic
         this.developerRepository = developerRepository;
     }
 
-    public Project createProject(String name) { // creates and then stores the created project
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Project name cannot be empty");
-        }
-        String id = projectRepository.generateProjectId();
-        Project project = new Project(id, name);
-        projectRepository.add(project);
-        return project;
-    }
+	public Project createProject(String name) { // Only allows strings
+		if (name == null) {
+			throw new IllegalArgumentException("Project name cannot be empty");
+		}
+		boolean hasContent = false;
+		for (int i = 0; i < name.length(); i++) {
+			if (name.charAt(i) != ' ') {
+				hasContent = true;
+			}
+		}
+		if (!hasContent) {
+			throw new IllegalArgumentException("Project name cannot be empty");
+		}
+		String id = projectRepository.generateProjectId();
+		Project project = new Project(id, name);
+		projectRepository.add(project);
+		return project;
+	}
 
     public Project getProject(String id) { //gets the project
         return projectRepository.findById(id)
