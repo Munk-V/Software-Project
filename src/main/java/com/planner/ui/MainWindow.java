@@ -1,5 +1,6 @@
 package com.planner.ui;
 // DELT – se per-metode kommentarer nedenfor (fordeling pr. tab)
+// everything her eneed to be redone ( nicolai )
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;

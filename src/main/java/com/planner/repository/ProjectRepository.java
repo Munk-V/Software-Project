@@ -35,6 +35,7 @@ public class ProjectRepository implements IProjectRepository {
         return new ArrayList<>(projects);
     }
 
+    // Needs to be redone
     public Optional<Activity> findActivity(String projectId, String activityName) {
         return findById(projectId)
                 .flatMap(p -> p.getActivities().stream()

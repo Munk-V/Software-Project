@@ -10,6 +10,8 @@ import com.planner.repository.IProjectRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+// everything here needs to be redone
 public class AvailabilityService {
 
     private final IProjectRepository projectRepository;

@@ -30,6 +30,9 @@ public class TimeRegistrationService {
         }
 
         // Pre-conditions (hold after defensive validation above)
+
+        // assert needs to be redone
+
         assert developerInitials != null : "developerInitials must not be null";
         assert projectId != null : "projectId must not be null";
         assert activityName != null : "activityName must not be null";
@@ -65,6 +68,8 @@ public class TimeRegistrationService {
         Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
 
+
+        // all .something needs to be loops ( nicolai)
         TimeRegistration registration = activity.getTimeRegistrations().stream()
                 .filter(r -> r.getDeveloper().equals(developer) && r.getDate().equals(date))
                 .findFirst()
