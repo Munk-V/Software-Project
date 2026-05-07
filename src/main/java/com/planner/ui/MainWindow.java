@@ -64,7 +64,7 @@ public class MainWindow {
     private final Label projectInfoLabel = new Label("");
     private final Label reportTotalLabel = new Label("");
 
-    public MainWindow() {
+    public MainWindow(AppContext context) {
         DeveloperRepository developerRepository = new DeveloperRepository();
         ProjectRepository projectRepository = new ProjectRepository();
         AbsenceRepository absenceRepository = new AbsenceRepository();
