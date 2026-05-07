@@ -1,10 +1,10 @@
 package com.planner.domain;
 // Vedanta
 
-import java.util.ArrayList; // for the activities for the project
+import java.util.ArrayList; // activities in the project
 import java.util.List;
 
-public class Project { // Needs to be accessed by other modules; hence pulic class
+public class Project { // accessed by other modules; hence pulic class
 
 // Within Project; hence private
     private final String id;
@@ -21,14 +21,13 @@ public class Project { // Needs to be accessed by other modules; hence pulic cla
         this.name = name;
     }
     // Now Public so if it is "asked for" by other modules
-    // Get the ID and Name 
+    // ID and Name 
     public String getId() {
         return id;
     }
     public String getName() {
         return name;
     }
-    // Project leader
     public Developer getProjectLeader() {
         return projectLeader;
     }
@@ -40,7 +39,7 @@ public class Project { // Needs to be accessed by other modules; hence pulic cla
         return activities;
     }
     
-    // Time / deadline related stuff
+    // deadline of project related stuff
     public int getStartWeek() {
         return startWeek;
     }
@@ -51,7 +50,7 @@ public class Project { // Needs to be accessed by other modules; hence pulic cla
         this.startWeek = week;
         this.startYear = year;
     }
-    public boolean hasStart() { // True or Fale if the project has started 
+    public boolean hasStart() { // True or Fale for project been started 
         return startYear > 0;
     }
     public int getDeadlineWeek() {
@@ -77,13 +76,11 @@ public class Project { // Needs to be accessed by other modules; hence pulic cla
         activities.add(activity);
     }
 
-    // needs to be redone ( nicolai )
     public double getTotalBudgetedHours() { // get from the 'activity'
         return activities.stream()
                 .mapToDouble(Activity::getBudgetedHours)
                 .sum();
     }
-    // same here
     public double getTotalRegisteredHours() {  // get from the 'registeration'
         return activities.stream()
                 .mapToDouble(Activity::getTotalRegisteredHours)
