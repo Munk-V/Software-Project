@@ -12,17 +12,16 @@ public class ProjectRepository {
     private final List<Project> projects = new ArrayList<>();
     private int projectCounter = 1; // ids generation incrementally
 
-    public String generateProjectId() {
+    public String generateProjectId() { // the projects need IDs, because we cant just rely on names
         int year = Year.now().getValue() % 100;
-
-        String yearPart;
+        String yearPart; // zero padding 
         if (year < 10) {
             yearPart = "0" + year;
         } else {
             yearPart = "" + year;
         }
 
-        String counterPart;
+        String counterPart; // zero padding 
         if (projectCounter < 10) {
             counterPart = "00" + projectCounter;
         } else if (projectCounter < 100) {
