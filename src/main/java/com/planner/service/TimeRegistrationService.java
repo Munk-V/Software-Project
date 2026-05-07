@@ -3,11 +3,14 @@ package com.planner.service;
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
+import com.planner.domain.Project;
 import com.planner.domain.TimeRegistration;
 import com.planner.repository.IDeveloperRepository;
 import com.planner.repository.IProjectRepository;
 
 import java.time.LocalDate;
+import java.util.List;
+
 
 
 public class TimeRegistrationService {
@@ -74,20 +77,20 @@ public class TimeRegistrationService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
         
-        Activity activity = projectRepository.findActivity()
-                .flatMap(p -> p.getActivities().stream())
-                .flatMap(a -> a.getTimeRegistrations().stream())
-                .filter(r -> r.getDeveloper().equals(developer) && r.getDate().equals(date))
-                .mapToDouble(TimeRegistration::getHours)
-                .sum();
- 
-                return projectRepository.findAll().stream()
-                .flatMap(p -> p.getActivities().stream())
-                .flatMap(a -> a.getTimeRegistrations().stream())
-                .filter(r -> r.getDeveloper().equals(developer) && r.getDate().equals(date))
-                .mapToDouble(TimeRegistration::getHours)
-                .sum();
-
-                
+        Double sum = 0.0;
+        List<Project> project = projectRepository.findAll();
+        for (Project proj : project) {
+        List<Activity> activities = proj.getActivities();
+                for (Activity activity : activities) {
+                List<TimeRegistration> timeRegistrations = activity.getTimeRegistrations();
+                        for (TimeRegistration timeRegistration : timeRegistrations) {
+                                if (timeRegistration.getDeveloper().equals(developer) && timeRegistration.getDate().equals(date)){
+                                Double time = timeRegistration.getHours();
+                                sum = sum + time;
+                                }
+                        }
+                }
+        }
+        return sum;        
     }
 }
