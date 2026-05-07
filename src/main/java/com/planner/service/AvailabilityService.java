@@ -12,6 +12,8 @@ import com.planner.repository.IProjectRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// everything here needs to be redone
 public class AvailabilityService {
 
     private final IProjectRepository projectRepository;

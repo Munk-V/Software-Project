@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/// Nicolai: I have vommented out all things AI
 public class DeveloperRepository implements IDeveloperRepository {
 
     private final List<Developer> developers = new ArrayList<>();
 
+    // need to be redone as well
     public DeveloperRepository() {
         loadFromFile();
         // Ensure "huba" is always present as per requirements
@@ -22,6 +24,7 @@ public class DeveloperRepository implements IDeveloperRepository {
         }
     }
 
+    // same her
     private void loadFromFile() {
         try (InputStream is = getClass().getResourceAsStream("/developers.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
@@ -38,6 +41,7 @@ public class DeveloperRepository implements IDeveloperRepository {
         developers.add(developer);
     }
 
+    // Good here
     public Optional<Developer> findByInitials(String initials) {
         // For loop through the developers
     for (Developer dev : developers) {

@@ -29,6 +29,9 @@ public class TimeRegistrationService {
         }
 
         // Pre-conditions (hold after defensive validation above)
+
+        // assert needs to be redone
+
         assert developerInitials != null : "developerInitials must not be null";
         assert projectId != null : "projectId must not be null";
         assert activityName != null : "activityName must not be null";

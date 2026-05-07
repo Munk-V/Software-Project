@@ -17,17 +17,13 @@ public class AbsenceService {
     private final IDeveloperRepository developerRepository;
     private final IProjectRepository projectRepository;
 
-    public AbsenceService(IAbsenceRepository absenceRepository,
-                          IDeveloperRepository developerRepository,
-                          IProjectRepository projectRepository) {
+    public AbsenceService(IAbsenceRepository absenceRepository, IDeveloperRepository developerRepository, IProjectRepository projectRepository) {
         this.absenceRepository = absenceRepository;
         this.developerRepository = developerRepository;
         this.projectRepository = projectRepository;
     }
 
-    public Absence registerAbsence(String developerInitials, Absence.Type type,
-                                   int startWeek, int startYear,
-                                   int endWeek, int endYear) {
+    public Absence registerAbsence(String developerInitials, Absence.Type type, int startWeek, int startYear, int endWeek, int endYear) {
         if (type == null) {
             throw new IllegalArgumentException("Absence type cannot be null");
         }
@@ -41,10 +37,12 @@ public class AbsenceService {
         }
 
         // Pre-conditions (hold after defensive validation above)
-        assert developerInitials != null : "developerInitials must not be null";
-        assert type != null : "type must not be null";
-        assert startWeek >= 1 && startWeek <= 53 : "startWeek must be between 1 and 53";
-        assert endWeek >= 1 && endWeek <= 53 : "endWeek must be between 1 and 53";
+        // Det her skal fjernes, asert er for nice
+
+        //assert developerInitials != null : "developerInitials must not be null";
+        //assert type != null : "type must not be null";
+        //assert startWeek >= 1 && startWeek <= 53 : "startWeek must be between 1 and 53";
+        //assert endWeek >= 1 && endWeek <= 53 : "endWeek must be between 1 and 53";
 
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));

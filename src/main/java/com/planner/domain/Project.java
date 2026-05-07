@@ -76,11 +76,14 @@ public class Project { // Needs to be accessed by other modules; hence pulic cla
     public void addActivity(Activity activity) { // acitivities for the project
         activities.add(activity);
     }
+
+    // needs to be redone ( nicolai )
     public double getTotalBudgetedHours() { // get from the 'activity'
         return activities.stream()
                 .mapToDouble(Activity::getBudgetedHours)
                 .sum();
     }
+    // same here
     public double getTotalRegisteredHours() {  // get from the 'registeration'
         return activities.stream()
                 .mapToDouble(Activity::getTotalRegisteredHours)
