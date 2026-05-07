@@ -39,7 +39,7 @@ public class Project { // accessed by other modules; hence pulic class
         return activities;
     }
     
-    // deadline related stuff
+    // deadline of project related stuff
     public int getStartWeek() {
         return startWeek;
     }
