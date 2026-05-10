@@ -1,18 +1,14 @@
+// Vedanta s245010
 package com.planner.service;
-// Vedanta
+
+import java.util.List;
 
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
 import com.planner.repository.IDeveloperRepository;
 import com.planner.repository.IProjectRepository;
 
-import java.util.List;
-
-// Assert need to be looked at here as well
-
-
-
-public class ProjectService {
+public class ProjectService { //LOgic 
 
     private final IProjectRepository projectRepository;
     private final IDeveloperRepository developerRepository;
@@ -22,30 +18,37 @@ public class ProjectService {
         this.developerRepository = developerRepository;
     }
 
-    public Project createProject(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Project name cannot be empty");
-        }
-        // Pre-conditions (hold after defensive validation above)
-        assert name != null : "name must not be null";
-        assert !name.isBlank() : "name must not be blank";
+	public Project createProject(String name) { // Only allows strings
+		if (name == null) {
+			throw new IllegalArgumentException("Project name cannot be empty");
+		}
+		boolean hasContent = false;
+		for (int i = 0; i < name.length(); i++) {
+			if (name.charAt(i) != ' ') {
+				hasContent = true;
+			}
+		}
+		if (!hasContent) {
+			throw new IllegalArgumentException("Project name cannot be empty");
+		}
+		String id = projectRepository.generateProjectId();
+		Project project = new Project(id, name);
+		projectRepository.add(project);
+		return project;       
+	}
 
-        String id = projectRepository.generateProjectId();
-        Project project = new Project(id, name);
-        projectRepository.add(project);
-
-        // Post-conditions
-        assert project != null : "created project must not be null";
-        assert project.getName().equals(name) : "project name must match input";
-        assert projectRepository.findById(project.getId()).isPresent() : "project must be stored in repository";
-
-        return project;
-    }
-
-    public Project getProject(String id) {
-        return projectRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));
-    }
+	public Project getProject(String id) {
+		Project found = null;
+		for (Project p : projectRepository.findAll()) {
+			if (p.getId().equals(id)) {
+				found = p;
+			}
+		}
+		if (found == null) {
+			throw new IllegalArgumentException("Project not found: " + id);
+		}
+		return found;
+	}
 
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
@@ -61,17 +64,24 @@ public class ProjectService {
         project.setStart(week, year);
     }
 
-    public double getProjectProgress(String projectId) {
-        Project project = getProject(projectId);
-        double budgeted = project.getTotalBudgetedHours();
-        if (budgeted == 0) return 0;
-        return (project.getTotalRegisteredHours() / budgeted) * 100;
-    }
+	public double getProjectProgress(String projectId) {
+		Project project = getProject(projectId);
+		double budgeted = project.getTotalBudgetedHours();
+		if (budgeted == 0) return 0;
+		return (project.getTotalRegisteredHours() / budgeted) * 100;
+	}
 
-    public void assignProjectLeader(String projectId, String developerInitials) {
-        Project project = getProject(projectId);
-        Developer developer = developerRepository.findByInitials(developerInitials)
-                .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
-        project.setProjectLeader(developer);
-    }
+	public void assignProjectLeader(String projectId, String developerInitials) {
+		Project project = getProject(projectId);
+		Developer developer = null;
+		for (Developer d : developerRepository.findAll()) {
+			if (d.getInitials().equals(developerInitials)) {
+				developer = d;
+			}
+		}
+		if (developer == null) {
+			throw new IllegalArgumentException("Developer not found: " + developerInitials);
+		}
+		project.setProjectLeader(developer);
+	}
 }

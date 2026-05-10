@@ -1,45 +1,69 @@
 package com.planner.repository;
-// Vedanta
-
-import com.planner.domain.Activity;
-import com.planner.domain.Project;
 
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProjectRepository implements IProjectRepository {
+import com.planner.domain.Activity;
+import com.planner.domain.Project;
 
+public class ProjectRepository implements IProjectRepository{
+    //memory storage
     private final List<Project> projects = new ArrayList<>();
-    private int projectCounter = 1;
+    private int projectCounter = 1; // ids generation incrementally
 
-    public String generateProjectId() {
+    @Override
+    public String generateProjectId() { // the projects need IDs, because we cant just rely on names
         int year = Year.now().getValue() % 100;
-        String id = String.format("%02d%03d", year, projectCounter);
+        String yearPart; // zero padding 
+        if (year < 10) {
+            yearPart = "0" + year;
+        } else {
+            yearPart = "" + year;
+        }
+
+        String counterPart; // zero padding 
+        if (projectCounter < 10) {
+            counterPart = "00" + projectCounter;
+        } else if (projectCounter < 100) {
+            counterPart = "0" + projectCounter;
+        } else {
+            counterPart = "" + projectCounter;
+        }
+
+        String id = yearPart + counterPart;
         projectCounter++;
         return id;
     }
-
+    @Override
     public void add(Project project) {
         projects.add(project);
     }
-
+    @Override
     public Optional<Project> findById(String id) {
-        return projects.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+        for (Project p : projects) {
+            if (p.getId().equals(id)) {
+                return Optional.of(p);
+            }
+        }
+        return Optional.empty();
     }
-
-    public List<Project> findAll() {
+    @Override
+    public List<Project> findAll() { // return a copy
         return new ArrayList<>(projects);
     }
-
-    // Needs to be redone
-    public Optional<Activity> findActivity(String projectId, String activityName) {
-        return findById(projectId)
-                .flatMap(p -> p.getActivities().stream()
-                        .filter(a -> a.getName().equals(activityName))
-                        .findFirst());
-    }
+    @Override
+	public Optional<Activity> findActivity(String projectId, String activityName) {
+		for (Project p : projects) {
+			if (p.getId().equals(projectId)) {
+				for (Activity a : p.getActivities()) {
+					if (a.getName().equals(activityName)) {
+						return Optional.of(a);
+					}
+				}
+			}
+		}
+		return Optional.empty();
+	}
 }
