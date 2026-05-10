@@ -30,6 +30,8 @@ public class AbsenceService {
         if (startWeek < 1 || startWeek > 53 || endWeek < 1 || endWeek > 53) {
             throw new IllegalArgumentException("Week must be between 1 and 53");
         }
+        requireNotInPast(startWeek, startYear);
+        requireNotInPast(endWeek, endYear);
         int start = startYear * 100 + startWeek;
         int end = endYear * 100 + endWeek;
         if (start > end) {
@@ -89,5 +91,13 @@ public class AbsenceService {
         int activityStart = activity.getStartYear() * 100 + activity.getStartWeek();
         int activityEnd = activity.getEndYear() * 100 + activity.getEndWeek();
         return activityStart <= requestedEnd && activityEnd >= requestedStart;
+    }
+
+    private void requireNotInPast(int week, int year) {
+        int currentYear = java.time.LocalDate.now().getYear();
+        int currentWeek = java.time.LocalDate.now().get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
+        if (year * 100 + week < currentYear * 100 + currentWeek) {
+            throw new IllegalArgumentException("Date cannot be in the past");
+        }
     }
 }

@@ -59,6 +59,10 @@ public class ActivityService {
                 throw new IllegalArgumentException("Start week must be before or equal to end week");
             }
         }
+        if (startWeek != 0) requireNotInPast(startWeek, startYear);
+        if (endWeek != 0) requireNotInPast(endWeek, endYear);
+
+        // Pre-conditions: defensive validation above ensures these hold
         assert budgetedHours >= 0 : "budgetedHours must be non-negative";
         assert startWeek == 0 || (startWeek >= 1 && startWeek <= 53) : "startWeek must be 0 or between 1 and 53";
         assert endWeek == 0 || (endWeek >= 1 && endWeek <= 53) : "endWeek must be 0 or between 1 and 53";
@@ -70,6 +74,7 @@ public class ActivityService {
         activity.setEndWeek(endWeek);
         activity.setEndYear(endYear);
 
+        // Post-conditions: verify the activity was updated correctly
         assert activity.getBudgetedHours() == budgetedHours : "budgeted hours must match input";
         assert activity.getStartWeek() == startWeek : "start week must match input";
         assert activity.getEndWeek() == endWeek : "end week must match input";
@@ -104,5 +109,13 @@ public class ActivityService {
             throw new IllegalArgumentException("Project not found: " + projectId);
         }
         return result.get().getActivities();
+    }
+
+    private void requireNotInPast(int week, int year) {
+        int currentYear = java.time.LocalDate.now().getYear();
+        int currentWeek = java.time.LocalDate.now().get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
+        if (year * 100 + week < currentYear * 100 + currentWeek) {
+            throw new IllegalArgumentException("Date cannot be in the past");
+        }
     }
 }
