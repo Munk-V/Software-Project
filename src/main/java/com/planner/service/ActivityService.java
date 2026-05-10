@@ -59,11 +59,9 @@ public class ActivityService {
                 throw new IllegalArgumentException("Start week must be before or equal to end week");
             }
         }
-
-        // Assert needs to be redone
-        //assert budgetedHours >= 0 : "budgetedHours must be non-negative";
-        //assert startWeek == 0 || (startWeek >= 1 && startWeek <= 53) : "startWeek must be 0 or between 1 and 53";
-        //assert endWeek == 0 || (endWeek >= 1 && endWeek <= 53) : "endWeek must be 0 or between 1 and 53";
+        assert budgetedHours >= 0 : "budgetedHours must be non-negative";
+        assert startWeek == 0 || (startWeek >= 1 && startWeek <= 53) : "startWeek must be 0 or between 1 and 53";
+        assert endWeek == 0 || (endWeek >= 1 && endWeek <= 53) : "endWeek must be 0 or between 1 and 53";
 
         Activity activity = getActivity(projectId, activityName);
         activity.setBudgetedHours(budgetedHours);
@@ -72,10 +70,9 @@ public class ActivityService {
         activity.setEndWeek(endWeek);
         activity.setEndYear(endYear);
 
-        // Also here 
-        //assert activity.getBudgetedHours() == budgetedHours : "budgeted hours must match input";
-        //assert activity.getStartWeek() == startWeek : "start week must match input";
-        //assert activity.getEndWeek() == endWeek : "end week must match input";
+        assert activity.getBudgetedHours() == budgetedHours : "budgeted hours must match input";
+        assert activity.getStartWeek() == startWeek : "start week must match input";
+        assert activity.getEndWeek() == endWeek : "end week must match input";
     }
 
     // Looks up the developer by initials and adds them to the activity
