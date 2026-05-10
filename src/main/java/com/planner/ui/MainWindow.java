@@ -427,8 +427,10 @@ public class MainWindow {
 
             // updates and summarizes table
             reportTable.setItems(FXCollections.observableArrayList(activitiesWithHours));
+            double remaining = project.getTotalBudgetedHours() - project.getTotalRegisteredHours();
             reportTotalLabel.setText("Budgeted: " + project.getTotalBudgetedHours()
-                    + " h, registered: " + project.getTotalRegisteredHours() + " h");
+                    + " h, registered: " + project.getTotalRegisteredHours()
+                    + " h, remaining: " + remaining + " h");
         }));
 
         VBox content = page(
