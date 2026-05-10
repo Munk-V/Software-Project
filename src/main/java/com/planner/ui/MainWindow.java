@@ -4,6 +4,7 @@ import com.planner.domain.Absence;
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
+import com.planner.domain.TimeRegistration;
 import com.planner.repository.AbsenceRepository;
 import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
@@ -272,6 +273,7 @@ public class MainWindow {
         ComboBox<String> regDeveloper = new ComboBox<>(developerItems);
         ComboBox<String> regActivity = new ComboBox<>(activityItems);
         TextField regHours = new TextField();
+        TextField regComment = new TextField();
         DatePicker regDate = new DatePicker(LocalDate.now());
 
         ComboBox<String> editDeveloper = new ComboBox<>(developerItems);
@@ -289,6 +291,7 @@ public class MainWindow {
         editActivity.setPromptText("Activity");
         checkDeveloper.setPromptText("Developer");
         setPrompt(regHours, "Hours");
+        setPrompt(regComment, "Comment (optional)");
         setPrompt(editHours, "New hours");
 
         Button registerTime = new Button("Register time");
@@ -296,9 +299,10 @@ public class MainWindow {
             timeRegistrationService.registerTime(
                     requireValue(regDeveloper.getValue(), "Choose a developer."), requireProjectId(),
                     requireValue(regActivity.getValue(), "Choose an activity."), regDate.getValue(),
-                    parseDouble(regHours)
+                    parseDouble(regHours), regComment.getText().trim()
             );
             regHours.clear();
+            regComment.clear();
             refreshSelectedProject();
         }));
 
@@ -326,6 +330,7 @@ public class MainWindow {
                 row("Activity", regActivity),
                 row("Date", regDate),
                 row("Hours", regHours),
+                row("Comment", regComment),
                 registerTime,
                 new Label("Edit time registration"),
                 row("Developer", editDeveloper),
@@ -409,24 +414,42 @@ public class MainWindow {
 
     private Tab buildReportTab() {
         setupReportTable(reportTable);
-        reportTable.setPrefHeight(300);
+        reportTable.setPrefHeight(250);
+
+        Label detailLabel = new Label("");
+        ListView<String> detailList = new ListView<>();
+        detailList.setPrefHeight(150);
+
+        reportTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == null) {
+                detailLabel.setText("");
+                detailList.setItems(FXCollections.observableArrayList());
+                return;
+            }
+            detailLabel.setText("Registrations for: " + newVal.getName());
+            ObservableList<String> items = FXCollections.observableArrayList();
+            for (TimeRegistration tr : newVal.getTimeRegistrations()) {
+                String line = tr.getDeveloper().getInitials() + "  |  " + tr.getDate() + "  |  " + tr.getHours() + " h";
+                if (!tr.getComment().isBlank()) line += "  |  " + tr.getComment();
+                items.add(line);
+            }
+            detailList.setItems(items);
+        });
 
         Button generateReport = new Button("Generate report for selected project");
-        // generate the report
         generateReport.setOnAction(e -> runAction(() -> {
             Project project = projectService.getProject(requireProjectId());
 
-            // only include activities with registered hours 
             List<Activity> activitiesWithHours = new java.util.ArrayList<>();
-
             for (Activity activity : project.getActivities()) {
                 if (activity.getTotalRegisteredHours() > 0) {
                     activitiesWithHours.add(activity);
                 }
             }
 
-            // updates and summarizes table
             reportTable.setItems(FXCollections.observableArrayList(activitiesWithHours));
+            detailLabel.setText("");
+            detailList.setItems(FXCollections.observableArrayList());
             double remaining = project.getTotalBudgetedHours() - project.getTotalRegisteredHours();
             reportTotalLabel.setText("Budgeted: " + project.getTotalBudgetedHours()
                     + " h, registered: " + project.getTotalRegisteredHours()
@@ -434,13 +457,14 @@ public class MainWindow {
         }));
 
         VBox content = page(
-                
                 new Label("Report"),
                 generateReport,
                 reportTable,
-                reportTotalLabel
+                reportTotalLabel,
+                detailLabel,
+                detailList
         );
-        
+
         return tab("Report", content);
     }
 

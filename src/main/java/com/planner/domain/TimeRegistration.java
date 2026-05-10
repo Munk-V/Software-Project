@@ -9,12 +9,14 @@ public class TimeRegistration {
     private final Activity activity;
     private LocalDate date;
     private double hours;
+    private final String comment;
 
-    public TimeRegistration(Developer developer, Activity activity, LocalDate date, double hours) {
+    public TimeRegistration(Developer developer, Activity activity, LocalDate date, double hours, String comment) {
         this.developer = developer;
         this.activity = activity;
         this.date = date;
         this.hours = hours;
+        this.comment = comment == null ? "" : comment;
     }
 
     public Developer getDeveloper() {
@@ -39,5 +41,9 @@ public class TimeRegistration {
 
     public void setDate(LocalDate date) { //Dont think this makes sense
         this.date = date;
+    }
+
+    public String getComment() {
+        return comment;
     }
 }
