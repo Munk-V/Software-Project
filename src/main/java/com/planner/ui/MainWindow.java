@@ -131,6 +131,7 @@ public class MainWindow {
         box.setPadding(new Insets(20));
         box.setAlignment(Pos.CENTER_LEFT);
 
+        dialog.setOnCloseRequest(e -> Platform.exit());
         dialog.setScene(new Scene(box, 280, 160));
         dialog.showAndWait();
 
