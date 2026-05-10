@@ -100,6 +100,30 @@ public class ActivityServiceTest {
                 () -> activityService.setActivityDetails(projectId, "Design", 10.0, 50, 2025, 5, 2026));
     }
 
+    // TC: developer successfully added to activity
+    @Test
+    public void addDeveloperToActivity_validInput_developerAssignedToActivity() {
+        activityService.createActivity(projectId, "Design");
+        activityService.addDeveloperToActivity(projectId, "Design", "huba");
+        Activity a = activityService.getActivity(projectId, "Design");
+        assertEquals(1, a.getAssignedDevelopers().size());
+    }
+
+    // TC: unknown developer should throw
+    @Test
+    public void addDeveloperToActivity_unknownDeveloper_throwsIllegalArgumentException() {
+        activityService.createActivity(projectId, "Design");
+        assertThrows(IllegalArgumentException.class,
+                () -> activityService.addDeveloperToActivity(projectId, "Design", "ZZZ"));
+    }
+
+    // TC: unknown activity should throw
+    @Test
+    public void addDeveloperToActivity_unknownActivity_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> activityService.addDeveloperToActivity(projectId, "NoSuchActivity", "huba"));
+    }
+
     // Valid name. The activity should be findable in the project afterwards
     @Test
     public void createActivity_validInput_activityAddedToProject() {
