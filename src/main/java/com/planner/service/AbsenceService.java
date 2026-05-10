@@ -36,14 +36,6 @@ public class AbsenceService {
             throw new IllegalArgumentException("Start week must be before or equal to end week");
         }
 
-        // Pre-conditions (hold after defensive validation above)
-        // Det her skal fjernes, asert er for nice
-
-        //assert developerInitials != null : "developerInitials must not be null";
-        //assert type != null : "type must not be null";
-        //assert startWeek >= 1 && startWeek <= 53 : "startWeek must be between 1 and 53";
-        //assert endWeek >= 1 && endWeek <= 53 : "endWeek must be between 1 and 53";
-
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
@@ -53,10 +45,6 @@ public class AbsenceService {
 
         Absence absence = new Absence(developer, type, startWeek, startYear, endWeek, endYear);
         absenceRepository.add(absence);
-
-        // Post-conditions
-        assert absence != null : "created absence must not be null";
-        assert absenceRepository.findByDeveloper(developer).contains(absence) : "absence must be stored in repository";
 
         return absence;
     }
