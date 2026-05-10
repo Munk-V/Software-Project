@@ -55,13 +55,23 @@ public class ProjectService { //LOgic
     }
 
     public void setDeadline(String projectId, int week, int year) {
+        requireNotInPast(week, year);
         Project project = getProject(projectId);
         project.setDeadline(week, year);
     }
 
     public void setStart(String projectId, int week, int year) {
+        requireNotInPast(week, year);
         Project project = getProject(projectId);
         project.setStart(week, year);
+    }
+
+    private void requireNotInPast(int week, int year) {
+        int currentYear = java.time.LocalDate.now().getYear();
+        int currentWeek = java.time.LocalDate.now().get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
+        if (year * 100 + week < currentYear * 100 + currentWeek) {
+            throw new IllegalArgumentException("Date cannot be in the past");
+        }
     }
 
 	public double getProjectProgress(String projectId) {
