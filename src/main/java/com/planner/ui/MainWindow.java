@@ -4,6 +4,7 @@ import com.planner.domain.Absence;
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
 import com.planner.domain.Project;
+import com.planner.domain.TimeRegistration;
 import com.planner.repository.AbsenceRepository;
 import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
@@ -409,24 +410,40 @@ public class MainWindow {
 
     private Tab buildReportTab() {
         setupReportTable(reportTable);
-        reportTable.setPrefHeight(300);
+        reportTable.setPrefHeight(250);
+
+        Label detailLabel = new Label("");
+        ListView<String> detailList = new ListView<>();
+        detailList.setPrefHeight(150);
+
+        reportTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == null) {
+                detailLabel.setText("");
+                detailList.setItems(FXCollections.observableArrayList());
+                return;
+            }
+            detailLabel.setText("Registrations for: " + newVal.getName());
+            ObservableList<String> items = FXCollections.observableArrayList();
+            for (TimeRegistration tr : newVal.getTimeRegistrations()) {
+                items.add(tr.getDeveloper().getInitials() + "  |  " + tr.getDate() + "  |  " + tr.getHours() + " h");
+            }
+            detailList.setItems(items);
+        });
 
         Button generateReport = new Button("Generate report for selected project");
-        // generate the report
         generateReport.setOnAction(e -> runAction(() -> {
             Project project = projectService.getProject(requireProjectId());
 
-            // only include activities with registered hours 
             List<Activity> activitiesWithHours = new java.util.ArrayList<>();
-
             for (Activity activity : project.getActivities()) {
                 if (activity.getTotalRegisteredHours() > 0) {
                     activitiesWithHours.add(activity);
                 }
             }
 
-            // updates and summarizes table
             reportTable.setItems(FXCollections.observableArrayList(activitiesWithHours));
+            detailLabel.setText("");
+            detailList.setItems(FXCollections.observableArrayList());
             double remaining = project.getTotalBudgetedHours() - project.getTotalRegisteredHours();
             reportTotalLabel.setText("Budgeted: " + project.getTotalBudgetedHours()
                     + " h, registered: " + project.getTotalRegisteredHours()
@@ -434,13 +451,14 @@ public class MainWindow {
         }));
 
         VBox content = page(
-                
                 new Label("Report"),
                 generateReport,
                 reportTable,
-                reportTotalLabel
+                reportTotalLabel,
+                detailLabel,
+                detailList
         );
-        
+
         return tab("Report", content);
     }
 
