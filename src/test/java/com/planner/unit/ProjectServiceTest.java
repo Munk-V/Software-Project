@@ -7,6 +7,7 @@ import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,12 +24,14 @@ public class ProjectServiceTest {
     // ── createProject ────────────────────────────────────────────────────────────
 
     @Test
+    @DisplayName("Create a project")
     public void createProject_validName_returnsProjectWithCorrectName() {
         Project project = projectService.createProject("WebShop");
         assertEquals("WebShop", project.getName());
     }
 
     @Test
+    @DisplayName("Create a project and find it in the repository")
     public void createProject_validName_projectStoredInRepository() {
         Project project = projectService.createProject("WebShop");
         Project found = projectService.getProject(project.getId());
@@ -37,27 +40,32 @@ public class ProjectServiceTest {
     }
 
     @Test
+    @DisplayName("Create a project with a non-null id")
     public void createProject_validName_idIsNotNull() {
         Project project = projectService.createProject("WebShop");
         assertNotNull(project.getId());
     }
 
     @Test
+    @DisplayName("Cannot create a project with an empty name")
     public void createProject_emptyName_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> projectService.createProject(""));
     }
 
     @Test
+    @DisplayName("Cannot create a project with a blank name")
     public void createProject_blankName_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> projectService.createProject("   "));
     }
 
     @Test
+    @DisplayName("Cannot create a project with a null name")
     public void createProject_nullName_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> projectService.createProject(null));
     }
 
     @Test
+    @DisplayName("Multiple projects each get a unique id")
     public void createProject_multipleProjects_eachGetsUniqueId() {
         Project p1 = projectService.createProject("Alpha");
         Project p2 = projectService.createProject("Beta");
@@ -67,6 +75,7 @@ public class ProjectServiceTest {
     // ── setDeadline ──────────────────────────────────────────────────────────────
 
     @Test
+    @DisplayName("Set a deadline for a project")
     public void setDeadline_validWeek_deadlineIsSet() {
         Project project = projectService.createProject("WebShop");
         projectService.setDeadline(project.getId(), 20, 2026);
@@ -75,30 +84,35 @@ public class ProjectServiceTest {
     }
 
     @Test
+    @DisplayName("Cannot set an invalid deadline week of zero")
     public void setDeadline_week0_throwsIllegalArgumentException() {
         Project project = projectService.createProject("WebShop");
         assertThrows(IllegalArgumentException.class, () -> projectService.setDeadline(project.getId(), 0, 2026));
     }
 
     @Test
+    @DisplayName("Cannot set an invalid deadline week above 53")
     public void setDeadline_week54_throwsIllegalArgumentException() {
         Project project = projectService.createProject("WebShop");
         assertThrows(IllegalArgumentException.class, () -> projectService.setDeadline(project.getId(), 54, 2026));
     }
 
     @Test
+    @DisplayName("Week 1 is a valid deadline")
     public void setDeadline_week1_valid() {
         Project project = projectService.createProject("WebShop");
         assertDoesNotThrow(() -> projectService.setDeadline(project.getId(), 1, 2026));
     }
 
     @Test
+    @DisplayName("Week 53 is a valid deadline")
     public void setDeadline_week53_valid() {
         Project project = projectService.createProject("WebShop");
         assertDoesNotThrow(() -> projectService.setDeadline(project.getId(), 53, 2026));
     }
 
     @Test
+    @DisplayName("Cannot set deadline for a non-existent project")
     public void setDeadline_unknownProjectId_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> projectService.setDeadline("99999", 10, 2026));
     }
@@ -106,6 +120,7 @@ public class ProjectServiceTest {
     // ── getProjectProgress ───────────────────────────────────────────────────────
 
     @Test
+    @DisplayName("View project progress with no activities returns zero")
     public void getProjectProgress_noActivities_returnsZero() {
         Project project = projectService.createProject("Empty");
         assertEquals(0.0, projectService.getProjectProgress(project.getId()), 0.001);
