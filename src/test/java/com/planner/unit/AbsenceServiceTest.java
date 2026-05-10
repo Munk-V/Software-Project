@@ -94,4 +94,21 @@ public class AbsenceServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> absenceService.registerAbsence("huba", Absence.Type.VACATION, 11, 2026, 11, 2026));
     }
+    // TC9 sick leave is allowed even when developer is busy
+    @Test
+    public void registerAbsence_sickLeaveWhenDeveloperBusy_returnsAbsence() {
+        ProjectService projectService = new ProjectService(projectRepository, developerRepository);
+        ActivityService activityService = new ActivityService(projectRepository, developerRepository);
+
+        Project project = projectService.createProject("BusyProject");
+        activityService.createActivity(project.getId(), "BusyTask");
+        activityService.setActivityDetails(project.getId(), "BusyTask", 10.0, 10, 2026, 12, 2026);
+        activityService.addDeveloperToActivity(project.getId(), "BusyTask", "huba");
+
+        Absence absence = absenceService.registerAbsence(
+                "huba", Absence.Type.SICK_LEAVE, 11, 2026, 11, 2026);
+
+        assertNotNull(absence);
+        assertEquals(Absence.Type.SICK_LEAVE, absence.getType());
+    }
 }
