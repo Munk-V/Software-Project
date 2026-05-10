@@ -42,7 +42,7 @@ public class StepDefinitions {
     private double calculatedProgress;
     private double todayHours;
 
-    // DELT – bruges af alle scenarier
+    // Shared for all scenarios
     @Before
     public void setUp() {
         developerRepository = new DeveloperRepository();
@@ -400,7 +400,7 @@ public class StepDefinitions {
         }
     }
 
-    // DELT – generisk fejl-check brugt på tværs af scenarier
+    // Shared, generic error mesasge.
     @Then("an error is raised with message {string}")
     public void anErrorIsRaisedWithMessage(String expectedMessage) {
         assertNotNull(thrownException, "Expected an exception but none was thrown");
