@@ -9,7 +9,6 @@ import com.planner.service.ActivityService;
 import com.planner.service.ProjectService;
 import com.planner.service.TimeRegistrationService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -39,7 +38,6 @@ public class TimeRegistrationServiceTest {
 
     // TC1 valid input returns a time registration with the correct hours
     @Test
-    @DisplayName("Register time on an activity")
     public void registerTime_validInput_returnsTimeRegistration() {
         TimeRegistration tr = timeService.registerTime("huba", projectId, "Design", DATE, 2.0);
         assertNotNull(tr);
@@ -48,7 +46,6 @@ public class TimeRegistrationServiceTest {
 
     // TC2 zero hours is not a positive value and must be rejected
     @Test
-    @DisplayName("Cannot register zero hours on an activity")
     public void registerTime_zeroHours_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "Design", DATE, 0.0));
@@ -56,7 +53,6 @@ public class TimeRegistrationServiceTest {
 
     // TC3 negative hours must be rejected
     @Test
-    @DisplayName("Cannot register negative hours on an activity")
     public void registerTime_negativeHours_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "Design", DATE, -1.0));
@@ -64,7 +60,6 @@ public class TimeRegistrationServiceTest {
 
     // TC4 hours must be a multiple of 0.5 so 1.3 should throw
     @Test
-    @DisplayName("Cannot register hours not a multiple of 0.5")
     public void registerTime_hoursNotMultipleOfHalf_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "Design", DATE, 1.3));
@@ -72,7 +67,6 @@ public class TimeRegistrationServiceTest {
 
     // TC5 developer not in the system should throw
     @Test
-    @DisplayName("Cannot register time for a non-existent developer")
     public void registerTime_unknownDeveloper_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("ZZZ", projectId, "Design", DATE, 2.0));
@@ -80,7 +74,6 @@ public class TimeRegistrationServiceTest {
 
     // TC6 activity does not exist in the project so it should throw
     @Test
-    @DisplayName("Cannot register time on a non-existent activity")
     public void registerTime_unknownActivity_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "NoSuchActivity", DATE, 2.0));
