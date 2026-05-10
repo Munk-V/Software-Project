@@ -33,11 +33,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,6 +57,7 @@ public class MainWindow {
     private final AvailabilityService availabilityService;
 
     private final BorderPane root = new BorderPane();
+    private String currentUserInitials;
 
 
     // shared state, so all selections in the project stays synchronized
@@ -83,8 +87,54 @@ public class MainWindow {
         absenceService = new AbsenceService(absenceRepository, developerRepository, projectRepository);
         availabilityService = new AvailabilityService(projectRepository, developerRepository, absenceRepository);
 
+        currentUserInitials = showLoginDialog();
+        if (currentUserInitials == null) {
+            Platform.exit();
+            return;
+        }
+
         buildUI();
         refreshDevelopers();
+    }
+
+    private String showLoginDialog() {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Login");
+
+        TextField initialsField = new TextField();
+        initialsField.setPromptText("Your initials");
+        Label errorLabel = new Label("");
+        errorLabel.setStyle("-fx-text-fill: red;");
+        Button loginButton = new Button("Login");
+
+        loginButton.setOnAction(e -> {
+            String initials = initialsField.getText().trim();
+            boolean found = developerService.getAllDevelopers().stream()
+                    .anyMatch(d -> d.getInitials().equalsIgnoreCase(initials));
+            if (found) {
+                dialog.setUserData(initials.toLowerCase());
+                dialog.close();
+            } else {
+                errorLabel.setText("Unknown initials: " + initials);
+            }
+        });
+
+        initialsField.setOnAction(e -> loginButton.fire());
+
+        VBox box = new VBox(10,
+                new Label("Enter your initials to log in:"),
+                initialsField,
+                loginButton,
+                errorLabel
+        );
+        box.setPadding(new Insets(20));
+        box.setAlignment(Pos.CENTER_LEFT);
+
+        dialog.setScene(new Scene(box, 280, 160));
+        dialog.showAndWait();
+
+        return dialog.getUserData() != null ? (String) dialog.getUserData() : null;
     }
 
     // builds the main layout.
@@ -285,7 +335,7 @@ public class MainWindow {
         DatePicker checkDate = new DatePicker(LocalDate.now());
         Label checkResult = new Label("");
 
-        regDeveloper.setPromptText("Developer");
+        regDeveloper.setValue(currentUserInitials);
         regActivity.setPromptText("Activity");
         editDeveloper.setPromptText("Developer");
         editActivity.setPromptText("Activity");
@@ -362,7 +412,7 @@ public class MainWindow {
 
         availableList.setPrefHeight(200);
 
-        absenceDeveloper.setPromptText("Developer");
+        absenceDeveloper.setValue(currentUserInitials);
         absenceType.setValue("VACATION");
         setPrompt(absenceStartWeek, "Start week");
         setPrompt(absenceEndWeek, "End week");

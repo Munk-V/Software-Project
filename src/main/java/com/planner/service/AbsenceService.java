@@ -39,7 +39,7 @@ public class AbsenceService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
-        if (isDeveloperBusyInPeriod(developer, startWeek, startYear, endWeek, endYear)) {
+        if (type != Absence.Type.SICK_LEAVE && isDeveloperBusyInPeriod(developer, startWeek, startYear, endWeek, endYear)) {
             throw new IllegalArgumentException("Absence denied: developer is assigned to an activity in that period");
         }
 
