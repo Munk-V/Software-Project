@@ -53,8 +53,12 @@ public class AbsenceService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
-        return absenceRepository.findByDeveloper(developer).stream()
-                .anyMatch(a -> a.isActiveInWeek(week, year));
+        for (Absence a : absenceRepository.findByDeveloper(developer)) {
+            if (a.isActiveInWeek(week, year)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Absence> getAbsencesForDeveloper(String developerInitials) {
