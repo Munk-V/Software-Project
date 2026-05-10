@@ -89,18 +89,18 @@ Feature: Project planning
   Scenario: Vacation is denied if developer is busy with an activity
     Given a project with name "WebShop" exists
     And the project has an activity named "Requirements"
-    And the activity has weeks 10 2026 to 12 2026
+    And the activity has weeks 20 2026 to 22 2026
     And developer "huba" is added to the activity "Requirements"
-    When developer "huba" tries to register vacation from week 11 2026 to week 11 2026
+    When developer "huba" tries to register vacation from week 21 2026 to week 21 2026
     Then an error is raised with message "Absence denied: developer is assigned to an activity in that period"
 
-  Scenario: Sick leave is denied if developer is busy with an activity
+  Scenario: Sick leave is allowed if developer is busy with an activity
     Given a project with name "WebShop" exists
     And the project has an activity named "Requirements"
     And the activity has weeks 20 2026 to 30 2026
     And developer "huba" is added to the activity "Requirements"
-    When developer "huba" tries to register sick leave from week 20 2026 to week 30 2026
-    Then an error is raised with message "Absence denied: developer is assigned to an activity in that period"
+    When developer "huba" registers sick leave from week 20 2026 to week 30 2026
+    Then developer "huba" is busy in week 21 2026
 
   Scenario: Register vacation as a fixed activity
     When developer "huba" registers vacation from week 20 2026 to week 22 2026
@@ -112,7 +112,7 @@ Feature: Project planning
     Then an error is raised with message "Week must be between 1 and 53"
 
   Scenario: Cannot register absence when start week is after end week
-    When developer "huba" tries to register vacation from week 20 2026 to week 10 2026
+    When developer "huba" tries to register vacation from week 25 2026 to week 20 2026
     Then an error is raised with message "Start week must be before or equal to end week"
 
   # ─────────────────────────────────────────
@@ -122,14 +122,14 @@ Feature: Project planning
   Scenario: Available developers excludes developers assigned to activities
     Given a project with name "WebShop" exists
     And the project has an activity named "Requirements"
-    And the activity has weeks 10 2026 to 12 2026
+    And the activity has weeks 20 2026 to 22 2026
     And developer "huba" is added to the activity "Requirements"
-    When available developers in week 11 2026 are requested
+    When available developers in week 21 2026 are requested
     Then developer "huba" is not in the available list
 
   Scenario: Available developers excludes developers on vacation
-    When developer "huba" registers vacation from week 10 2026 to week 12 2026
-    When available developers in week 11 2026 are requested
+    When developer "huba" registers vacation from week 20 2026 to week 22 2026
+    When available developers in week 21 2026 are requested
     Then developer "huba" is not in the available list
 
   # ─────────────────────────────────────────

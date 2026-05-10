@@ -32,11 +32,11 @@ public class AbsenceServiceTest {
     // TC1 valid absence is stored and returned
     @Test
     public void registerAbsence_validInput_returnsAbsence() {
-        Absence absence = absenceService.registerAbsence("huba", Absence.Type.VACATION, 10, 2026, 12, 2026);
+        Absence absence = absenceService.registerAbsence("huba", Absence.Type.VACATION, 20, 2026, 22, 2026);
         assertNotNull(absence);
         assertEquals(Absence.Type.VACATION, absence.getType());
-        assertEquals(10, absence.getStartWeek());
-        assertEquals(12, absence.getEndWeek());
+        assertEquals(20, absence.getStartWeek());
+        assertEquals(22, absence.getEndWeek());
     }
 
     // TC2 null type must be rejected
@@ -71,14 +71,14 @@ public class AbsenceServiceTest {
     @Test
     public void registerAbsence_startAfterEnd_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> absenceService.registerAbsence("huba", Absence.Type.VACATION, 15, 2026, 10, 2026));
+                () -> absenceService.registerAbsence("huba", Absence.Type.VACATION, 25, 2026, 20, 2026));
     }
 
     // TC7 developer not in the system should throw
     @Test
     public void registerAbsence_unknownDeveloper_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> absenceService.registerAbsence("ZZZ", Absence.Type.VACATION, 10, 2026, 12, 2026));
+                () -> absenceService.registerAbsence("ZZZ", Absence.Type.VACATION, 20, 2026, 22, 2026));
     }
 
     // TC8 developer assigned to an activity in that period, absence is denied
@@ -88,13 +88,14 @@ public class AbsenceServiceTest {
         ActivityService activityService = new ActivityService(projectRepository, developerRepository);
         Project project = projectService.createProject("BusyProject");
         activityService.createActivity(project.getId(), "BusyTask");
-        activityService.setActivityDetails(project.getId(), "BusyTask", 10.0, 10, 2026, 12, 2026);
+        activityService.setActivityDetails(project.getId(), "BusyTask", 10.0, 20, 2026, 22, 2026);
         activityService.addDeveloperToActivity(project.getId(), "BusyTask", "huba");
 
         assertThrows(IllegalArgumentException.class,
-                () -> absenceService.registerAbsence("huba", Absence.Type.VACATION, 11, 2026, 11, 2026));
+                () -> absenceService.registerAbsence("huba", Absence.Type.VACATION, 21, 2026, 21, 2026));
     }
-    // TC9 sick leave is allowed even when developer is busy
+
+    // TC9 sick leave is allowed even when developer is busy (sick leave overrides activity conflicts)
     @Test
     public void registerAbsence_sickLeaveWhenDeveloperBusy_returnsAbsence() {
         ProjectService projectService = new ProjectService(projectRepository, developerRepository);
@@ -102,11 +103,11 @@ public class AbsenceServiceTest {
 
         Project project = projectService.createProject("BusyProject");
         activityService.createActivity(project.getId(), "BusyTask");
-        activityService.setActivityDetails(project.getId(), "BusyTask", 10.0, 10, 2026, 12, 2026);
+        activityService.setActivityDetails(project.getId(), "BusyTask", 10.0, 20, 2026, 22, 2026);
         activityService.addDeveloperToActivity(project.getId(), "BusyTask", "huba");
 
         Absence absence = absenceService.registerAbsence(
-                "huba", Absence.Type.SICK_LEAVE, 11, 2026, 11, 2026);
+                "huba", Absence.Type.SICK_LEAVE, 21, 2026, 21, 2026);
 
         assertNotNull(absence);
         assertEquals(Absence.Type.SICK_LEAVE, absence.getType());

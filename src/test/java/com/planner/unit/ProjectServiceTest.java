@@ -89,7 +89,7 @@ public class ProjectServiceTest {
     @Test
     public void setDeadline_week1_valid() {
         Project project = projectService.createProject("WebShop");
-        assertDoesNotThrow(() -> projectService.setDeadline(project.getId(), 1, 2026));
+        assertDoesNotThrow(() -> projectService.setDeadline(project.getId(), 1, 2027));
     }
 
     @Test

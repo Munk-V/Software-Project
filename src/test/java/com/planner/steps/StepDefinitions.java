@@ -206,6 +206,13 @@ public class StepDefinitions {
     }
 
     // Nicolai
+    @When("developer {string} registers sick leave from week {int} {int} to week {int} {int}")
+    public void developerRegistersSickLeave(String initials, int startWeek, int startYear, int endWeek, int endYear) {
+        absenceService.registerAbsence(initials, Absence.Type.SICK_LEAVE,
+                startWeek, startYear, endWeek, endYear);
+    }
+
+    // Nicolai
     @When("developer {string} tries to register sick leave from week {int} {int} to week {int} {int}")
     public void developerTriesToRegisterSickLeave(String initials, Integer startWeek, Integer startYear, Integer endWeek, Integer endYear) {
         try {

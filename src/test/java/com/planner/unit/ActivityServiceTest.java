@@ -35,12 +35,12 @@ public class ActivityServiceTest {
     @Test
     public void setActivityDetails_validInput_setsAllFields() {
         activityService.createActivity(projectId, "Design");
-        activityService.setActivityDetails(projectId, "Design", 40.0, 10, 2026, 12, 2026);
+        activityService.setActivityDetails(projectId, "Design", 40.0, 20, 2026, 22, 2026);
         Activity a = activityService.getActivity(projectId, "Design");
         assertEquals(40.0, a.getBudgetedHours(), 0.001);
-        assertEquals(10, a.getStartWeek());
+        assertEquals(20, a.getStartWeek());
         assertEquals(2026, a.getStartYear());
-        assertEquals(12, a.getEndWeek());
+        assertEquals(22, a.getEndWeek());
         assertEquals(2026, a.getEndYear());
     }
 
@@ -89,15 +89,15 @@ public class ActivityServiceTest {
     public void setActivityDetails_sameStartAndEndWeek_isAllowed() {
         activityService.createActivity(projectId, "Design");
         assertDoesNotThrow(
-                () -> activityService.setActivityDetails(projectId, "Design", 10.0, 10, 2026, 10, 2026));
+                () -> activityService.setActivityDetails(projectId, "Design", 10.0, 20, 2026, 20, 2026));
     }
 
-    // TC8 start in 2025 and end in 2026. Checks that the year is part of the comparison
+    // TC8 start in 2026 and end in 2027. Checks that the year is part of the comparison
     @Test
     public void setActivityDetails_startEndAcrossYears_isAllowed() {
         activityService.createActivity(projectId, "Design");
         assertDoesNotThrow(
-                () -> activityService.setActivityDetails(projectId, "Design", 10.0, 50, 2025, 5, 2026));
+                () -> activityService.setActivityDetails(projectId, "Design", 10.0, 50, 2026, 5, 2027));
     }
 
     // TC: developer successfully added to activity
