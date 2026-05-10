@@ -13,4 +13,5 @@ public interface IProjectRepository {
     Optional<Project> findById(String id);
     List<Project> findAll();
     Optional<Activity> findActivity(String projectId, String activityName);
+    void removeActivity(String projectId, String activityName);
 }

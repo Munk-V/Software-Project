@@ -275,10 +275,15 @@ public class MainWindow {
             activityService.createActivity(projectId, name);
 
             if (!budget.getText().isBlank()) {
-                activityService.setActivityDetails(
-                        projectId, name,parseDouble(budget), optionalInt(startWeek),
-                        optionalInt(startYear), optionalInt(endWeek), optionalInt(endYear)
-                );
+                try {
+                    activityService.setActivityDetails(
+                            projectId, name, parseDouble(budget), optionalInt(startWeek),
+                            optionalInt(startYear), optionalInt(endWeek), optionalInt(endYear)
+                    );
+                } catch (Exception ex) {
+                    activityService.deleteActivity(projectId, name);
+                    throw ex;
+                }
             }
 
             activityName.clear();

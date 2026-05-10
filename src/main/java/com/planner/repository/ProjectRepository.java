@@ -66,4 +66,13 @@ public class ProjectRepository implements IProjectRepository{
 		}
 		return Optional.empty();
 	}
+    @Override
+    public void removeActivity(String projectId, String activityName) {
+        for (Project p : projects) {
+            if (p.getId().equals(projectId)) {
+                p.getActivities().removeIf(a -> a.getName().equals(activityName));
+                return;
+            }
+        }
+    }
 }

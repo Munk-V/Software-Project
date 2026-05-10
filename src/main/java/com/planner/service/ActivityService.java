@@ -102,6 +102,10 @@ public class ActivityService {
         return result.get();
     }
 
+    public void deleteActivity(String projectId, String activityName) {
+        projectRepository.removeActivity(projectId, activityName);
+    }
+
     // Returns all activities belonging to the given project
     public List<Activity> getActivitiesForProject(String projectId) {
         Optional<Project> result = projectRepository.findById(projectId);
