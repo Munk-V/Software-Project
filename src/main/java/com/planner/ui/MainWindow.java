@@ -460,8 +460,8 @@ public class MainWindow {
         TableColumn<Activity, String> developers = new TableColumn<>("Developers");
         developers.setCellValueFactory(d -> new SimpleStringProperty(developerText(d.getValue())));
 
-        //table.getColumns().setAll(name, budget, registered, weeks, developers);
-        //table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getColumns().setAll(name, budget, registered, weeks, developers);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void setupReportTable(TableView<Activity> table) {
@@ -474,8 +474,8 @@ public class MainWindow {
         TableColumn<Activity, Number> registered = new TableColumn<>("Registered hours");
         registered.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getTotalRegisteredHours()));
 
-        //table.getColumns().setAll(name, budget, registered);
-        //table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getColumns().setAll(name, budget, registered);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void refreshSelectedProject() {
