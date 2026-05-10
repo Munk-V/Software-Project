@@ -273,6 +273,7 @@ public class MainWindow {
         ComboBox<String> regDeveloper = new ComboBox<>(developerItems);
         ComboBox<String> regActivity = new ComboBox<>(activityItems);
         TextField regHours = new TextField();
+        TextField regComment = new TextField();
         DatePicker regDate = new DatePicker(LocalDate.now());
 
         ComboBox<String> editDeveloper = new ComboBox<>(developerItems);
@@ -290,6 +291,7 @@ public class MainWindow {
         editActivity.setPromptText("Activity");
         checkDeveloper.setPromptText("Developer");
         setPrompt(regHours, "Hours");
+        setPrompt(regComment, "Comment (optional)");
         setPrompt(editHours, "New hours");
 
         Button registerTime = new Button("Register time");
@@ -297,9 +299,10 @@ public class MainWindow {
             timeRegistrationService.registerTime(
                     requireValue(regDeveloper.getValue(), "Choose a developer."), requireProjectId(),
                     requireValue(regActivity.getValue(), "Choose an activity."), regDate.getValue(),
-                    parseDouble(regHours)
+                    parseDouble(regHours), regComment.getText().trim()
             );
             regHours.clear();
+            regComment.clear();
             refreshSelectedProject();
         }));
 
@@ -327,6 +330,7 @@ public class MainWindow {
                 row("Activity", regActivity),
                 row("Date", regDate),
                 row("Hours", regHours),
+                row("Comment", regComment),
                 registerTime,
                 new Label("Edit time registration"),
                 row("Developer", editDeveloper),
@@ -425,7 +429,9 @@ public class MainWindow {
             detailLabel.setText("Registrations for: " + newVal.getName());
             ObservableList<String> items = FXCollections.observableArrayList();
             for (TimeRegistration tr : newVal.getTimeRegistrations()) {
-                items.add(tr.getDeveloper().getInitials() + "  |  " + tr.getDate() + "  |  " + tr.getHours() + " h");
+                String line = tr.getDeveloper().getInitials() + "  |  " + tr.getDate() + "  |  " + tr.getHours() + " h";
+                if (!tr.getComment().isBlank()) line += "  |  " + tr.getComment();
+                items.add(line);
             }
             detailList.setItems(items);
         });

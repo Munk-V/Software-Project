@@ -22,7 +22,11 @@ public class TimeRegistrationService {
         this.developerRepository = developerRepository;
     }
 
-    public TimeRegistration registerTime(String developerInitials, String projectId,String activityName, LocalDate date, double hours) {
+    public TimeRegistration registerTime(String developerInitials, String projectId, String activityName, LocalDate date, double hours) {
+        return registerTime(developerInitials, projectId, activityName, date, hours, "");
+    }
+
+    public TimeRegistration registerTime(String developerInitials, String projectId, String activityName, LocalDate date, double hours, String comment) {
         if (hours <= 0 || hours % 0.5 != 0.0) {
             throw new IllegalArgumentException("Hours must be a positive multiple of 0.5");
         }
@@ -35,13 +39,13 @@ public class TimeRegistrationService {
         assert hours > 0 : "hours must be positive";
         assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
 
-        Developer developer =   developerRepository.findByInitials(developerInitials)
+        Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
         Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
 
-        TimeRegistration registration = new TimeRegistration(developer, activity, date, hours);
+        TimeRegistration registration = new TimeRegistration(developer, activity, date, hours, comment);
         activity.addTimeRegistration(registration);
 
         // Post-conditions
