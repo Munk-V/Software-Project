@@ -19,10 +19,10 @@ public class ProjectService { //LOgic
     }
 
 	public Project createProject(String name) { // Only allows strings
-		if (name == null) {
+		if (name == null) { // check to see if the slot is left empty
 			throw new IllegalArgumentException("Project name cannot be empty");
 		}
-		boolean hasContent = false;
+		boolean hasContent = false; // check to see if its just spaces
 		for (int i = 0; i < name.length(); i++) {
 			if (name.charAt(i) != ' ') {
 				hasContent = true;
@@ -31,16 +31,16 @@ public class ProjectService { //LOgic
 		if (!hasContent) {
 			throw new IllegalArgumentException("Project name cannot be empty");
 		}
-		String id = projectRepository.generateProjectId();
-		Project project = new Project(id, name);
+		String id = projectRepository.generateProjectId(); // call upon the Projet ID maker from the repository
+		Project project = new Project(id, name); // Tuple the name and the id together
 		projectRepository.add(project);
 		return project;       
 	}
 
 	public Project getProject(String id) {
 		Project found = null;
-		for (Project p : projectRepository.findAll()) {
-			if (p.getId().equals(id)) {
+		for (Project p : projectRepository.findAll()) { //find the project using the ID
+			if (p.getId().equals(id)) { // if there is a mathc, then thats the one
 				found = p;
 			}
 		}
@@ -50,20 +50,20 @@ public class ProjectService { //LOgic
 		return found;
 	}
 
-    public List<Project> getAllProjects() {
+    public List<Project> getAllProjects() { // just get them all
         return projectRepository.findAll();
     }
 
-    public void setDeadline(String projectId, int week, int year) {
+    public void setDeadline(String projectId, int week, int year) { // set date
         requireNotInPast(week, year);
         Project project = getProject(projectId);
-        if (project.hasStart() && year * 100 + week < project.getStartYear() * 100 + project.getStartWeek()) {
+        if (project.hasStart() && year * 100 + week < project.getStartYear() * 100 + project.getStartWeek()) {  // ensure that the start date isnt after the end date
             throw new IllegalArgumentException("Deadline cannot be before project start");
         }
-        project.setDeadline(week, year);
+        project.setDeadline(week, year); // put into tuple
     }
 
-    public void setStart(String projectId, int week, int year) {
+    public void setStart(String projectId, int week, int year) { 
         requireNotInPast(week, year);
         Project project = getProject(projectId);
         if (project.hasDeadline() && year * 100 + week > project.getDeadlineYear() * 100 + project.getDeadlineWeek()) {
