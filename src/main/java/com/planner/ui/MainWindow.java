@@ -97,17 +97,22 @@ public class MainWindow {
         refreshDevelopers();
     }
 
+
+    // login implemtation
     private String showLoginDialog() {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Login");
-
+        
+        // setting textfield
         TextField initialsField = new TextField();
         initialsField.setPromptText("Your initials");
         Label errorLabel = new Label("");
         errorLabel.setStyle("-fx-text-fill: red;");
         Button loginButton = new Button("Login");
 
+        
+        // login button
         loginButton.setOnAction(e -> {
             String initials = initialsField.getText().trim();
             boolean found = developerService.getAllDevelopers().stream()
@@ -207,6 +212,7 @@ public class MainWindow {
             deadlineWeek.clear();
         }));
 
+        
         Button setLeader = new Button("Set leader");
         setLeader.setOnAction(e -> runAction(() -> {
             String projectId = requireProjectId();
@@ -326,6 +332,7 @@ public class MainWindow {
 
     // builds tabs for time registration
     private Tab buildTimeTab() {
+        // Fields for registering, editing and checking time registrations.
         ComboBox<String> regDeveloper = new ComboBox<>(developerItems);
         ComboBox<String> regActivity = new ComboBox<>(activityItems);
         TextField regHours = new TextField();
@@ -350,7 +357,10 @@ public class MainWindow {
         setPrompt(regComment, "Comment (optional)");
         setPrompt(editHours, "New hours");
 
+        // reads the values from UI, sends logic to service layer.
         Button registerTime = new Button("Register time");
+
+        // Runs when user clicks register time button. (event)
         registerTime.setOnAction(e -> runAction(() -> {
             timeRegistrationService.registerTime(
                     requireValue(regDeveloper.getValue(), "Choose a developer."), requireProjectId(),
@@ -363,6 +373,7 @@ public class MainWindow {
         }));
 
         Button editTime = new Button("Edit time");
+        // same runs when action (event)
         editTime.setOnAction(e -> runAction(() -> {
             timeRegistrationService.editTimeRegistration(
                     requireValue(editDeveloper.getValue(), "Choose a developer."), requireProjectId(),
@@ -378,7 +389,7 @@ public class MainWindow {
             String initials = requireValue(checkDeveloper.getValue(), "Choose a developer.");
             double hours = timeRegistrationService.getTodayHours(initials, checkDate.getValue());
             checkResult.setText(initials + ": " + hours + " hours on " + checkDate.getValue());
-        }));
+     }));
 
         VBox content = page(
                 new Label("Register time"),
@@ -398,8 +409,7 @@ public class MainWindow {
                 row("Developer", checkDeveloper),
                 row("Date", checkDate),
                 checkHours,
-                checkResult
-        );
+                checkResult );
 
         return tab("Time", content);
     }
