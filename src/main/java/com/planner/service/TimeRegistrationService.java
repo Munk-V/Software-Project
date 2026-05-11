@@ -93,7 +93,7 @@ public class TimeRegistrationService {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
         
-        Double sum = 0.0;
+        Double sum = 0.0; //Also rewriten fully 
         List<Project> project = projectRepository.findAll();
         for (Project proj : project) {
         List<Activity> activities = proj.getActivities();
