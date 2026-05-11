@@ -35,12 +35,12 @@ public class TimeRegistrationService {
         //Checks if the time is valid to be addet to the time register
 
         // Pre-conditions (hold after defensive validation above)
-        //assert developerInitials != null : "developerInitials must not be null";
-        //assert projectId != null : "projectId must not be null";
-        //assert activityName != null : "activityName must not be null";
-       // assert date != null : "date must not be null";
-        //assert hours > 0 : "hours must be positive";
-       // assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
+        assert developerInitials != null : "developerInitials must not be null";
+        assert projectId != null : "projectId must not be null";
+        assert activityName != null : "activityName must not be null";
+        assert date != null : "date must not be null";
+        assert hours > 0 : "hours must be positive";
+        assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
 
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
@@ -55,8 +55,8 @@ public class TimeRegistrationService {
         //makes a registration
 
         // Post-conditions
-        //assert activity.getTimeRegistrations().contains(registration) : "registration must be stored on activity";
-        //assert registration.getHours() == hours : "registered hours must match input";
+        assert activity.getTimeRegistrations().contains(registration) : "registration must be stored on activity";
+        assert registration.getHours() == hours : "registered hours must match input";
 
         return registration;
     }
@@ -72,6 +72,7 @@ public class TimeRegistrationService {
 
         Activity activity = projectRepository.findActivity(projectId, activityName)
                 .orElseThrow(() -> new IllegalArgumentException("Activity not found: " + activityName));
+// Cheks the same things as before, but as it aloso instantites the variebles used it is written in both places
 
         List<TimeRegistration> registration = activity.getTimeRegistrations();
         for (TimeRegistration timeRegistration : registration) {
@@ -81,10 +82,12 @@ public class TimeRegistrationService {
                  else{
                     throw new IllegalArgumentException("No time registration found for that date");
                  }
-        }
+        }//Makes sure that there is actualy a time registration for that developer, activity and date
                 
 
     }
+
+
 
     public double getTodayHours(String developerInitials, LocalDate date) {
         Developer developer = developerRepository.findByInitials(developerInitials)
@@ -105,5 +108,6 @@ public class TimeRegistrationService {
                 }
         }
         return sum;        
+        //TAkes a developer and date and gors thrue all the activityes to see if they have registeret any houres
     }
 }
