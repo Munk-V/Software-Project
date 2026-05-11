@@ -37,7 +37,7 @@ public class AbsenceService {
         requireNotInPast(startWeek, startYear);
         requireNotInPast(endWeek, endYear);
 
-        // 202643
+        // 202643 still AI's idea. But copied to here. 
         int start = startYear * 100 + startWeek;
         int end = endYear * 100 + endWeek;
         if (start > end) {
@@ -48,11 +48,12 @@ public class AbsenceService {
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
 
         // Way to work around having a sick leave exception.
-        // Alle absencetypes except, sick leave cannot be made if the developer is active
+        // All absencetypes except, sick leave cannot be made if the developer is active
         if (type != Absence.Type.SICK_LEAVE && isDeveloperBusyInPeriod(developer, startWeek, startYear, endWeek, endYear)) {
             throw new IllegalArgumentException("Absence denied: developer is assigned to an activity in that period");
         }
 
+        // create absence
         Absence absence = new Absence(developer, type, startWeek, startYear, endWeek, endYear);
         absenceRepository.add(absence);
 
@@ -72,7 +73,7 @@ public class AbsenceService {
         return false;
     }
 
-    
+
     public List<Absence> getAbsencesForDeveloper(String developerInitials) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));

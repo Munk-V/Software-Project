@@ -496,6 +496,7 @@ public class MainWindow {
         detailList.setPrefHeight(150);
 
         reportTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            
             if (newVal == null) {
                 detailLabel.setText("");
                 detailList.setItems(FXCollections.observableArrayList());
