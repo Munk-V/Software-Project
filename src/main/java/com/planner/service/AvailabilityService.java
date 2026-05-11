@@ -1,6 +1,6 @@
 package com.planner.service;
 // Nat
-
+//Makes the list of awaileble developeres 
 import com.planner.domain.Absence;
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
@@ -12,8 +12,6 @@ import com.planner.repository.IProjectRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-
-// everything here needs to be redone
 public class AvailabilityService {
 
     private final IProjectRepository projectRepository;
@@ -27,6 +25,7 @@ public class AvailabilityService {
         this.developerRepository = developerRepository;
         this.absenceRepository = absenceRepository;
     }
+
 
     public List<Developer> getAvailableDevelopers(int week, int year) {
         List<Developer> allDevelopers = developerRepository.findAll();

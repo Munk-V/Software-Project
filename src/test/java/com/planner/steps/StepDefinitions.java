@@ -1,5 +1,5 @@
 package com.planner.steps;
-// DELT, se kommentarer over hver step metode
+// DELT, See coments over each step method
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
