@@ -1,5 +1,6 @@
-package com.planner.service;
 // Nicolai, s234146
+package com.planner.service;
+
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;

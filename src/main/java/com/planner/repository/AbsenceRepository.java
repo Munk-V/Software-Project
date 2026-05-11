@@ -1,5 +1,5 @@
-package com.planner.repository;
 // Nicolai, s234146
+package com.planner.repository;
 
 import com.planner.domain.Developer;
 import com.planner.domain.Absence;
