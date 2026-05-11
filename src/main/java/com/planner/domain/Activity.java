@@ -12,7 +12,7 @@ public class Activity {
     // The activity's name — cannot be changed after creation 
     private final String name;
 
-    // How many hours the activity is budgeted to take (UC2: Create Activity)
+    // How many hours the activity is budgeted to take UC2: Create Activity
     private double budgetedHours;
 
     // Start week and year for the activity, 0 means "not yet set"
