@@ -414,9 +414,11 @@ public class MainWindow {
         return tab("Time", content);
     }
 
+    // absence and abulity tabs, pretty much the same as time with 
     private Tab buildAbsenceAndAvailabilityTab() {
         ComboBox<String> absenceDeveloper = new ComboBox<>(developerItems);
         ComboBox<String> absenceType = new ComboBox<>(FXCollections.observableArrayList("VACATION", "SICK_LEAVE", "COURSE", "OTHER"));
+
         TextField absenceStartWeek = new TextField();
         TextField absenceStartYear = new TextField(String.valueOf(LocalDate.now().getYear()));
         TextField absenceEndWeek = new TextField();
