@@ -46,6 +46,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Nicolai and Viktor
+
 public class MainWindow {
 
     // logic layer
@@ -436,7 +438,9 @@ public class MainWindow {
         setPrompt(absenceEndWeek, "End week");
         setPrompt(availableWeek, "Week");
 
+        // buttonAction = connect to AbcenseService
         Button registerAbsence = new Button("Register absence");
+
         registerAbsence.setOnAction(e -> runAction(() -> {
             absenceService.registerAbsence(
                     requireValue(absenceDeveloper.getValue(), "Choose a developer."),
@@ -446,6 +450,7 @@ public class MainWindow {
                     parseInt(absenceEndWeek),
                     parseInt(absenceEndYear)
             );
+            // clearing and refreshing.
             absenceStartWeek.clear();
             absenceEndWeek.clear();
             refreshSelectedProject();
@@ -455,6 +460,8 @@ public class MainWindow {
         checkAvailable.setOnAction(e -> runAction(() -> {
             int week = parseInt(availableWeek);
             int year = parseInt(availableYear);
+
+            
             List<Developer> developers = availabilityService.getAvailableDevelopers(week, year);
             ObservableList<String> items = FXCollections.observableArrayList();
             if (developers.isEmpty()) {
@@ -537,6 +544,8 @@ public class MainWindow {
     }
 
     private void setupActivityTable(TableView<Activity> table) {
+
+        // in activity row, getValue() = activity name
         TableColumn<Activity, String> name = new TableColumn<>("Activity");
         name.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
 
@@ -557,6 +566,7 @@ public class MainWindow {
     }
 
     private void setupReportTable(TableView<Activity> table) {
+        // same here
         TableColumn<Activity, String> name = new TableColumn<>("Activity");
         name.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
 
@@ -566,11 +576,13 @@ public class MainWindow {
         TableColumn<Activity, Number> registered = new TableColumn<>("Registered hours");
         registered.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getTotalRegisteredHours()));
 
+        // defines collumns in the activity table
         table.getColumns().setAll(name, budget, registered);
+        //resizing (AI)
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    private void refreshSelectedProject() {
+    private void refreshSelectedProject(){
         String projectId = getSelectedProjectId();
         if (projectId == null) {
             selectedProjectLabel.setText("No project selected");

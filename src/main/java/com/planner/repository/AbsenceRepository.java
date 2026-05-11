@@ -1,5 +1,5 @@
 package com.planner.repository;
-// Nicolai
+// Nicolai, s234146
 
 import com.planner.domain.Developer;
 import com.planner.domain.Absence;
@@ -27,7 +27,6 @@ public class AbsenceRepository implements IAbsenceRepository {
             result.add(absence);// adds absence if any
         }
     }
-
     return result;
     }
 

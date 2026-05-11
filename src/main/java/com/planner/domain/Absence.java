@@ -1,8 +1,9 @@
 package com.planner.domain;
-// Nicolai
+// Nicolai, s234146
 
 public class Absence {
 
+    // types of absence in our program. Enum
     public enum Type {
         VACATION, SICK_LEAVE, COURSE, OTHER
     }

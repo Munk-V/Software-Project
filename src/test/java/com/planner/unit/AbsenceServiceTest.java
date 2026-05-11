@@ -122,4 +122,11 @@ public class AbsenceServiceTest {
         assertNotNull(absence);
         assertEquals(Absence.Type.SICK_LEAVE, absence.getType());
     }
+    // TC10: date in the past should throw
+    @Test
+    public void registerAbsence_dateInPast_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> absenceService.registerAbsence(
+                        "huba", Absence.Type.VACATION, 1, 2000, 2, 2000));
+    }
 }
