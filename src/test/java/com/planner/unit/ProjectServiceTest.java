@@ -13,7 +13,6 @@ import com.planner.domain.Project;
 import com.planner.repository.DeveloperRepository;
 import com.planner.repository.ProjectRepository;
 import com.planner.service.ProjectService;
-
 public class ProjectServiceTest {
 
     private ProjectService projectService;

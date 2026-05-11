@@ -22,10 +22,10 @@ public class Project { // accessed by other modules; hence pulic class
     }
     // Now Public so if it is "asked for" by other modules
     // ID and Name 
-    public String getId() {
+    public String getId() { // make the name
         return id;
     }
-    public String getName() {
+    public String getName() { // make the id
         return name;
     }
     public Developer getProjectLeader() {

@@ -37,24 +37,24 @@ public class ProjectRepository implements IProjectRepository{
         return id;
     }
     @Override
-    public void add(Project project) {
+    public void add(Project project) { // add the projects, to a list
         projects.add(project);
     }
     @Override
-    public Optional<Project> findById(String id) {
+    public Optional<Project> findById(String id) { // find the poject, going through all of them, untill the id's match
         for (Project p : projects) {
             if (p.getId().equals(id)) {
                 return Optional.of(p);
             }
         }
-        return Optional.empty();
+        return Optional.empty(); // if the project desnt exist
     }
     @Override
-    public List<Project> findAll() { // return a copy
+    public List<Project> findAll() { // return all of the projects 
         return new ArrayList<>(projects);
     }
     @Override
-	public Optional<Activity> findActivity(String projectId, String activityName) {
+	public Optional<Activity> findActivity(String projectId, String activityName) { // find the activty in the project
 		for (Project p : projects) {
 			if (p.getId().equals(projectId)) {
 				for (Activity a : p.getActivities()) {
@@ -64,7 +64,7 @@ public class ProjectRepository implements IProjectRepository{
 				}
 			}
 		}
-		return Optional.empty();
+		return Optional.empty(); //no activity
 	}
     @Override
     public void removeActivity(String projectId, String activityName) {
