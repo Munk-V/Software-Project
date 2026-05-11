@@ -1,7 +1,7 @@
 package com.planner.domain;
 // Nat
 // Sets up the time registration class. 5Instances of this class are used to store timeregistrations and can be edited after the fact.
-// THese are used when printing the reports, AI was used to write this code as it is just a class witch has to save a bunch of variables, that we already know
+// THese are used when printing the reports, AI was used to help write this code as it is just a class witch has to save a bunch of variables, that we already know
 import java.time.LocalDate;
 
 public class TimeRegistration {

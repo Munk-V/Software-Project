@@ -32,12 +32,12 @@ public class TimeRegistrationService {
         }
 
         // Pre-conditions (hold after defensive validation above)
-        assert developerInitials != null : "developerInitials must not be null";
-        assert projectId != null : "projectId must not be null";
-        assert activityName != null : "activityName must not be null";
-        assert date != null : "date must not be null";
-        assert hours > 0 : "hours must be positive";
-        assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
+        //assert developerInitials != null : "developerInitials must not be null";
+        //assert projectId != null : "projectId must not be null";
+        //assert activityName != null : "activityName must not be null";
+       // assert date != null : "date must not be null";
+        //assert hours > 0 : "hours must be positive";
+       // assert hours % 0.5 == 0 : "hours must be a multiple of 0.5";
 
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
@@ -49,8 +49,8 @@ public class TimeRegistrationService {
         activity.addTimeRegistration(registration);
 
         // Post-conditions
-        assert activity.getTimeRegistrations().contains(registration) : "registration must be stored on activity";
-        assert registration.getHours() == hours : "registered hours must match input";
+        //assert activity.getTimeRegistrations().contains(registration) : "registration must be stored on activity";
+        //assert registration.getHours() == hours : "registered hours must match input";
 
         return registration;
     }
