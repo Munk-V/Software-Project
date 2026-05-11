@@ -72,6 +72,7 @@ public class AbsenceService {
         return false;
     }
 
+    
     public List<Absence> getAbsencesForDeveloper(String developerInitials) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
