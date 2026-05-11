@@ -57,12 +57,18 @@ public class ProjectService { //LOgic
     public void setDeadline(String projectId, int week, int year) {
         requireNotInPast(week, year);
         Project project = getProject(projectId);
+        if (project.hasStart() && year * 100 + week < project.getStartYear() * 100 + project.getStartWeek()) {
+            throw new IllegalArgumentException("Deadline cannot be before project start");
+        }
         project.setDeadline(week, year);
     }
 
     public void setStart(String projectId, int week, int year) {
         requireNotInPast(week, year);
         Project project = getProject(projectId);
+        if (project.hasDeadline() && year * 100 + week > project.getDeadlineYear() * 100 + project.getDeadlineWeek()) {
+            throw new IllegalArgumentException("Start cannot be after project deadline");
+        }
         project.setStart(week, year);
     }
 
