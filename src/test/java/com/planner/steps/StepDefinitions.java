@@ -1,5 +1,5 @@
 package com.planner.steps;
-// DELT – se kommentarer over hver step-metode (fordeling pr. service)
+// DELT, se kommentarer over hver step metode
 
 import com.planner.domain.Activity;
 import com.planner.domain.Developer;
@@ -185,7 +185,6 @@ public class StepDefinitions {
         assertEquals(registered, activity.getTotalRegisteredHours(), 0.001);
     }
 
-    // --- Fixed activity steps ---
 
     // Nicolai
     @When("developer {string} registers vacation from week {int} {int} to week {int} {int}")
@@ -234,7 +233,6 @@ public class StepDefinitions {
         assertFalse(absenceService.isDeveloperAbsent(initials, week, year));
     }
 
-    // --- Available developers steps ---
 
     // Mathias
     @When("available developers in week {int} {int} are requested")
@@ -254,7 +252,6 @@ public class StepDefinitions {
         assertFalse(availableDevelopers.stream().anyMatch(d -> d.getInitials().equals(initials)));
     }
 
-    // --- Set deadline steps ---
 
     // Vedanta
     @When("a deadline is set to week {int} year {int} for the project")
@@ -274,8 +271,6 @@ public class StepDefinitions {
         assertEquals(year, project.getDeadlineYear());
     }
 
-    // --- View project progress steps ---
-
     // Vedanta
     @When("the project progress is calculated")
     public void theProjectProgressIsCalculated() {
@@ -287,8 +282,6 @@ public class StepDefinitions {
     public void theProgressIs(double expectedPercent) {
         assertEquals(expectedPercent, calculatedProgress, 0.001);
     }
-
-    // --- Error scenario steps ---
 
     // Vedanta
     @When("a developer tries to create a project with an empty name")

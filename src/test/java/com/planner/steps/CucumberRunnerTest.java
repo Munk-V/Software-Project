@@ -6,12 +6,12 @@ package com.planner.steps;
 // in the "features" folder on the classpath.
 //
 // The actual test scenarios are written in plain English in:
-//   src/test/resources/features/project_planning.feature
+// src/test/resources/features/project_planning.feature
 //
 // Each scenario in the feature file corresponds to a use case from Report 1.
 // The step definitions that connect the scenarios to Java code are in StepDefinitions.java.
 //
-// "pretty" plugin makes the test output readable in the terminal — it prints
+// "pretty" plugin makes the test output readable in the terminal, it prints
 // each Given/When/Then step with pass/fail status.
 
 import org.junit.platform.suite.api.ConfigurationParameter;

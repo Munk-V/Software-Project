@@ -2,7 +2,7 @@
 package com.planner.unit;
 
 // White-box unit tests for TimeRegistrationService.registerTime.
-// Covers UC4 (Register Time on Activity) from Report 1, Section 4.4.
+// Covers UC4 from Report 1, Section 4.4.
 // Systematically tested in Report 2, Section 3.5 using equivalence partitioning.
 // Each test is named: methodName_inputCondition_expectedBehaviour
 
@@ -25,10 +25,10 @@ public class TimeRegistrationServiceTest {
     private TimeRegistrationService timeService;
     private String projectId;
 
-    // A fixed test date — avoids dependency on the current date in assertions
+    // A fixed test date, avoids dependency on the current date in assertions
     private static final LocalDate DATE = LocalDate.of(2026, 5, 10);
 
-    // Runs before each test — sets up a project with one activity and assigns "huba" to it
+    // Runs before each test, sets up a project with one activity and assigns "huba" to it
     @BeforeEach
     public void setUp() {
         ProjectRepository projectRepository = new ProjectRepository();
@@ -42,7 +42,7 @@ public class TimeRegistrationServiceTest {
         activityService.addDeveloperToActivity(projectId, "Design", "huba");
     }
 
-    // TC1: valid input — registration is stored and the correct hours are returned
+    // TC1: valid input, registration is stored and the correct hours are returned
     @Test
     public void registerTime_validInput_returnsTimeRegistration() {
         TimeRegistration tr = timeService.registerTime("huba", projectId, "Design", DATE, 2.0);

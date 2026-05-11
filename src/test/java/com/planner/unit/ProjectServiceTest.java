@@ -2,7 +2,7 @@
 package com.planner.unit;
 
 // White-box unit tests for ProjectService.
-// Covers UC1 (Create Project), UC9 (Set Project Deadline), and UC10 (View Project Progress).
+// Covers UC1, UC9, and UC10.
 // Test design follows equivalence partitioning and boundary value analysis (Report 2, Section 3.2).
 // Each test is named: methodName_inputCondition_expectedBehaviour
 
@@ -19,22 +19,20 @@ public class ProjectServiceTest {
 
     private ProjectService projectService;
 
-    // Runs before each test — creates a fresh service with empty in-memory repositories
+    // Runs before each test, creates a fresh service with empty in-memory repositories
     @BeforeEach
     public void setUp() {
         projectService = new ProjectService(new ProjectRepository(), new DeveloperRepository());
     }
 
-    // ── createProject (UC1) ──────────────────────────────────────────────────────
-
-    // TC1: valid name — the returned project should have exactly the name that was given
+    // TC1: valid name, the returned project should have exactly the name that was given
     @Test
     public void createProject_validName_returnsProjectWithCorrectName() {
         Project project = projectService.createProject("WebShop");
         assertEquals("WebShop", project.getName());
     }
 
-    // TC2: valid name — the project should be retrievable from the repository after creation
+    // TC2: valid name, the project should be retrievable from the repository after creation
     @Test
     public void createProject_validName_projectStoredInRepository() {
         Project project = projectService.createProject("WebShop");
@@ -43,14 +41,14 @@ public class ProjectServiceTest {
         assertEquals("WebShop", found.getName());
     }
 
-    // TC3: valid name — a non-null ID must be automatically generated for the project
+    // TC3: valid name, a non-null ID must be automatically generated for the project
     @Test
     public void createProject_validName_idIsNotNull() {
         Project project = projectService.createProject("WebShop");
         assertNotNull(project.getId());
     }
 
-    // TC4: empty string is not a valid project name — should throw
+    // TC4: empty string is not a valid project name, should throw
     @Test
     public void createProject_emptyName_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> projectService.createProject(""));
@@ -62,7 +60,7 @@ public class ProjectServiceTest {
         assertThrows(IllegalArgumentException.class, () -> projectService.createProject("   "));
     }
 
-    // TC6: null is not a valid name — should throw
+    // TC6: null is not a valid name, should throw
     @Test
     public void createProject_nullName_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> projectService.createProject(null));
@@ -76,7 +74,6 @@ public class ProjectServiceTest {
         assertNotEquals(p1.getId(), p2.getId());
     }
 
-    // ── setDeadline (UC9) ────────────────────────────────────────────────────────
 
     // TC1: a valid future week should be stored as the project deadline
     @Test
@@ -121,7 +118,6 @@ public class ProjectServiceTest {
         assertThrows(IllegalArgumentException.class, () -> projectService.setDeadline("99999", 10, 2026));
     }
 
-    // ── getProjectProgress (UC10) ────────────────────────────────────────────────
 
     // TC1: a project with no activities has no budgeted hours so progress must be 0%
     @Test
