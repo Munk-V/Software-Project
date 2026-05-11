@@ -88,7 +88,6 @@ public class TimeRegistrationService {
     }
 
 
-
     public double getTodayHours(String developerInitials, LocalDate date) {
         Developer developer = developerRepository.findByInitials(developerInitials)
                 .orElseThrow(() -> new IllegalArgumentException("Developer not found: " + developerInitials));
