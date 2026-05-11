@@ -1,6 +1,11 @@
 // Viktor
 package com.planner.unit;
 
+// White-box unit tests for TimeRegistrationService.registerTime.
+// Covers UC4 (Register Time on Activity) from Report 1, Section 4.4.
+// Systematically tested in Report 2, Section 3.5 using equivalence partitioning.
+// Each test is named: methodName_inputCondition_expectedBehaviour
+
 import com.planner.domain.TimeRegistration;
 import com.planner.domain.Project;
 import com.planner.repository.DeveloperRepository;
@@ -15,14 +20,15 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// White-box unit tests for TimeRegistrationService.registerTime
 public class TimeRegistrationServiceTest {
 
     private TimeRegistrationService timeService;
     private String projectId;
+
+    // A fixed test date — avoids dependency on the current date in assertions
     private static final LocalDate DATE = LocalDate.of(2026, 5, 10);
 
-    // Sets up a project with one activity and assigns "huba" to it
+    // Runs before each test — sets up a project with one activity and assigns "huba" to it
     @BeforeEach
     public void setUp() {
         ProjectRepository projectRepository = new ProjectRepository();
@@ -36,7 +42,7 @@ public class TimeRegistrationServiceTest {
         activityService.addDeveloperToActivity(projectId, "Design", "huba");
     }
 
-    // TC1 valid input returns a time registration with the correct hours
+    // TC1: valid input — registration is stored and the correct hours are returned
     @Test
     public void registerTime_validInput_returnsTimeRegistration() {
         TimeRegistration tr = timeService.registerTime("huba", projectId, "Design", DATE, 2.0);
@@ -44,35 +50,35 @@ public class TimeRegistrationServiceTest {
         assertEquals(2.0, tr.getHours(), 0.001);
     }
 
-    // TC2 zero hours is not a positive value and must be rejected
+    // TC2: zero hours is not positive and must be rejected
     @Test
     public void registerTime_zeroHours_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "Design", DATE, 0.0));
     }
 
-    // TC3 negative hours must be rejected
+    // TC3: negative hours must be rejected
     @Test
     public void registerTime_negativeHours_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "Design", DATE, -1.0));
     }
 
-    // TC4 hours must be a multiple of 0.5 so 1.3 should throw
+    // TC4: hours must be a multiple of 0.5 — 1.3 is not valid and should throw
     @Test
     public void registerTime_hoursNotMultipleOfHalf_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("huba", projectId, "Design", DATE, 1.3));
     }
 
-    // TC5 developer not in the system should throw
+    // TC5: developer "ZZZ" does not exist in the system and should throw
     @Test
     public void registerTime_unknownDeveloper_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> timeService.registerTime("ZZZ", projectId, "Design", DATE, 2.0));
     }
 
-    // TC6 activity does not exist in the project so it should throw
+    // TC6: the activity "NoSuchActivity" does not exist in the project and should throw
     @Test
     public void registerTime_unknownActivity_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
