@@ -3,7 +3,7 @@ package com.planner.unit;
 
 // White-box unit tests for ProjectService.
 // Covers UC1, UC9, and UC10.
-// Test design follows equivalence partitioning and boundary value analysis (Report 2, Section 3.2).
+// Test design follows equivalence partitioning and boundary value analysis.
 // Each test is named: methodName_inputCondition_expectedBehaviour
 
 import com.planner.domain.Project;
@@ -19,7 +19,7 @@ public class ProjectServiceTest {
 
     private ProjectService projectService;
 
-    // Runs before each test, creates a fresh service with empty in-memory repositories
+    // Runs before each test, creates a fresh service with empty in memory repositories
     @BeforeEach
     public void setUp() {
         projectService = new ProjectService(new ProjectRepository(), new DeveloperRepository());
