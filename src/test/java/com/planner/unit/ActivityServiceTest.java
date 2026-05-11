@@ -99,7 +99,7 @@ public class ActivityServiceTest {
     }
 
     // TC8: start in week 50 of 2026 and end in week 5 of 2027, year must be part of the
-    // comparison, encoded as year*100+week so this cross-year period should be accepted
+    // comparison, encoded as year*100+week so this cross year period should be accepted
     @Test
     public void setActivityDetails_startEndAcrossYears_isAllowed() {
         activityService.createActivity(projectId, "Design");
