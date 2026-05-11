@@ -47,6 +47,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // Nicolai and Viktor
+// The UI as it is now was made late in development.
+// An early prototype was used as starting point, which this version in structue/layout is based on. (vbox, hbox, grid etc. )
+
+
+
 
 public class MainWindow {
 
@@ -487,23 +492,33 @@ public class MainWindow {
         return tab("Absence / Available", content);
     }
 
+    // AI was used for this function to achieve the wanted functionality.
     private Tab buildReportTab() {
+
         setupReportTable(reportTable);
         reportTable.setPrefHeight(250);
 
         Label detailLabel = new Label("");
+
+        //list showing the details of the time reg
         ListView<String> detailList = new ListView<>();
         detailList.setPrefHeight(150);
 
+        // Listener function that runs when a new report in table is selected 
+        ///////// AI
         reportTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            
+
+            // if nothing is selected, the ui is cleared
             if (newVal == null) {
                 detailLabel.setText("");
                 detailList.setItems(FXCollections.observableArrayList());
                 return;
             }
+            // updates the activity lavbel
             detailLabel.setText("Registrations for: " + newVal.getName());
             ObservableList<String> items = FXCollections.observableArrayList();
+
+            // loop through all time reg for the activity
             for (TimeRegistration tr : newVal.getTimeRegistrations()) {
                 String line = tr.getDeveloper().getInitials() + "  |  " + tr.getDate() + "  |  " + tr.getHours() + " h";
                 if (!tr.getComment().isBlank()) line += "  |  " + tr.getComment();
@@ -511,7 +526,9 @@ public class MainWindow {
             }
             detailList.setItems(items);
         });
+        /////////// AI
 
+        // generate button. same as others
         Button generateReport = new Button("Generate report for selected project");
         generateReport.setOnAction(e -> runAction(() -> {
             Project project = projectService.getProject(requireProjectId());
@@ -523,9 +540,13 @@ public class MainWindow {
                 }
             }
 
+            // show activity.
             reportTable.setItems(FXCollections.observableArrayList(activitiesWithHours));
+            //clears the old details
             detailLabel.setText("");
             detailList.setItems(FXCollections.observableArrayList());
+ 
+            // calculater for remaining budget( help from ai)
             double remaining = project.getTotalBudgetedHours() - project.getTotalRegisteredHours();
             reportTotalLabel.setText("Budgeted: " + project.getTotalBudgetedHours()
                     + " h, registered: " + project.getTotalRegisteredHours()
@@ -583,8 +604,13 @@ public class MainWindow {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
+
+
+    // refreshes 
     private void refreshSelectedProject(){
         String projectId = getSelectedProjectId();
+
+        // if no proejct is seleted clear the activity field
         if (projectId == null) {
             selectedProjectLabel.setText("No project selected");
             activityItems.clear();
@@ -592,6 +618,7 @@ public class MainWindow {
             return;
         }
 
+        //loads the project and updates tables/label
         Project project = projectService.getProject(projectId);
         selectedProjectLabel.setText("Selected: " + project.getId() + " " + project.getName());
         projectInfoLabel.setText(projectInfo(project));
@@ -603,12 +630,15 @@ public class MainWindow {
         activityTable.refresh();
     }
 
+    // refresh function for developers
     private void refreshDevelopers() {
         developerItems.setAll(developerService.getAllDevelopers().stream()
                 .map(Developer::getInitials)
                 .collect(Collectors.toList()));
     }
 
+    // Makes all project information  readable in ui
+    // here ai heloed a bit as well
     private String projectInfo(Project project) {
         String leader = project.getProjectLeader() == null ? "none" : project.getProjectLeader().getInitials();
         String start = project.hasStart() ? project.getStartWeek() + "/" + project.getStartYear() : "not set";
@@ -621,6 +651,7 @@ public class MainWindow {
                 + "\nRegistered hours: " + project.getTotalRegisteredHours();
     }
 
+    // star/end dsiplay
     private String weekText(Activity activity) {
         if (activity.getStartYear() == 0 || activity.getEndYear() == 0) {
             return "-";
@@ -650,6 +681,7 @@ public class MainWindow {
         return selected.substring(1, selected.indexOf("]"));
     }
 
+    // proejctID
     private String requireProjectId() {
         String projectId = getSelectedProjectId();
         if (projectId == null) {
@@ -699,6 +731,7 @@ public class MainWindow {
         field.setPrefWidth(150);
     }
 
+    // horisontal row.
     private HBox row(String label, javafx.scene.Node... nodes) {
         Label l = new Label(label + ":");
         l.setMinWidth(100);
@@ -707,7 +740,7 @@ public class MainWindow {
         row.setAlignment(Pos.CENTER_LEFT);
         return row;
     }
-
+    // grid for multiple rows
     private GridPane form(HBox... rows) {
         GridPane grid = new GridPane();
         grid.setVgap(6);
@@ -723,7 +756,7 @@ public class MainWindow {
         box.setFillWidth(true);
         return box;
     }
-
+    // scrollpane for scrolable tab
     private Tab tab(String title, javafx.scene.Node content) {
         ScrollPane scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);

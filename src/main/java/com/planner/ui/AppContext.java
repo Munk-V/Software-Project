@@ -16,6 +16,10 @@ import com.planner.service.TimeRegistrationService;
 
 public class AppContext {
 
+    //Appcontext acts like a hub for all services to keep them out of the UI.
+    //If services an repositorie are not kept seperate, dependencies are directly in the mainwindow themselves. t
+    
+    // therefore repoes/services are declared here
     public final ProjectService projectService;
     public final ActivityService activityService;
     public final AvailabilityService availabilityService;
@@ -24,10 +28,12 @@ public class AppContext {
     public final AbsenceService absenceService;
 
     public AppContext() {
+        //in-memory storage
         IProjectRepository projectRepository = new ProjectRepository();
         IDeveloperRepository developerRepository = new DeveloperRepository();
         IAbsenceRepository absenceRepository = new AbsenceRepository();
 
+        // initializes all servuces and inject the dependancies. (DIP)
         this.projectService = new ProjectService(projectRepository, developerRepository);
         this.activityService = new ActivityService(projectRepository, developerRepository);
         this.availabilityService = new AvailabilityService(projectRepository, developerRepository, absenceRepository);
